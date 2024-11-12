@@ -1,7 +1,6 @@
 const {DataTypes} = require('sequelize')
-const sequelize = require('../server'); // Import sequelize instance from server.js
+const sequelize = require('../config/database'); // Import sequelize instance from server.js
 
-module.exports = (sequelize) =>{
     const Order = sequelize.define ("Order",{
         userId:{
                 type: DataTypes.INTEGER,
@@ -22,5 +21,5 @@ module.exports = (sequelize) =>{
             defaultValue: "Pending",
         },
     })
-    return Order;
-}
+
+module.exports = Order;
