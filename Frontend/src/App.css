@@ -1,0 +1,16 @@
+/*---------------------------------------------------------floating animation*/
+@keyframes float {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px); /* Adjust the height of the float */
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.float-animation {
+  animation: float 5s ease-in-out infinite; /* Adjust duration and timing function as needed */
+}
