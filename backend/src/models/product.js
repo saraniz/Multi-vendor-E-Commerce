@@ -1,7 +1,7 @@
 const {DataTypes} = require('sequelize')
-const sequelize = require('../server'); // Import sequelize instance from server.js
+const sequelize = require('../config/database'); // Import sequelize instance from server.js
 
-module.exports = (sequelize) =>{
+
     const Product = sequelize.define("Product",{
         id:{
             type: DataTypes.INTEGER,
@@ -25,5 +25,5 @@ module.exports = (sequelize) =>{
             allowNull: false,
         },
     })
-    return Product;
-}
+
+module.exports = Product;

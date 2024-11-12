@@ -1,10 +1,9 @@
 // models/user.js
 const { DataTypes } = require('sequelize');
 const bcrypt = require('bcrypt');
-const sequelize = require('../server'); // Import sequelize instance from server.js
+const sequelize = require('../config/database'); // Import sequelize instance from server.js
 
 
-module.exports = (sequelize) => {
     const User = sequelize.define('User', {
         id: {
             type: DataTypes.INTEGER,
@@ -52,5 +51,5 @@ module.exports = (sequelize) => {
         },
     });
 
-    return User;
-};
+  module.exports = User;
+

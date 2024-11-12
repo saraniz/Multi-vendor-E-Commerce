@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken')
 
 
 //register user
-const registerUser = (User, bcrypt, jwt) => async (req, res) => {
+const registerUser =  async (req, res) => {
     console.log("Request Body:", req.body);
     try {
         const userExist = await User.findOne({ where: { email: req.body.email } });
@@ -44,7 +44,7 @@ const registerUser = (User, bcrypt, jwt) => async (req, res) => {
     }
 };
 
-const loginUser = (User, bcrypt) => async (req, res) => {
+const loginUser = async (req, res) => {
     const { username, password } = req.body;
     try {
         const user = await User.findOne({ where: { username } });
