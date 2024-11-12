@@ -8,7 +8,7 @@ const ProductCard = () => {
   const shopname="D-Mart";
 
   return (
-    <div className="w-64 p-4 border rounded-lg shadow-lg transition-all duration-300 ease-in-out hover:bg-gray-100 hover:scale-105 hover:shadow-lg">
+    <div className="w-64 p-4 transition-all duration-300 ease-in-out rounded-lg hover:border hover:scale-105 hover:shadow-lg">
       {/* Product Image */}
       <div className="relative">
       <Link to={'/Productpage'}><img
@@ -28,10 +28,10 @@ const ProductCard = () => {
       </div>
 
       {/* Product Information */}
-      <Link to={'/Productpage'}><div className="mt-3">
-        <a href=''><p className="text-gray-600 truncate">Gents trouser dark navy...</p></a>
+      <div className="mt-3">
+      <Link to={'/Productpage'}><a href=''><p className="text-gray-600 truncate">Gents trouser dark navy...</p></a></Link>
         <p className="text-xl font-bold">3800 LKR</p>
-      </div></Link>
+      </div>
       
 
       {/* Seller Information */}
