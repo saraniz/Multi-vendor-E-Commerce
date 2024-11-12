@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
+import Banner1 from '../../Assests/Banner1.jpg';
 
 const advertisements = [
   {
     id: 1,
-    image: "https://d1csarkz8obe9u.cloudfront.net/posterpreviews/fashion-sale-facebook-cover-design-template-2e10214ed16ca2db95e8f354bb33aa92_screen.jpg?ts=1634573105",
+    image: Banner1,
   },
   {
     id: 2,
@@ -22,7 +23,7 @@ function AdvertisementSlider() {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentAd((prevAd) => (prevAd + 1) % advertisements.length);
-    }, 3000); // Change every 3 seconds
+    }, 6000); // Change every 3 seconds
 
     // Cleanup interval on component unmount
     return () => clearInterval(interval);
