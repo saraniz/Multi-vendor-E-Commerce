@@ -3,6 +3,8 @@ const User = require('../models/user'); // Import User model
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken')
 
+
+//register user
 const registerUser = (User, bcrypt, jwt) => async (req, res) => {
     console.log("Request Body:", req.body);
     try {
