@@ -8,6 +8,8 @@ import ShopHome from './Pages/ShopHome';
 import Productpage from './Pages/Productpage';
 import Cart from './Pages/Cart';
 import CustomerProfile from './Pages/CustomerProfile';
+import LoginPage from './Pages/LoginPage';
+import RegistrationForm from './Pages/RegistrationForm';
 
 
 const router = createBrowserRouter([
@@ -33,6 +35,14 @@ const router = createBrowserRouter([
   {
     path: "/CusProfile",
     element: <div><CustomerProfile/></div>,
+  },
+  {
+    path: "/LoginPage",
+    element: <div><LoginPage/></div>,
+  },
+  {
+    path: "/RegistraionForm",
+    element: <div><RegistrationForm/></div>,
   },
   
   
