@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from "react-router-dom";
 import whitelogo from '../../Assests/white logo.png'
 
 const Footer = () => {
@@ -27,18 +28,20 @@ const Footer = () => {
           </div>
 
           {/* Middle Section for Logo */}
-          <div className="pr-20 mb-8 md:mb-0">
+         <div className="pr-20 mb-8 md:mb-0">
+         <Link to={'/'}>
             <img
               src={whitelogo} // Sample logo placeholder URL
               alt="Logo"
               className="w-48 h-48 mx-auto md:mx-0"
-            />
+            /></Link>
           </div>
+          
 
           {/* Right Section */}
           <div className="flex flex-col text-center md:flex-row md:space-x-12 md:text-left">
             <ul className="mb-8 md:mb-0">
-              <li className="mb-3"><a href="/about" className="transition-all duration-300 hover:text-gray-200">About Us</a></li>
+              <li className="mb-3"><a href="/" className="transition-all duration-300 hover:text-gray-200">About Us</a></li>
               <li className="mb-3"><a href="/" className="transition-all duration-300 hover:text-gray-200">Shop</a></li>
               <li className="mb-3"><a href="/" className="transition-all duration-300 hover:text-gray-200">Contact</a></li>
             </ul>

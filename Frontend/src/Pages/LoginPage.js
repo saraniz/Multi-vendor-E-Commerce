@@ -1,82 +1,120 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faLock, faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
-import BackgroundImage from '../Assests/img.jpg'; // Use a relative path for the background image
 import { Link } from "react-router-dom";
-import Navbar from "../Components/Header/Navbar";
+import LogoImage from '../Assests/KLOSET.png'; // Path to your logo image
 
 function LoginPage() {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
 
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const userData = { username, password };
+
+    try {
+      const response = await fetch('https://your-backend-api.com/login', { // Replace with your backend endpoint
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userData),
+      });
+
+      const result = await response.json();
+      if (response.ok) {
+        console.log("Login successful:", result);
+        // Redirect or perform other actions
+      } else {
+        console.error("Login failed:", result.message);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
   return (
-    <div>
-      <Navbar/>
-    <div
-      className="flex items-center justify-center min-h-screen bg-center bg-cover"
-      style={{ backgroundImage: `url(${BackgroundImage})` }}
-    >
-      <div className="p-8 border border-gray-400 shadow-lg rounded-xl bg-white/10 backdrop-blur-md w-80 md:w-96">
-        <h2 className="mb-6 text-3xl font-semibold text-center text-white">Login</h2>
-        <form className="space-y-6">
-          <div>
-            <label className="sr-only">Username</label>
+    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      <div className="flex items-center p-10 space-x-6 bg-white shadow-2xl rounded-2xl w-full max-w-3xl">
+        
+        {/* Logo on the Left Side */}
+        <div className="hidden md:flex items-center justify-center w-1/3">
+          <img src={LogoImage} alt="Logo" className="w-48 h-48" />
+        </div>
+
+        {/* Right Side with Form */}
+        <div className="flex flex-col items-center w-full p-6 space-y-6 md:w-2/3">
+          
+          {/* Welcome Text */}
+          <h2 className="text-xl font-bold text-center text-gray-800">
+            Welcome to the World's Largest Online Shopping Platform
+          </h2>
+
+          {/* Login Form */}
+          <h3 className="text-2xl font-semibold text-center text-gray-800">Login</h3>
+          <form className="space-y-5 w-full" onSubmit={handleSubmit}>
             <div className="relative">
               <input
                 type="text"
                 placeholder="Username"
-                className="w-full py-2 pl-10 pr-4 text-white rounded-full outline-none bg-white/10"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                className="w-full py-3 pl-10 pr-4 text-gray-700 bg-gray-100 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               />
-              <span className="absolute text-white transform -translate-y-1/2 left-3 top-1/2">
+              <span className="absolute text-gray-500 transform -translate-y-1/2 left-3 top-1/2">
                 <FontAwesomeIcon icon={faUser} />
               </span>
             </div>
-          </div>
-          <div>
-            <label className="sr-only">Password</label>
             <div className="relative">
               <input
                 type={showPassword ? "text" : "password"}
                 placeholder="Password"
-                className="w-full py-2 pl-10 pr-10 text-white rounded-full outline-none bg-white/10"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full py-3 pl-10 pr-10 text-gray-700 bg-gray-100 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               />
-              <span className="absolute text-white transform -translate-y-1/2 left-3 top-1/2">
+              <span className="absolute text-gray-500 transform -translate-y-1/2 left-3 top-1/2">
                 <FontAwesomeIcon icon={faLock} />
               </span>
               <button
                 type="button"
                 onClick={togglePasswordVisibility}
-                className="absolute text-white transform -translate-y-1/2 right-3 top-1/2 focus:outline-none"
+                className="absolute text-gray-500 transform -translate-y-1/2 right-3 top-1/2 focus:outline-none"
               >
                 <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
               </button>
             </div>
-          </div>
-          <div className="flex items-center justify-between text-sm text-gray-300">
-            <label className="flex items-center">
-              <input type="checkbox" className="mr-1" />
-              Remember me
-            </label>
-            <a href="#" className="hover:underline">
-              Forgot Password?
-            </a>
-          </div>
-          <button
-            type="submit"
-            className="w-full py-2 font-semibold text-purple-700 transition bg-white rounded-full hover:bg-gray-200"
-          >
-            Login
-          </button>
-        </form>
-        <p className="mt-4 text-sm text-center text-gray-300">
-          Don’t have an account? 
-          <Link to={'/RegistraionForm'}><button className="font-semibold text-white hover:underline">Register</button></Link>
-        </p>
+            <div className="flex items-center justify-between text-sm text-gray-500">
+              <label className="flex items-center">
+                <input type="checkbox" className="mr-1" />
+                Remember me
+              </label>
+              <a href="#" className="hover:underline">
+                Forgot Password?
+              </a>
+            </div>
+            <button
+              type="submit"
+              className="w-full py-3 font-semibold text-white bg-gradient-to-r from-blue-800 to-blue-950 rounded-lg shadow-lg hover:from-blue-700 hover:to-blue-800"
+            >
+              Login
+            </button>
+          </form>
+
+          {/* Register Link */}
+          <p className="text-sm text-center text-gray-500">
+            Don’t have an account?{" "}
+            <Link to={'/RegistrationForm'}>
+              <button className="font-semibold text-indigo-600 hover:underline">Register</button>
+            </Link>
+          </p>
+        </div>
       </div>
-    </div>
     </div>
   );
 }

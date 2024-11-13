@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import Navbar from "../Components/Header/Navbar";
+import axios from "axios"; // Added axios for backend integration
+import Footer from "../Components/Footer/Footer";
 
 function RegistrationForm() {
   const [profileImage, setProfileImage] = useState(null);
@@ -23,25 +24,29 @@ function RegistrationForm() {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission logic
-    console.log(formData);
+    try {
+      // Backend integration example using axios
+      const response = await axios.post("https://your-backend-endpoint.com/register", formData);
+      console.log("Registration successful:", response.data);
+    } catch (error) {
+      console.error("Error during registration:", error);
+    }
   };
 
   return (
     <div>
-        <Navbar/>
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-      <h2 className="text-2xl font-semibold">Welcome to</h2>
-      <h3 className="mb-6 text-xl font-light">The World Largest Online Fashion Space</h3>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-white text-gray-800 my-20">
+      <h2 className="text-3xl font-semibold mb-4 text-blue-950">Create Your KLOSET Account</h2>
+      <p className="mb-8 text-lg font-light text-gray-600">Join the world's largest online fashion space</p>
 
       <div className="flex flex-col items-center mb-6">
         <label htmlFor="profileImage" className="cursor-pointer">
           <img
-            src={profileImage || "https://via.placeholder.com/100"}
+            src={profileImage || "https://t4.ftcdn.net/jpg/05/69/90/73/360_F_569907313_fl7W3gX7YIVw2r05B4Ij1c21ix4xRUqD.jpg"}
             alt="Profile"
-            className="object-cover w-24 h-24 border-2 border-gray-300 rounded-full"
+            className="object-cover w-24 h-24 border-4 border-blue-950 rounded-full"
           />
         </label>
         <input
@@ -51,86 +56,40 @@ function RegistrationForm() {
           className="hidden"
           onChange={handleImageChange}
         />
-        <p className="mt-2 text-sm text-gray-600">Profile Picture</p>
+        <p className="mt-2 text-sm text-gray-500">Profile Picture</p>
       </div>
 
       <form
         onSubmit={handleSubmit}
-        className="w-full max-w-md px-8 pt-6 pb-8 mb-4 bg-white rounded shadow-md"
+        className="w-full max-w-md px-8 py-8 bg-white rounded-lg shadow-lg border border-gray-200"
       >
-        <div className="mb-4">
-          <label className="block mb-2 text-sm font-bold text-gray-700">Full Name</label>
-          <input
-            type="text"
-            name="fullName"
-            value={formData.fullName}
-            onChange={handleInputChange}
-            className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-          />
-        </div>
+        {[ 
+          { label: "Full Name", name: "fullName", type: "text" },
+          { label: "Username", name: "username", type: "text" },
+          { label: "Email", name: "email", type: "email" },
+          { label: "Password", name: "password", type: "password" },
+          { label: "Confirm Password", name: "confirmPassword", type: "password" },
+          { label: "Mobile-No", name: "mobileNo", type: "tel" }
+        ].map((field) => (
+          <div key={field.name} className="mb-4">
+            <label className="block mb-2 text-sm font-semibold text-gray-600">{field.label}</label>
+            <input
+              type={field.type}
+              name={field.name}
+              value={formData[field.name]}
+              onChange={handleInputChange}
+              className="w-full px-4 py-2 text-gray-800 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-600"
+            />
+          </div>
+        ))}
 
         <div className="mb-4">
-          <label className="block mb-2 text-sm font-bold text-gray-700">Username</label>
-          <input
-            type="text"
-            name="username"
-            value={formData.username}
-            onChange={handleInputChange}
-            className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-          />
-        </div>
-
-        <div className="mb-4">
-          <label className="block mb-2 text-sm font-bold text-gray-700">Email</label>
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleInputChange}
-            className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-          />
-        </div>
-
-        <div className="mb-4">
-          <label className="block mb-2 text-sm font-bold text-gray-700">Password</label>
-          <input
-            type="password"
-            name="password"
-            value={formData.password}
-            onChange={handleInputChange}
-            className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-          />
-        </div>
-
-        <div className="mb-4">
-          <label className="block mb-2 text-sm font-bold text-gray-700">Confirm Password</label>
-          <input
-            type="password"
-            name="confirmPassword"
-            value={formData.confirmPassword}
-            onChange={handleInputChange}
-            className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-          />
-        </div>
-
-        <div className="mb-4">
-          <label className="block mb-2 text-sm font-bold text-gray-700">Mobile-No</label>
-          <input
-            type="tel"
-            name="mobileNo"
-            value={formData.mobileNo}
-            onChange={handleInputChange}
-            className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-          />
-        </div>
-
-        <div className="mb-4">
-          <label className="block mb-2 text-sm font-bold text-gray-700">Gender</label>
+          <label className="block mb-2 text-sm font-semibold text-gray-600">Gender</label>
           <select
             name="gender"
             value={formData.gender}
             onChange={handleInputChange}
-            className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+            className="w-full px-4 py-2 text-gray-800 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-600"
           >
             <option value="Male">Male</option>
             <option value="Female">Female</option>
@@ -138,23 +97,26 @@ function RegistrationForm() {
         </div>
 
         <div className="mb-4">
-          <label className="block mb-2 text-sm font-bold text-gray-700">Address</label>
+          <label className="block mb-2 text-sm font-semibold text-gray-600">Address</label>
           <textarea
             name="address"
             value={formData.address}
             onChange={handleInputChange}
-            className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+            className="w-full px-4 py-2 text-gray-800 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-600"
           />
         </div>
 
         <button
           type="submit"
-          className="w-full px-4 py-2 font-bold text-white bg-gray-800 rounded hover:bg-gray-700 focus:outline-none focus:shadow-outline"
+          className="w-full px-4 py-2 mt-4 font-semibold text-white bg-blue-950 rounded-md hover:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-indigo-600"
         >
-          Submit
+          Register
         </button>
       </form>
+
+      
     </div>
+    <Footer />
     </div>
   );
 }
