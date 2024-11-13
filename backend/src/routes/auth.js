@@ -1,6 +1,6 @@
 // routes/auth.js
 const express = require('express');
-const { registerUser, loginUser } = require('../controller/authController'); // Correct import path
+const { registerUser, loginUser, admin_login } = require('../controller/authController'); // Correct import path
 const roleMiddleware = require('../middleware/roleMiddleware')
 
 
@@ -10,5 +10,6 @@ const router = express.Router(); // Declare the router here
 router.post('/register', registerUser); // Handle registration
 router.post('/login', loginUser); // Handle login
 
+router.post('/admin-login', admin_login); // Handle admin login(🟢)
 // Export the router
 module.exports = router; // Make sure this line is at the end of the file
