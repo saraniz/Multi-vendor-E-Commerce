@@ -1,5 +1,6 @@
 // controllers/authController.js
 const User = require('../models/user'); // Import User model
+const adminModel = require('../models/adminModel'); // Import Admin model
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken')
 
@@ -44,6 +45,7 @@ const registerUser =  async (req, res) => {
     }
 };
 
+//User login
 const loginUser = async (req, res) => {
     const { username, password } = req.body;
     try {
@@ -65,6 +67,28 @@ const loginUser = async (req, res) => {
 };
 
 
+//Admin login - No need to signup 🟢
+const admin_login = async (req, res) => {
+    const { email, password } = req.body;
+    try {
+        const admin = await adminModel.findOne({ email }).select('+password');
+        if (admin) {
+            const match = await bcrypt.compare(password, admin.password);
+            if (match) {
+                return res.status(200).json({ message: 'Login successful' });
+            } else {
+                return res.status(401).json({ message: 'Incorrect password' });
+            }
+        } else {
+            return res.status(401).json({ message: 'Admin Email not found' });
+        }
+            }       
+        catch (error) {
+            console.error('Error during login:', error);
+            res.status(500).json({ error: error.message });
+    }
+}
+
 
 // Exporting the functions
-module.exports = { registerUser, loginUser };
+module.exports = { registerUser, loginUser, admin_login};
