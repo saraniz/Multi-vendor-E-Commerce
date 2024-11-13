@@ -8,7 +8,7 @@ const Footer = () => {
         <div className="flex flex-col items-center justify-between md:flex-row md:space-x-12">
           {/* Left Section */}
           <div className="mb-8 text-center md:mb-0 md:text-left">
-            <h3 className="text-3xl font-semibold tracking-wide text-shadow-lg">KLOSET</h3>
+            <h3 className="text-3xl font-semibold tracking-wide text-shadow-lg">KLOSET PVT(Ltd)</h3>
             <p className="mt-2 text-lg">The world largest online fashion space.</p>
             <div className="flex justify-center mt-4 space-x-6 md:justify-start">
               <a href="/" className="text-2xl transition-all duration-300 hover:text-gray-300">
@@ -21,13 +21,13 @@ const Footer = () => {
                 <i className="fab fa-instagram"></i>
               </a>
               <a href="/" className="text-2xl transition-all duration-300 hover:text-gray-300">
-                <i className="fab fa-pinterest"></i>
+                <i className="fab fa-linkedin"></i>
               </a>
             </div>
           </div>
 
           {/* Middle Section for Logo */}
-          <div className="mb-8 md:mb-0">
+          <div className="pr-20 mb-8 md:mb-0">
             <img
               src={whitelogo} // Sample logo placeholder URL
               alt="Logo"
@@ -52,8 +52,8 @@ const Footer = () => {
         </div>
 
         <div className="pt-8 mt-8 text-center border-t-2 border-gray-200">
-          <p className="text-sm">&copy; 2024 Classic Fashion. All rights reserved.</p>
-          <p className="mt-2 text-sm">Designed by <a href="/" className="text-gray-200 hover:text-white">Your Company</a></p>
+          <p className="text-sm">&copy; 2024 KLOSET Group. All rights reserved.</p>
+          <p className="mt-2 text-sm">Designed by <a href="https://www.linkedin.com/feed/?trk=guest_homepage-basic_nav-header-signin" className="text-gray-200 hover:text-white">Ravindu Vidurusinghe</a></p>
         </div>
       </div>
     </footer>
