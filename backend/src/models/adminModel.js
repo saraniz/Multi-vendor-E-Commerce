@@ -35,7 +35,7 @@ const Admin = sequelize.define('Admin', {
     hooks: {
         beforeCreate: async (user) => {
             const saltRounds = 10;
-            user.password = await bcrypt.hash(user.password, saltRounds);
+            user.password = await bcrypt.hash(user.password, saltRounds); 
         },
     },
 }
