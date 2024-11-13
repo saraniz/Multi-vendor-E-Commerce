@@ -23,7 +23,7 @@ function AdvertisementSlider() {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentAd((prevAd) => (prevAd + 1) % advertisements.length);
-    }, 6000); // Change every 3 seconds
+    }, 4000); // Change every 4 seconds
 
     // Cleanup interval on component unmount
     return () => clearInterval(interval);
