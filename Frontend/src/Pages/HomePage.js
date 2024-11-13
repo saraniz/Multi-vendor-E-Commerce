@@ -21,7 +21,7 @@ function HomePage() {
         <button
           onClick={scrollToTabComponent}
           className='bg-slate-800 text-white text-center text-[30px] py-2 px-4 p-10 font-semibold rounded-full w-80 transition-all 
-            duration-300 ease-in-out hover:bg-gray-500 hover:scale-105 hover:shadow-lg'
+            duration-300 ease-in-out hover:bg-slate-600 hover:scale-105 hover:shadow-lg'
         >
           SHOP NOW!
         </button>
