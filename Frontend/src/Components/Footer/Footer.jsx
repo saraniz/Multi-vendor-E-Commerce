@@ -1,9 +1,63 @@
-import React from 'react'
+import React from 'react';
+import whitelogo from '../../Assests/white logo.png'
 
-function Footer() {
+const Footer = () => {
   return (
-    <div><div className='h-80 bg-black'></div></div>
-  )
-}
+    <footer className="py-12 text-white bg-gradient-to-t from-black to-blue-950">
+      <div className="container px-6 mx-auto md:px-12">
+        <div className="flex flex-col items-center justify-between md:flex-row md:space-x-12">
+          {/* Left Section */}
+          <div className="mb-8 text-center md:mb-0 md:text-left">
+            <h3 className="text-3xl font-semibold tracking-wide text-shadow-lg">KLOSET</h3>
+            <p className="mt-2 text-lg">The world largest online fashion space.</p>
+            <div className="flex justify-center mt-4 space-x-6 md:justify-start">
+              <a href="/" className="text-2xl transition-all duration-300 hover:text-gray-300">
+                <i className="fab fa-facebook-f"></i>
+              </a>
+              <a href="/" className="text-2xl transition-all duration-300 hover:text-gray-300">
+                <i className="fab fa-twitter"></i>
+              </a>
+              <a href="/" className="text-2xl transition-all duration-300 hover:text-gray-300">
+                <i className="fab fa-instagram"></i>
+              </a>
+              <a href="/" className="text-2xl transition-all duration-300 hover:text-gray-300">
+                <i className="fab fa-pinterest"></i>
+              </a>
+            </div>
+          </div>
 
-export default Footer
+          {/* Middle Section for Logo */}
+          <div className="mb-8 md:mb-0">
+            <img
+              src={whitelogo} // Sample logo placeholder URL
+              alt="Logo"
+              className="w-48 h-48 mx-auto md:mx-0"
+            />
+          </div>
+
+          {/* Right Section */}
+          <div className="flex flex-col text-center md:flex-row md:space-x-12 md:text-left">
+            <ul className="mb-8 md:mb-0">
+              <li className="mb-3"><a href="/about" className="transition-all duration-300 hover:text-gray-200">About Us</a></li>
+              <li className="mb-3"><a href="/" className="transition-all duration-300 hover:text-gray-200">Shop</a></li>
+              <li className="mb-3"><a href="/" className="transition-all duration-300 hover:text-gray-200">Contact</a></li>
+            </ul>
+
+            <ul className="mb-8 md:mb-0">
+              <li className="mb-3"><a href="/" className="transition-all duration-300 hover:text-gray-200">Privacy Policy</a></li>
+              <li className="mb-3"><a href="/" className="transition-all duration-300 hover:text-gray-200">Terms of Service</a></li>
+              <li className="mb-3"><a href="/" className="transition-all duration-300 hover:text-gray-200">Return Policy</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div className="pt-8 mt-8 text-center border-t-2 border-gray-200">
+          <p className="text-sm">&copy; 2024 Classic Fashion. All rights reserved.</p>
+          <p className="mt-2 text-sm">Designed by <a href="/" className="text-gray-200 hover:text-white">Your Company</a></p>
+        </div>
+      </div>
+    </footer>
+  );
+};
+
+export default Footer;
