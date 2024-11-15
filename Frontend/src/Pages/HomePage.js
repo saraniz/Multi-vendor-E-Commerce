@@ -18,13 +18,13 @@ function HomePage() {
       <Navbar />
       <AdvertisementSlider />
       <div className='flex justify-center m-10'>
-        <button
-          onClick={scrollToTabComponent}
-          className='bg-slate-800 text-white text-center text-[30px] py-2 px-4 p-10 font-semibold rounded-full w-80 transition-all 
-            duration-300 ease-in-out hover:bg-slate-600 hover:scale-105 hover:shadow-lg'
-        >
-          SHOP NOW!
-        </button>
+      <button
+  onClick={scrollToTabComponent}
+  className="bg-gradient-to-l from-slate-900 via-blue-950 to-gray-900 text-white text-center text-[30px] py-3 px-6 font-semibold rounded-full w-80 transition-transform duration-300 ease-in-out hover:scale-105 hover:shadow-xl
+    hover:from-slate-800 hover:via-blue-900 hover:to-slate-800 shadow-lg shadow-blue-100"
+>
+  SHOP NOW!
+</button>
       </div>
       <div className='flex justify-center'>
         <div className="w-[90%] h-1 bg-slate-300"></div>
