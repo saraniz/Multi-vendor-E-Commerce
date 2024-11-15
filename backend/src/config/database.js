@@ -3,8 +3,7 @@ require('dotenv').config()  //load env variables from .env file
 
 const sequelize = new Sequelize('pro1', 'root', 'Amie233#', {
     host: 'localhost',
-    dialect: 'mysql',
-    port: 3307,
+    dialect: 'postgres',
     logging: console.log  // Enable SQL logging
   });
   
