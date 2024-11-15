@@ -40,11 +40,11 @@ function LoginPage() {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="flex items-center p-10 space-x-6 bg-white shadow-2xl rounded-2xl w-full max-w-3xl">
+      <div className="flex items-center w-full max-w-3xl p-10 space-x-6 bg-white shadow-2xl rounded-2xl">
         
         {/* Logo on the Left Side */}
-        <div className="hidden md:flex items-center justify-center w-1/3">
-          <img src={LogoImage} alt="Logo" className="w-48 h-48" />
+        <div className="items-center justify-center hidden w-1/3 md:flex">
+        <Link to={'/'}><img src={LogoImage} alt="Logo" className="w-48 h-48" /></Link>
         </div>
 
         {/* Right Side with Form */}
@@ -57,7 +57,7 @@ function LoginPage() {
 
           {/* Login Form */}
           <h3 className="text-2xl font-semibold text-center text-gray-800">Login</h3>
-          <form className="space-y-5 w-full" onSubmit={handleSubmit}>
+          <form className="w-full space-y-5" onSubmit={handleSubmit}>
             <div className="relative">
               <input
                 type="text"
@@ -100,7 +100,7 @@ function LoginPage() {
             </div>
             <button
               type="submit"
-              className="w-full py-3 font-semibold text-white bg-gradient-to-r from-blue-800 to-blue-950 rounded-lg shadow-lg hover:from-blue-700 hover:to-blue-800"
+              className="w-full py-3 font-semibold text-white rounded-lg shadow-lg bg-gradient-to-r from-blue-800 to-blue-950 hover:from-blue-700 hover:to-blue-800"
             >
               Login
             </button>
