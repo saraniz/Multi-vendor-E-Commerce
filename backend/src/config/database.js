@@ -19,7 +19,7 @@ const sequelize = new Sequelize('pro1', 'root', 'Amie233#', {
     });
   
   // Sync all models (creates tables based on models if they don't exist)
-  sequelize.sync({ force: true })
+  sequelize.sync({ force: false })
   .then(() => {
     console.log('Database synced with force.');
   })

@@ -1,8 +1,13 @@
 import React, { useState } from "react";
 import axios from "axios"; // Added axios for backend integration
 import Footer from "../Components/Footer/Footer";
+import { useDispatch, useSelector } from "react-redux";
+import { userRegister } from "../Storage/Auth/UserAction";
+import { store } from "../Storage/Storage";
 
 function RegistrationForm() {
+  const dispatch = useDispatch()   //call methods
+  const {auth} = useSelector(store=>store)
   const [profileImage, setProfileImage] = useState(null);
   const [formData, setFormData] = useState({
     fullName: "",
@@ -26,13 +31,9 @@ function RegistrationForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      // Backend integration example using axios
-      const response = await axios.post("https://localhost:2000/register", formData);
-      console.log("Registration successful:", response.data);
-    } catch (error) {
-      console.error("Error during registration:", error);
-    }
+    console.log("Form data",formData)
+    dispatch(userRegister(formData))
+    console.log("jwt",auth?.jwt)
   };
 
   return (
