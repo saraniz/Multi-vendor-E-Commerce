@@ -10,11 +10,7 @@ const sequelize = require('../config/database'); // Import sequelize instance fr
             autoIncrement: true,
             primaryKey: true,
         },
-        firstName: {
-            type: DataTypes.STRING,
-            allowNull: false,
-        },
-        lastName: {
+        fullName: {
             type: DataTypes.STRING,
             allowNull: false,
         },
@@ -31,6 +27,18 @@ const sequelize = require('../config/database'); // Import sequelize instance fr
         password: {
             type: DataTypes.STRING,
             allowNull: false,
+        },
+        mobileNo:{
+            type: DataTypes.STRING,
+            allowNull:false,
+        },
+        gender:{
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
+        address:{
+            type: DataTypes.STRING,
+            allowNull:false,
         },
         role:{
             type: DataTypes.STRING,
