@@ -1,32 +1,30 @@
-const { Sequelize } = require('sequelize')
-require('dotenv').config()  //load env variables from .env file
+// const { Sequelize } = require('sequelize');
+// require('dotenv').config(); // Load environment variables from .env file
 
-const sequelize = new Sequelize('pro1', 'root', 'Amie233#', {
-    host: 'localhost',
-    dialect: 'mysql',
-    port: 3307,
-    logging: console.log  // Enable SQL logging
-  });
-  
-  
-  // Test the connection to MySQL
-  sequelize.authenticate()
-    .then(() => {
-      console.log('Connection has been established successfully.');
-    })
-    .catch(err => {
-      console.error('Unable to connect to the database:', err);
-    });
-  
-  // Sync all models (creates tables based on models if they don't exist)
-  sequelize.sync()  // No 'force: true' here
-  .then(() => {
-    console.log('Database synced.');
-  })
-  .catch(err => {
-    console.error('Unable to sync the database:', err);
-  });
+// // Initialize Sequelize with connection options
+// const sequelize = new Sequelize(
+//   process.env.SUPABASE_DB, 
+//   process.env.SUPABASE_USER, 
+//   process.env.SUPABASE_PASSWORD, 
+//   {
+//     host: process.env.SUPABASE_HOST,
+//     port: 6543, // Supabase default port for PostgreSQL
+//     dialect: 'postgres',
+//     // logging: process.env.NODE_ENV === 'development' ? console.log : false, // Log SQL only in development mode
+//     dialectOptions:{
+//       connectTimeout: 60000,
+//     }
+//   }
+// );
 
+// // Test the connection
+// (async () => {
+//   try {
+//     await sequelize.authenticate();
+//     console.log('✅ Connection to the database established successfully.');
+//   } catch (error) {
+//     console.error('❌ Unable to connect to the database:', error);
+//   }
+// })();
 
-
-  module.exports = sequelize;
+// module.exports = sequelize;
