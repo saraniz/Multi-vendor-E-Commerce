@@ -5,9 +5,13 @@ import TabComponent from '../Components/Body/TabComponent';
 import NextButton from '../Components/Buttons/NextButton';
 import Footer from '../Components/Footer/Footer';
 import Categories from '../Components/Body/Category/Categories';
+import { useSelector } from 'react-redux';
+
 
 function HomePage() {
   const tabRef = useRef(null);
+  const {auth} = useSelector(store=>store)
+  console.log("User from homepage",auth?.user)
 
   const scrollToTabComponent = () => {
     tabRef.current?.scrollIntoView({ behavior: 'smooth' });
