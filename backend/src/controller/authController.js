@@ -1,30 +1,46 @@
 // controllers/authController.js
-const User = require('../models/user'); // Import User model
-const adminModel = require('../models/adminModel'); // Import Admin model
+// const adminModel = require('../models/adminModel'); // Import Admin model
+const { PrismaClient } = require('@prisma/client')
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+
+
+//initialize prismaClient
+const prisma = new PrismaClient();
+
 
 // Register User
 const registerUser = async (req, res) => {
     try {
-        const userExist = await User.findOne({ where: { email: req.body.email } });
-        if (userExist) {
-            return res.status(400).json({ message: 'User already registered.' });
-        }
-
         const { fullName, username, email, password, mobileNo, gender, address } = req.body;
+        
+        //check if user already exist
+        const userExist = await prisma.user.findUnique({
+            where: {email},
+        })
 
-        const newUser = await User.create({
-            fullName,
-            username,
-            email,
-            password: await bcrypt.hash(password, 10),
-            mobileNo,
-            gender,
-            address,
-            role: "customer",
-            isSeller: false,
-        });
+        if (userExist){
+            return res.status(400).json('User already registered.')
+        }
+        
+        //hash the password
+        const hashedPassword = await bcrypt.hash(password,10)
+
+        //create a new user
+        const newUser = await prisma.user.create({
+            data:{
+                fullName,
+                username,
+                email,
+                password: hashedPassword,
+                mobileNo,
+                gender,
+                address,
+                role: "Customer",
+                isSeller: false,
+            },
+        })
+        
 
         // Generate a JWT token
         const token = jwt.sign(
@@ -40,15 +56,20 @@ const registerUser = async (req, res) => {
             jwt: token
         });
     } catch (error) {
+        console.error("Error during the registration",error)
         return res.status(500).json({ error: error.message });
     }
 };
+
 
 // User login
 const loginUser = async (req, res) => {
     const { username, password } = req.body;
     try {
-        const user = await User.findOne({ where: { username } });
+        const user = await prisma.user.findUnique({
+            where: {username},
+        })
+
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
@@ -61,6 +82,7 @@ const loginUser = async (req, res) => {
                 'your-secret-key', // Replace with your secret key
                 { expiresIn: '1h' }
             );
+
             return res.status(200).json({ message: 'Login successful', jwt: token });
         } else {
             return res.status(400).json({ message: 'Incorrect password' });
@@ -71,11 +93,16 @@ const loginUser = async (req, res) => {
     }
 };
 
+
+
 // Admin login
 const admin_login = async (req, res) => {
     const { email, password } = req.body;
     try {
-        const admin = await adminModel.findOne({ email }).select('+password');
+        const admin = await prisma.admin.findUnique({
+            where: {email},
+        })
+
         if (admin) {
             const match = await bcrypt.compare(password, admin.password);
             if (match) {
@@ -95,8 +122,15 @@ const admin_login = async (req, res) => {
 // Get User Details
 const getUser = async (req, res) => {
     try {
-        // Return the user details from the request object (attached by middleware)
-        return res.status(200).json({ user: req.user });
+        const user = await prisma.user.findUnique({
+            where: { id: req.user.id },
+        });
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        return res.status(200).json({ user });
     } catch (error) {
         console.error('Error fetching user details:', error);
         res.status(500).json({ error: error.message });

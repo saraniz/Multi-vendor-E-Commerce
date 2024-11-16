@@ -1,29 +1,52 @@
 const express = require('express');
-const cors = require('cors')
+const cors = require('cors');
 const bodyParser = require('body-parser');
-const sequelize = require('./config/database'); // Import sequelize instance
-const jsonMiddleware = require('./middleware/jsonMiddleware');  // Import JSON middleware
-const authenticate = require('./middleware/authMiddleware');    // Import auth middleware
+const { PrismaClient } = require('@prisma/client'); // Correct import
+const jsonMiddleware = require('./middleware/jsonMiddleware');
+const authenticate = require('./middleware/authMiddleware');
+require('dotenv').config(); 
 
+// Initialize Prisma client
+const prisma = new PrismaClient(); // Correct instantiation
+
+// Initialize the Express app
 const app = express();
-app.use(cors());
 
-
+// Middleware
+app.use(cors({ 
+  origin: process.env.CLIENT_ORIGIN || '*',
+  methods: 'GET,POST,PUT,DELETE', 
+  allowedHeaders: 'Content-Type,Authorization',
+}));
 app.use(bodyParser.json());
-app.use(jsonMiddleware);
+app.use(jsonMiddleware); 
 
-// Import routes and models
+// Import routes
 const authRoutes = require('./routes/auth');
 
-// Define your public API routes (no authentication required)
+// Public API routes
 app.use('/api', authRoutes);
 
-// Define protected routes (require authentication)
+// Protected routes
 app.use('/api/protected', authenticate, (req, res) => {
-    res.json({ message: "This is a protected route" });
+  res.json({ message: 'This is a protected route' });
 });
 
-// Server runs on the specified port
-app.listen(process.env.PORT, () => {
-    console.log(`Server is running on port ${process.env.PORT}`);
+// Error-handling middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(err.status || 500).json({ error: err.message || 'Internal Server Error' });
 });
+
+// Connect to database and start server
+prisma.$connect()
+  .then(() => {
+    console.log('✅ Database connected successfully using Prisma.');
+    const port = process.env.PORT || 2000;
+    app.listen(port, () => {
+      console.log("🚀 Server is running on port", port);
+    });
+  })
+  .catch((err) => {
+    console.error('❌ Database connection failed:', err.message);
+  });
