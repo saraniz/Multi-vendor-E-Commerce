@@ -8,7 +8,7 @@ function Navbar() {
       <nav className="flex items-center justify-between py-4 navbar">
 
         {/* Logo */}
-        <Link to={'/'}><div className="w-32 h-32"><img src={logo} alt="Logo" /></div></Link>
+        <Link to={'/*'}><div className="w-32 h-32"><img src={logo} alt="Logo" /></div></Link>
 
         {/* Search Box */}
         <div className="relative flex-grow max-w-[60rem]">
@@ -38,7 +38,7 @@ function Navbar() {
           </li>
 
           <li>
-            <Link to={'/CusProfile'}>
+            <Link to={'/CustomerProfile'}>
               <div className='font-semibold transition-colors duration-300 hover:text-blue-500'>Profile</div>
             </Link>
           </li>
