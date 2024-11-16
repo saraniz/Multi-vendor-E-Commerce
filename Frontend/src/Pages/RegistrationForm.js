@@ -28,7 +28,7 @@ function RegistrationForm() {
     e.preventDefault();
     try {
       // Backend integration example using axios
-      const response = await axios.post("https://your-backend-endpoint.com/register", formData);
+      const response = await axios.post("https://localhost:2000/register", formData);
       console.log("Registration successful:", response.data);
     } catch (error) {
       console.error("Error during registration:", error);

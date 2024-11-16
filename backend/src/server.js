@@ -1,10 +1,13 @@
 const express = require('express');
+const cors = require('cors')
 const bodyParser = require('body-parser');
 const sequelize = require('./config/database'); // Import sequelize instance
 const jsonMiddleware = require('./middleware/jsonMiddleware');  // Import JSON middleware
 const authenticate = require('./middleware/authMiddleware');    // Import auth middleware
 
 const app = express();
+app.use(cors());
+
 
 app.use(bodyParser.json());
 app.use(jsonMiddleware);
