@@ -4,11 +4,6 @@ import axios from "axios"
 import Swal from 'sweetalert2'
 
 
-
-
-
-
-
 //user register
 export const userRegister = (registerData)=>async(dispatch)=>{
     try{

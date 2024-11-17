@@ -33,11 +33,9 @@ function App() {
         <Route  path= "/ShopHome" element={<ShopHome/>}></Route>
         <Route  path= "/RegistrationForm" element={<RegistrationForm/>}></Route>
         <Route  path= "/LoginPage" element={<LoginPage/>}></Route>
-        <Route  path= "/RegistrationForm" element={<RegistrationForm/>}></Route>
         <Route  path= "/Productpage" element={<Productpage/>}></Route>
         <Route  path= "/CartPage" element={<CartPage/>}></Route>
         <Route  path= "/CustomerProfile" element={<CustomerProfile/>}></Route>
-
 
       </Routes>
       <HomePage/>

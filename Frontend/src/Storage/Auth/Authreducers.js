@@ -5,8 +5,6 @@ const initialState ={
     loading: null,
     error: null,
     jwt: null,
-    anotherUser: null,
-    findUser: null
 }
 export const authenticationReducer = (state=initialState,action)=>{
 
