@@ -1,11 +1,23 @@
-import React from 'react'
+// ProductPage.js
+import React from "react";
+import ImageGallery from "../Components/ProductPage/ImageGallery";
+import ProductDetails from "../Components/ProductPage/ProductDetails";
 import Navbar from '../Components/Header/Navbar'
+import Footer from '../Components/Footer/Footer'
 
-function Productpage() {
+const Productpage = () => {
   return (
     <div><Navbar/>
-    <div className='text-center text-[30px] p-10 font-semibold'>Product Page!</div></div>
-  )
-}
+    <div className="flex justify-center p-8 mb-40 space-x-8">
+      {/* Left Side - Image Gallery */}
+      <ImageGallery />
 
-export default Productpage
+      {/* Right Side - Product Details */}
+      <ProductDetails />
+    </div>
+    <Footer/>
+    </div>
+  );
+};
+
+export default Productpage;

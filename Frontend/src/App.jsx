@@ -37,8 +37,7 @@ function App() {
         <Route  path= "/Productpage" element={<Productpage/>}></Route>
         <Route  path= "/CartPage" element={<CartPage/>}></Route>
         <Route  path= "/CustomerProfile" element={<CustomerProfile/>}></Route>
-
-
+        
       </Routes>
       
     </div>

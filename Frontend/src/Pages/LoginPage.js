@@ -52,7 +52,7 @@ function LoginPage() {
           
           {/* Welcome Text */}
           <h2 className="text-xl font-bold text-center text-gray-800">
-            Welcome to the World's Largest Online Shopping Platform
+            Welcome to The World's Largest Online Shopping Platform
           </h2>
 
           {/* Login Form */}
