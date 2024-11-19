@@ -1,5 +1,5 @@
 import { api, API_BASE_URL } from "../APIConfig"
-import { GET_USER_FAILURE, GET_USER_SUCCESS, REGISTER_USER_FAILURE, REGISTER_USER_SUCCESS } from "./AuthActionType"
+import { GET_USER_FAILURE, GET_USER_SUCCESS, LOGIN_USER_FAILURE, LOGIN_USER_SUCCESS, REGISTER_USER_FAILURE, REGISTER_USER_SUCCESS } from "./AuthActionType"
 import axios from "axios"
 import Swal from 'sweetalert2'
 
@@ -36,8 +36,6 @@ export const userRegister = (registerData)=>async(dispatch)=>{
     
 }
 
-
-
 // Assuming API_BASE_URL is defined somewhere
 // const API_BASE_URL = 'http://your-api-url.com'; // Uncomment and define it properly
 
@@ -71,3 +69,46 @@ export const getUserProfile = () => async (dispatch) => {
         console.error("Error fetching user profile:", error);
     }
 };
+
+//user login
+export const userLogin = (loginData)=>async(dispatch)=>{
+    try{
+        //send post request for user login
+        const {data} = await axios.post(`${API_BASE_URL}/api/login`,loginData)
+
+        //check if jwt token exists in the response
+        if(data.jwt){
+            console.log("Login response:", data)
+            localStorage.setItem("jwt",data.jwt) //store jwt token in localstorage
+        }
+         // Display success notification
+         Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Logged in successfully",
+            showConfirmButton: false,
+            timer: 1500,
+        });
+
+        //dispatch success action
+        dispatch({type: LOGIN_USER_SUCCESS,payload:data})
+    }catch(error){
+        console.error("Login error:",error)
+
+        //extract error message from response
+        let errorMessage = "Login failed! Please try again."
+        if(error.response){
+            errorMessage = error.response.data.message || error.response.data || errorMessage
+        }
+
+        //dispatch failure action
+        dispatch({type: LOGIN_USER_FAILURE,payload: errorMessage})
+
+        //show error notification
+        Swal.fire({
+            title: "Login failed",
+            text: errorMessage,
+            icon: "error",
+        });
+    }
+}
