@@ -3,40 +3,52 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faLock, faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import LogoImage from '../Assests/KLOSET.png'; // Path to your logo image
+import {useDispatch} from "react-redux" //import useDispatch for redux
+import { userLogin } from "../Storage/Auth/UserAction";   //import the login action
+
+
 
 function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const dispatch = useDispatch()
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
-
-  const handleSubmit = async (event) => {
+  
+  const handleSubmit = (event) => {
     event.preventDefault();
-    const userData = { username, password };
+    const loginData = { username, password };
 
-    try {
-      const response = await fetch('https://your-backend-api.com/login', { // Replace with your backend endpoint
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(userData),
-      });
-
-      const result = await response.json();
-      if (response.ok) {
-        console.log("Login successful:", result);
-        // Redirect or perform other actions
-      } else {
-        console.error("Login failed:", result.message);
-      }
-    } catch (error) {
-      console.error("Error:", error);
-    }
+    // Dispatch the login action
+    dispatch(userLogin(loginData));
   };
+  // const handleSubmit = (event) => {
+  //   event.preventDefault();
+  //   const userData = { username, password };
+
+  //   try {
+  //     const response = await fetch('https://your-backend-api.com/login', { // Replace with your backend endpoint
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify(userData),
+  //     });
+
+  //     const result = await response.json();
+  //     if (response.ok) {
+  //       console.log("Login successful:", result);
+  //       // Redirect or perform other actions
+  //     } else {
+  //       console.error("Login failed:", result.message);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error:", error);
+  //   }
+  // };
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
