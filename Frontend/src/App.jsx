@@ -10,6 +10,8 @@ import { getUserProfile } from './Storage/Auth/UserAction';
 import Productpage from './Pages/Productpage';
 import CartPage from './Pages/CartPage';
 import CustomerProfile from './Pages/CustomerProfile';
+import MyOrders from './Pages/MyOrders';
+import EditProfile from './Pages/EditProfile';
 
 
 function App() {
@@ -36,6 +38,9 @@ function App() {
         <Route  path= "/Productpage" element={<Productpage/>}></Route>
         <Route  path= "/CartPage" element={<CartPage/>}></Route>
         <Route  path= "/CustomerProfile" element={<CustomerProfile/>}></Route>
+        <Route  path= "/MyOrders" element={<MyOrders/>}></Route>
+        <Route  path= "/EditProfile" element={<EditProfile/>}></Route>
+      
         
       </Routes>
       

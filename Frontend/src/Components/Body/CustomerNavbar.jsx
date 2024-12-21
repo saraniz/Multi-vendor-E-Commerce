@@ -11,9 +11,9 @@ function CustomerNavbar() {
         <button className="w-full px-4 py-2 text-center text-white bg-gray-600 rounded-lg ">Dashboard</button>
         <button className="w-full px-4 py-2 text-center transition-all duration-300 ease-in-out bg-gray-400 rounded-lg hover:bg-gray-500 hover:scale-105 hover:shadow-lg">Favorites</button>
         <Link to='/CartPage' className="w-full"><button className="w-full px-4 py-2 text-center transition-all duration-300 ease-in-out bg-gray-400 rounded-lg hover:bg-gray-500 hover:scale-105 hover:shadow-lg">My Cart</button></Link>
-        <button className="w-full px-4 py-2 text-center transition-all duration-300 ease-in-out bg-gray-400 rounded-lg hover:bg-gray-500 hover:scale-105 hover:shadow-lg">Order List</button>
+        <Link to='/MyOrders' className="w-full"><button className="w-full px-4 py-2 text-center transition-all duration-300 ease-in-out bg-gray-400 rounded-lg hover:bg-gray-500 hover:scale-105 hover:shadow-lg">Order List</button></Link>
         <button className="w-full px-4 py-2 text-center transition-all duration-300 ease-in-out bg-gray-400 rounded-lg hover:bg-gray-500 hover:scale-105 hover:shadow-lg">Contact Admin</button>
-        <button className="w-full px-4 py-2 text-center transition-all duration-300 ease-in-out bg-gray-400 rounded-lg hover:bg-gray-500 hover:scale-105 hover:shadow-lg">Settings</button>
+        <Link to='/EditProfile' className="w-full"><button className="w-full px-4 py-2 text-center transition-all duration-300 ease-in-out bg-gray-400 rounded-lg hover:bg-gray-500 hover:scale-105 hover:shadow-lg">Edit Profile</button></Link>
         <button className="w-full px-4 py-2 text-center transition-all duration-300 ease-in-out bg-gray-400 rounded-lg hover:bg-gray-500 hover:scale-105 hover:shadow-lg">Log Out</button>
       </div>
       
