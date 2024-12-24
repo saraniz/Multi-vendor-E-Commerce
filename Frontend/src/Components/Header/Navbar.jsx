@@ -17,6 +17,7 @@ function Navbar() {
             placeholder="What are you looking for"
             className="w-full py-2 pl-10 pr-4 border-gray-300 rounded-full bg-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           />
+          
           {/* Search Icon */}
           <botton><div className="absolute text-gray-500 transform -translate-y-1/2 right-4 top-1/2">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-6">
