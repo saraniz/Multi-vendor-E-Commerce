@@ -1,9 +1,8 @@
-// const express = require('express')
-// const {searchItems} = require('./itemController')
+const express = require('express');
+const {searchItems} = require('../controller/itemController')
+const router = express.Router();
 
-// const router = express.Router()
+// Route for searching items
+router.post('/search', searchItems);
 
-// //route for searching item
-// router.get('/search',searchItems)
-
-// module.exports = router;
+module.exports = router;
