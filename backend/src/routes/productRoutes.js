@@ -9,3 +9,5 @@ router.post('/add', authenticate, roleMiddleware(['seller']), addProduct) //add 
 router.put('/update/:id',authenticate,roleMiddleware(['seller']),updateProduct) //update product
 router.delete('/delete/:id',authenticate,roleMiddleware(['seller']),deleteProduct) //delete product
 router.get('/my-products',authenticate,roleMiddleware(['seller']),getSellerProduct)  //get seller products
+// 👇👇 product image upload
+router.post('/product-image-update',authenticate, productController.product_image_update)
