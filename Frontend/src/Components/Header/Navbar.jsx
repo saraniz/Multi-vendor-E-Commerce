@@ -1,14 +1,77 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from "react-router-dom";
 import logo from '../../Assests/KLOSET.png';
+import { Dialog, DialogActions, DialogContent, DialogTitle, Button } from '@mui/material';  // Material-UI for dialog box
+import axios from 'axios';
+import {useDispatch} from "react-redux" 
+import { searchItems } from '../../Storage/Search/SearchAction';
+
+const API_BASE_URL = 'http://localhost:2000'
 
 function Navbar() {
+  const [searchResults, setSearchResults] = useState([]);
+  const [sQuery, setSearchQuery] = useState("");
+  const [openDialog, setOpenDialog] = useState(false); // To control dialog visibility
+  const [dialogMessage, setDialogMessage] = useState(''); // To store the message for the dialog
+const dispatch = useDispatch()
+
+
+console.log("Results ",searchResults)
+  
+ // Prevent page reload on form submission
+ const handleSearch = async (e) => {
+  e.preventDefault(); // Prevent page reload on form submission
+
+  if (sQuery.trim() === "") {
+    setDialogMessage("Please enter a search query.");
+    setOpenDialog(true); // Open the dialog box if no query is entered
+    return; // Exit the function early
+  }
+
+  const searchQuery = {
+    searchQuery: sQuery, // Wrap search query in an object
+  };
+
+  try {
+    // Dispatch the Redux action and get the results
+    const response = await dispatch(searchItems(searchQuery));
+
+    if (response && response.length > 0) {
+      setSearchResults(response); // Update the results state
+      setDialogMessage(`Found ${response.length} results!`);
+    } else {
+      setSearchResults([]); // No results found, clear any previous results
+      setDialogMessage(
+        "No results found. Please try again with a different query."
+      );
+    }
+    setOpenDialog(true); // Open the dialog box
+  } catch (error) {
+    setDialogMessage(
+      "Something went wrong with the search. Please try again."
+    );
+    setOpenDialog(true); // Open the dialog box with the error message
+    console.error("Search error:", error);
+  }
+};
+
+  
+
+  const handleKeyPress = (event) => {
+    if (event.key === 'Enter') {
+      handleSearch(event); // Trigger the search on 'Enter' key press
+    }
+  };
+
   return (
     <div className="container px-16 mx-auto">
       <nav className="flex items-center justify-between py-4 navbar">
-
         {/* Logo */}
-        <Link to={'/*'}><div className="w-32 h-32"><img src={logo} alt="Logo" /></div></Link>
+        <Link to={'/*'}>
+          <div className="w-32 h-32">
+            <img src={logo} alt="Logo" />
+          </div>
+        </Link>
 
         {/* Search Box */}
         <div className="relative flex-grow max-w-[60rem]">
@@ -16,14 +79,19 @@ function Navbar() {
             type="text"
             placeholder="What are you looking for"
             className="w-full py-2 pl-10 pr-4 border-gray-300 rounded-full bg-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            value={sQuery}
+            onChange={(e) => setSearchQuery(e.target.value)} // Update the search query
+            onKeyDown={handleKeyPress} // Trigger search on Enter key press
           />
           
           {/* Search Icon */}
-          <botton><div className="absolute text-gray-500 transform -translate-y-1/2 right-4 top-1/2">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-6">
-              <path fillRule="evenodd" d="M10.5 3.75a6.75 6.75 0 1 0 0 13.5 6.75 6.75 0 0 0 0-13.5ZM2.25 10.5a8.25 8.25 0 1 1 14.59 5.28l4.69 4.69a.75.75 0 1 1-1.06 1.06l-4.69-4.69A8.25 8.25 0 0 1 2.25 10.5Z" clipRule="evenodd" />
-            </svg>
-          </div></botton>
+          <button onClick={handleSearch}>
+            <div className="absolute text-gray-500 transform -translate-y-1/2 right-4 top-1/2">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-6">
+                <path fillRule="evenodd" d="M10.5 3.75a6.75 6.75 0 1 0 0 13.5 6.75 6.75 0 0 0 0-13.5ZM2.25 10.5a8.25 8.25 0 1 1 14.59 5.28l4.69 4.69a.75.75 0 1 1-1.06 1.06l-4.69-4.69A8.25 8.25 0 0 1 2.25 10.5Z" clipRule="evenodd" />
+              </svg>
+            </div>
+          </button>
         </div>
 
         {/* Navbar Links */}
@@ -50,6 +118,19 @@ function Navbar() {
           </li>
         </ul>
       </nav>
+
+      {/* Dialog box to display search results */}
+      <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
+        <DialogTitle>Search Results</DialogTitle>
+        <DialogContent>
+          <p>{dialogMessage}</p>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenDialog(false)} color="primary">
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 }
