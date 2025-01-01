@@ -3,6 +3,7 @@
 const { PrismaClient } = require('@prisma/client')
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const { use } = require('../routes/auth');
 
 
 //initialize prismaClient
@@ -44,7 +45,7 @@ const registerUser = async (req, res) => {
 
         // Generate a JWT token
         const token = jwt.sign(
-            { id: newUser.id, email: newUser.email, role: newUser.role },
+            { reg_id: newUser.reg_id, email: newUser.email, role: newUser.role },
             'your-secret-key', // Replace with your secret key
             { expiresIn: '1h' } // Token expiry time
         );
@@ -78,7 +79,7 @@ const loginUser = async (req, res) => {
         if (isMatch) {
             // Generate JWT token for login
             const token = jwt.sign(
-                { id: user.id, email: user.email, role: user.role },
+                { reg_id: user.reg_id, email: user.email, role: user.role },
                 'your-secret-key', // Replace with your secret key
                 { expiresIn: '1h' }
             );
@@ -123,7 +124,7 @@ const admin_login = async (req, res) => {
 const getUser = async (req, res) => {
     try {
         const user = await prisma.user.findUnique({
-            where: { id: req.user.id },
+            where: { reg_id: req.user.reg_id },
         });
 
         if (!user) {
@@ -137,5 +138,30 @@ const getUser = async (req, res) => {
     }
 };
 
+// Controller to update the profile
+const updateProfile = async (req, res) => {
+    try {
+      const { fullName, profilePicture, teleNumber, address } = req.body;
+        console.log(fullName, profilePicture, teleNumber, address )
+      
+      const updatedUser = await prisma.user.update({
+        where: {
+          reg_id: req.user.reg_id,
+        },
+        data: {
+          fullName: fullName || undefined,
+          profilePicture: profilePicture || undefined,
+          teleNumber: teleNumber || undefined,
+          address: address || undefined,
+        },
+      });
+  
+      return res.status(200).json({ message: 'Profile updated successfully!', user: updatedUser });
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ message: 'Failed to update profile. Please try again later.' });
+    }
+  };
 // Export functions
-module.exports = { registerUser, loginUser, admin_login, getUser };
+module.exports = { registerUser, loginUser, admin_login, getUser , updateProfile }; 
+
