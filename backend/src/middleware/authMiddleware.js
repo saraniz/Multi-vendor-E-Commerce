@@ -16,7 +16,7 @@ const authenticate = async (req, res, next) => {
         // Find the user by decoded ID
         const user = await prisma.user.findUnique({
             where: {
-                id: decoded.id, // Assuming 'id' is the primary key
+                reg_id: decoded.reg_id, // Assuming 'id' is the primary key
             },
         });
 
