@@ -1,5 +1,5 @@
 import { act } from "react"
-import { GET_USER_FAILURE, GET_USER_REQUEST, GET_USER_SUCCESS, LOGIN_USER_FAILURE, LOGIN_USER_REQUEST, LOGIN_USER_SUCCESS, LOGOUT, REGISTER_USER_FAILURE, REGISTER_USER_REQUEST, REGISTER_USER_SUCCESS } from "./AuthActionType"
+import { GET_USER_FAILURE, GET_USER_REQUEST, GET_USER_SUCCESS, LOGIN_USER_FAILURE, LOGIN_USER_REQUEST, LOGIN_USER_SUCCESS, LOGOUT, REGISTER_USER_FAILURE, REGISTER_USER_REQUEST, REGISTER_USER_SUCCESS, UPDATE_PROFILE_REQUEST,UPDATE_PROFILE_SUCCESS,UPDATE_PROFILE_FAILURE} from "./AuthActionType"
 
 const initialState ={
     user: null,
@@ -29,6 +29,15 @@ export const authenticationReducer = (state=initialState,action)=>{
 
         case GET_USER_SUCCESS:
             return{...state,loading:false,error:null,user: action.payload.user}
+
+        case UPDATE_PROFILE_REQUEST:
+                return { ...state, loading: true, error: null };
+
+        case UPDATE_PROFILE_SUCCESS:
+                return { ...state, loading: false, user: action.payload, error: null };
+
+        case UPDATE_PROFILE_FAILURE:
+                return { ...state, loading: false, error: action.payload };
 
         case LOGOUT:
             return initialState
