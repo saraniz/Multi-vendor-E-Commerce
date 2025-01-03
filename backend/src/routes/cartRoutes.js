@@ -10,4 +10,4 @@ router.put('/update/:id',authenticate,updateCartItem)
 router.delete('/delete/:id',authenticate,deleteCartItem)
 router.get('/',authenticate,viewCart)
 
-module.exports = router
+module.exports = router 

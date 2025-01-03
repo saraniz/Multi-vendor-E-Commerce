@@ -148,5 +148,7 @@ const product_image_upload = async (req,res) =>{
     });
 }
 
+
+
 // now export the product_image_upload function ⭕⭕
 module.exports = {addProduct,updateProduct,deleteProduct,getSellerProduct, product_image_upload}
