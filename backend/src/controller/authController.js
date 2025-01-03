@@ -1,8 +1,11 @@
-// controllers/authController.js
-// const adminModel = require('../models/adminModel'); // Import Admin model
+
+//const adminModel = require('../models/adminModel'); // Import Admin model
 const { PrismaClient } = require('@prisma/client')
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const cloudinary = require('cloudinary').v2
+const formidable = require("formidable")
+
 
 
 //initialize prismaClient
@@ -137,5 +140,62 @@ const getUser = async (req, res) => {
     }
 };
 
+// Profile Image Upload ⭕
+const profile_image_upload = async (req, res) => {
+    const {id} = req;
+    const form = formidable({ multiples: false });
+    form.parse(req, async (err, _, files) => {
+        if (err) {
+            return res.status(400).json({ error: err.message });
+        }
+
+        // Configure Cloudinary
+        cloudinary.config({
+            cloud_name: process.env.CLOUD_NAME,
+            api_key: process.env.API_KEY,
+            api_secret: process.env.API_SECRET,
+            secure: true
+        });
+
+        try {
+            const { image } = files;
+
+            // Upload to Cloudinary
+            const result = await cloudinary.uploader.upload(image.filepath, { folder: 'profile' });
+
+            if (result) {
+                // Update image URL in Supabase
+                const { error } = await supabase
+                    .from('User')      
+                    .update({ image: result.url })   //🔴🔴 <--- we need to add image field and set it into String
+                    .eq('id', id);
+
+                if (error) {
+                    throw new Error(error.message);
+                }
+                // feetch data
+                const { data, error: fetchError } = await supabase
+                    .from('User')
+                    .select('*')
+                    .eq('id', id)
+                    .single();
+
+                if (fetchError) {
+                    throw new Error(fetchError.message);
+                }
+
+                return res.status(201).json({
+                    message: 'Profile Image Uploaded Successfully',
+                    userInfo: data
+                });
+            } else {
+                return res.status(404).json({ error: 'Image Upload Failed' });
+            }
+        } catch (error) {
+            return res.status(500).json({ error: error.message });
+        }
+    });
+}
+
 // Export functions
-module.exports = { registerUser, loginUser, admin_login, getUser };
+module.exports = { registerUser, loginUser, admin_login, getUser, profile_image_upload };
