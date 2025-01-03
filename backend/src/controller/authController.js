@@ -1,4 +1,4 @@
-
+// controllers/authController.js
 //const adminModel = require('../models/adminModel'); // Import Admin model
 const { PrismaClient } = require('@prisma/client')
 const bcrypt = require('bcrypt');
