@@ -1,3 +1,4 @@
+
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
@@ -13,8 +14,8 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id        Int      @id @default(autoincrement())
+model user {
+  reg_id        Int      @id @default(autoincrement())
   fullName  String
   username  String   @unique
   email     String   @unique
@@ -28,22 +29,20 @@ model User {
 
   
 //product model
-model Product {
-  id  Int  @id @default(autoincrement())
+model product {
+  product_id  Int  @id @default(autoincrement())
   name String
   description String
   price Float
   stock Int
-  storeId Int
-  store Store @relation(fields: [storeId], references: [id])
+  //store_id Int
+  //store Store @relation(fields: [storeId], references: [id])
   category String
 }
 
 //store model
-model Store{
+model store{
   id Int @id @default(autoincrement())
   name String
-  products Product[]
+  //products Product[]
 }
-
-

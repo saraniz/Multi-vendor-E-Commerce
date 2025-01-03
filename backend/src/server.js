@@ -23,11 +23,13 @@ app.use(jsonMiddleware);
 
 // Import routes
 const authRoutes = require('./routes/auth');
-// const itemRoutes = require('./routes/itemRoutes')
+const itemRoutes = require('./routes/itemRoutes')
+// const profileRoutes = require('./routes/profileRoutes')
 
 // Public API routes
 app.use('/api', authRoutes);
-// app.use('/api/items',itemRoutes)
+app.use('/api/items',itemRoutes)
+// app.use('/api/profileedit',profileRoutes)
 
 // Protected routes
 app.use('/api/protected', authenticate, (req, res) => {
