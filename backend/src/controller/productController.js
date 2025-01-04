@@ -215,5 +215,33 @@ const addProductImg = async (req, res) => {
     })
 }
 
+// product Image Update 
+const product_image_update = async (req, res) => {
+    const form = formidable({ multiples: true });
+
+    // Configure Cloudinary
+    cloudinary.config({
+        cloud_name: process.env.CLOUD_NAME,
+        api_key: process.env.API_KEY,
+        api_secret: process.env.API_SECRET,
+        secure: true
+    });
+
+    form.parse(req, async (err, field, files) => {
+        const { oldImage, id } = field;
+        const { newImage } = files;
+
+        if (err) {
+            return responseReturn(res, 400, { error: err.message });
+        }
+
+
+
+
+        
+
+    }
+)}
+
 
 module.exports = {addProduct,updateProduct,deleteProduct,getSellerProduct, addProductImg};
