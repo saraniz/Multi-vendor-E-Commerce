@@ -150,6 +150,7 @@ const getSellerProduct = async (req,res) =>{
 //     });
 // }
 
+// Product Image ADD ⭕
 const addProductImg = async (req, res) => {
     const {id} = req;
     const form = formidable({ multiples: true });
@@ -176,15 +177,43 @@ const addProductImg = async (req, res) => {
         // lets upload images to the cloudinary 
         try{
             let imageUrls = [];
-            
+            if (files.images) {
+                const imageFiles = Array.isArray(files.images) ? files.images : [files.images];
+                for (const image of imageFiles) {
+                    const result = await cloudinary.uploader.upload(image.filepath, {
+                        folder: 'Products'
+                    });
+                    imageUrls.push(result.secure_url);
+                }
+            }
+
+            // Insert data into Supabase
+            const { data, error } = await supabase
+                .from('Products') // Folder in Cloudinary ('Products')
+                .insert([
+                    {
+                        seller_id: id,     //  Find a way to get the seller id (DataBase Side ())
+                        name,
+                        description,
+                        stock: parseInt(stock),
+                        price: parseFloat(price),
+                        //shop_name: shopName,
+                        images: imageUrls
+                    }
+                ]);
+
+                if (error) {
+                    throw error;
+                }
+    
+                res.status(200).json({ message: 'Product Iamge added successfully', data });
         }
         catch(error){
-            
+            res.status(500).json({ error: error.message });
         }
         
     })
 }
 
 
-// now export the product_image_upload function ⭕⭕
-//module.exports = {addProduct,updateProduct,deleteProduct,getSellerProduct, product_image_upload}
+module.exports = {addProduct,updateProduct,deleteProduct,getSellerProduct, addProductImg};
