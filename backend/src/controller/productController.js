@@ -85,68 +85,68 @@ const getSellerProduct = async (req,res) =>{
     }
 }
 
-const product_image_upload = async (req,res) =>{
-                                              //👇 ⭕⭕add correct directory  🔴🔴🔴🔴
-    const form = formidable({multiples: true, uploadDir: './uploads', keepExtensions: true});
+// const product_image_upload = async (req,res) =>{
+//                                               //👇 ⭕⭕add correct directory  🔴🔴🔴🔴
+//     const form = formidable({multiples: true, uploadDir: './uploads', keepExtensions: true});
 
-    form.parse(req, async (err, fields, files) => {
-        const {oldImage, productId, storeId} = fields;
-        const {newImage} = files;
+//     form.parse(req, async (err, fields, files) => {
+//         const {oldImage, productId, storeId} = fields;
+//         const {newImage} = files;
 
-        if (err) {
-            return res.status(400).json({ error: err.message });
-        } else {
-            try {
-                // Define the new file path for the uploaded image
-                                                        // 👇⭕⭕ add correct directory  🔴🔴🔴
-                const uploadDir = path.join(__dirname, "./uploads"); 
+//         if (err) {
+//             return res.status(400).json({ error: err.message });
+//         } else {
+//             try {
+//                 // Define the new file path for the uploaded image
+//                                                         // 👇⭕⭕ add correct directory  🔴🔴🔴
+//                 const uploadDir = path.join(__dirname, "./uploads"); 
                 
-                const newFilePath = path.join(uploadDir, newImage.originalFilename);
+//                 const newFilePath = path.join(uploadDir, newImage.originalFilename);
       
-                // Ensure the upload directory exists
-                if (!fs.existsSync(uploadDir)) {
-                  fs.mkdirSync(uploadDir, { recursive: true });
-                }
+//                 // Ensure the upload directory exists
+//                 if (!fs.existsSync(uploadDir)) {
+//                   fs.mkdirSync(uploadDir, { recursive: true });
+//                 }
       
-                // Move the uploaded file to the target directory
-                fs.renameSync(newImage.filepath, newFilePath);
+//                 // Move the uploaded file to the target directory
+//                 fs.renameSync(newImage.filepath, newFilePath);
       
-                // Update the product in the database using Prisma
-                                                                                     // Unique key ⭕⭕ check db & change
-                const product = await prisma.product.findUnique({ where: { id: parseInt(productId) } });
+//                 // Update the product in the database using Prisma
+//                                                                                      // Unique key ⭕⭕ check db & change
+//                 const product = await prisma.product.findUnique({ where: { id: parseInt(productId) } });
       
-                if (!product) {
-                  res.status(404).json({ error: "Product not found" });
-                  return;
-                }
+//                 if (!product) {
+//                   res.status(404).json({ error: "Product not found" });
+//                   return;
+//                 }
       
-                const images = product.images || [];
-                const index = images.findIndex((img) => img === oldImage);
+//                 const images = product.images || [];
+//                 const index = images.findIndex((img) => img === oldImage);
       
-                if (index === -1) {
-                  res.status(400).json({ error: "Old image not found in product images" });
-                  return;
-                }
+//                 if (index === -1) {
+//                   res.status(400).json({ error: "Old image not found in product images" });
+//                   return;
+//                 }
       
-                images[index] = `/uploads/${newImage.originalFilename}`;
+//                 images[index] = `/uploads/${newImage.originalFilename}`;
       
-                const updatedProduct = await prisma.product.update({
-                  //where: { id: parseInt(productId) },
-                  where: {
-                    id: parseInt(productId),
-                    storeId: parseInt(storeId), 
-                  },
-                  data: { images },
-                });
-                res.status(200).json({ product: updatedProduct, message: "Product Image Updated Successfully" });
-              } 
-              catch (error) {
-                res.status(500).json({ error: error.message });
-              }
-            }
+//                 const updatedProduct = await prisma.product.update({
+//                   //where: { id: parseInt(productId) },
+//                   where: {
+//                     id: parseInt(productId),
+//                     storeId: parseInt(storeId), 
+//                   },
+//                   data: { images },
+//                 });
+//                 res.status(200).json({ product: updatedProduct, message: "Product Image Updated Successfully" });
+//               } 
+//               catch (error) {
+//                 res.status(500).json({ error: error.message });
+//               }
+//             }
         
-    });
-}
+//     });
+// }
 
 
 
