@@ -1,5 +1,7 @@
 const { PrismaClient, PrismaClient, Prisma } = require('@prisma/client')
 import formidable, { multipart } from './../../node_modules/formidable/src/index';
+const cloudinary = require('cloudinary').v2
+const formidable = require("formidable")
 
 //initialize prisma client
 const PrismaClient = new PrismaClient()
@@ -148,7 +150,41 @@ const getSellerProduct = async (req,res) =>{
 //     });
 // }
 
+const addProductImg = async (req, res) => {
+    const {id} = req;
+    const form = formidable({ multiples: true });
+
+    // Configure Cloudinary
+    cloudinary.config({
+        cloud_name: process.env.CLOUD_NAME,
+        api_key: process.env.API_KEY,
+        api_secret: process.env.API_SECRET,
+        secure: true
+    });
+    // <--- 🔴We need to add image (file-url) field  & (shopName <-- IF you like)
+    form.parse(req, async (err, fields, files) => {
+        if (err) {
+            return res.status(400).json({ error: 'Form parsing failed' });
+        }
+
+        let { name, description, stock, price } = fields;   
+        
+        // Trim names <------ ex - "  dunith   " --> "dunith"
+        name = name.trim();
+        description = description.trim();
+
+        // lets upload images to the cloudinary 
+        try{
+            let imageUrls = [];
+            
+        }
+        catch(error){
+            
+        }
+        
+    })
+}
 
 
 // now export the product_image_upload function ⭕⭕
-module.exports = {addProduct,updateProduct,deleteProduct,getSellerProduct, product_image_upload}
+//module.exports = {addProduct,updateProduct,deleteProduct,getSellerProduct, product_image_upload}
