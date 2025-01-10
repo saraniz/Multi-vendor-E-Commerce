@@ -198,7 +198,7 @@ const addProductImg = async (req, res) => {
                         stock: parseInt(stock),
                         price: parseFloat(price),
                         //shop_name: shopName,
-                        images: imageUrls
+                        images: imageUrls     // currently dont exists in Supabase ❌
                     }
                 ]);
 
@@ -215,7 +215,7 @@ const addProductImg = async (req, res) => {
     })
 }
 
-// product Image Update 
+// product Image Update ⭕
 const product_image_update = async (req, res) => {
     const form = formidable({ multiples: true });
 
@@ -234,6 +234,7 @@ const product_image_update = async (req, res) => {
         if (err) {
             return responseReturn(res, 400, { error: err.message });
         }
+
 
 
 
