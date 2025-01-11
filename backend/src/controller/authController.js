@@ -191,33 +191,21 @@ const profile_image_upload = async (req, res) => {
             const result = await cloudinary.uploader.upload(image.filepath, { folder: 'profile' });
 
             if (result) {
-                // Update image URL in Supabase
-                const { error } = await supabase
-                    .from('User')      
-                    .update({ image: result.url })   //🔴🔴 <--- we need to add image field and set it into String
-                    .eq('id', id);
-
-                if (error) {
-                    throw new Error(error.message);
-                }
-                // feetch data
-                const { data, error: fetchError } = await supabase
-                    .from('User')
-                    .select('*')
-                    .eq('id', id)
-                    .single();
-
-                if (fetchError) {
-                    throw new Error(fetchError.message);
-                }
-
-                return res.status(201).json({
-                    message: 'Profile Image Uploaded Successfully',
-                    userInfo: data
+                // Update image URL in the database using Prisma
+                // add image file to the data base 🔴
+                const user = await prisma.user.update({
+                  where: { id: id },
+                  data: { image: result.url },
                 });
-            } else {
+        
+                return res.status(201).json({
+                  message: 'Profile Image Uploaded Successfully',
+                  userInfo: user,
+                });
+              } else {
                 return res.status(404).json({ error: 'Image Upload Failed' });
-            }
+              }
+            
         } catch (error) {
             return res.status(500).json({ error: error.message });
         }
