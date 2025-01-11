@@ -187,24 +187,17 @@ const addProductImg = async (req, res) => {
                 }
             }
 
-            // Insert data into Supabase
-            const { data, error } = await supabase
-                .from('Products') // Folder in Cloudinary ('Products')
-                .insert([
-                    {
-                        seller_id: id,     //  Find a way to get the seller id (DataBase Side ())
-                        name,
-                        description,
-                        stock: parseInt(stock),
-                        price: parseFloat(price),
-                        //shop_name: shopName,
-                        images: imageUrls     // currently dont exists in Supabase ❌
-                    }
-                ]);
-
-                if (error) {
-                    throw error;
-                }
+            const product = await prisma.product.create({
+                data: {
+                  // There is not a seller Model 🔴🔴
+                  seller_id: id, 
+                  name,
+                  description,
+                  stock: parseInt(stock),
+                  price: parseFloat(price),
+                  images: imageUrls,
+                },
+              });
     
                 res.status(200).json({ message: 'Product Iamge added successfully', data });
         }
@@ -235,8 +228,8 @@ const product_image_update = async (req, res) => {
             return responseReturn(res, 400, { error: err.message });
         }
 
-
-
+        const result = await cloudinary.uploader.upload(newImage.filepath, { folder: 'Products' });
+        
 
 
         
