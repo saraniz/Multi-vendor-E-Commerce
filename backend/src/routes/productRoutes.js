@@ -11,4 +11,4 @@ router.delete('/delete/:id',authenticate,roleMiddleware(['seller']),deleteProduc
 router.get('/my-products',authenticate,roleMiddleware(['seller']),getSellerProduct)  //get seller products
 // 👇👇 product image upload
 //router.post('/product-image-update',authenticate, productController.productI)
-router.post('/product-image-upload',authenticate, roleMiddleware(['seller']), addProductImg);
+//router.post('/product-image-upload',authenticate, roleMiddleware(['seller']), addProductImg);

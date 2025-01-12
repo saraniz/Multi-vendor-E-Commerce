@@ -168,51 +168,51 @@ const updateProfile = async (req, res) => {
   };
 
 // Profile Image Upload ⭕
-const profile_image_upload = async (req, res) => {
-    const {id} = req;
-    const form = formidable({ multiples: false });
-    form.parse(req, async (err, _, files) => {
-        if (err) {
-            return res.status(400).json({ error: err.message });
-        }
+// const profile_image_upload = async (req, res) => {
+//     const {id} = req;
+//     const form = formidable({ multiples: false });
+//     form.parse(req, async (err, _, files) => {
+//         if (err) {
+//             return res.status(400).json({ error: err.message });
+//         }
 
-        // Configure Cloudinary
-        cloudinary.config({
-            cloud_name: process.env.CLOUD_NAME,
-            api_key: process.env.API_KEY,
-            api_secret: process.env.API_SECRET,
-            secure: true
-        });
+//         // Configure Cloudinary
+//         cloudinary.config({
+//             cloud_name: process.env.CLOUD_NAME,
+//             api_key: process.env.API_KEY,
+//             api_secret: process.env.API_SECRET,
+//             secure: true
+//         });
 
-        try {
-            const { image } = files;
+//         try {
+//             const { image } = files;
 
-            // Upload to Cloudinary
-            const result = await cloudinary.uploader.upload(image.filepath, { folder: 'profile' });
+//             // Upload to Cloudinary
+//             const result = await cloudinary.uploader.upload(image.filepath, { folder: 'profile' });
 
-            if (result) {
-                // Update image URL in the database using Prisma
-                // add image file to the data base 🔴
-                const user = await prisma.user.update({
-                  where: { id: id },
-                  data: { image: result.url },
-                });
+//             if (result) {
+//                 // Update image URL in the database using Prisma
+//                 // add image file to the data base 🔴
+//                 const user = await prisma.user.update({
+//                   where: { id: id },
+//                   data: { image: result.url },
+//                 });
         
-                return res.status(201).json({
-                  message: 'Profile Image Uploaded Successfully',
-                  userInfo: user,
-                });
-              } else {
-                return res.status(404).json({ error: 'Image Upload Failed' });
-              }
+//                 return res.status(201).json({
+//                   message: 'Profile Image Uploaded Successfully',
+//                   userInfo: user,
+//                 });
+//               } else {
+//                 return res.status(404).json({ error: 'Image Upload Failed' });
+//               }
             
-        } catch (error) {
-            return res.status(500).json({ error: error.message });
-        }
-    });
-}
+//         } catch (error) {
+//             return res.status(500).json({ error: error.message });
+//         }
+//     });
+// }
 
 // Export functions
-module.exports = { registerUser, loginUser, admin_login, getUser , updateProfile, profile_image_upload }; 
+module.exports = { registerUser, loginUser, admin_login, getUser , updateProfile }; 
 
 
