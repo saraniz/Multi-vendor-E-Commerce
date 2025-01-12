@@ -20,7 +20,7 @@ router.put('/update',authenticate,updateProfile)
 router.post('/admin-login', admin_login); // Handle admin login(🟢)
 
 // profile image upload  🔴
-router.post('/profile-image-upload',authenticate, profile_image_upload);
+//router.post('/profile-image-upload',authenticate, profile_image_upload);
 
 
 // Export the router
