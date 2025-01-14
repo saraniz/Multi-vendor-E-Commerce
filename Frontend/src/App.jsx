@@ -12,6 +12,12 @@ import CartPage from './Pages/CartPage';
 import CustomerProfile from './Pages/CustomerProfile';
 import MyOrders from './Pages/MyOrders';
 import EditProfile from './Pages/EditProfile';
+import Favourites from './Pages/Favourites';
+import ShopSettings from './Pages/ShopSettings';
+import SellerOrders from './Pages/SellerOrders'
+import AddItems from './Pages/AddItems';
+import ItemList from './Pages/ItemList';
+import SellerDashboard from './Pages/SellerDashboard';
 
 
 
@@ -41,6 +47,12 @@ function App() {
         <Route  path= "/CustomerProfile" element={<CustomerProfile/>}></Route>
         <Route  path= "/MyOrders" element={<MyOrders/>}></Route>
         <Route  path= "/EditProfile" element={<EditProfile/>}></Route>
+        <Route  path= "/Favourites" element={<Favourites/>}></Route>
+        <Route  path= "/ShopSettings" element={<ShopSettings/>}></Route>
+        <Route  path= "/SellerOrders" element={<SellerOrders/>}></Route>
+        <Route  path= "/AddItems" element={<AddItems/>}></Route>
+        <Route  path= "/ItemList" element={<ItemList/>}></Route>
+        <Route  path= "/SellerDashboard" element={<SellerDashboard/>}></Route>
       
         
       </Routes>
