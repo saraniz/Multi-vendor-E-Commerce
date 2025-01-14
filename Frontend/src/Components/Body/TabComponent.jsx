@@ -43,7 +43,7 @@ function TabComponent() {
         </div>
 
         {/* Tab Content */}
-        <div className="w-full p-6 bg-wh rounded max-w-7xl">
+        <div className="w-full p-6 rounded bg-wh max-w-7xl">
           {activeTab === 'All' && <div><ProductList /></div>}
           {activeTab === 'Following' && <div><ProductList /></div>}
           {activeTab === 'Premium' && <div><ProductList /></div>}

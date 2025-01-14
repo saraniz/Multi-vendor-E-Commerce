@@ -3,7 +3,7 @@ import Navbar from '../Components/Header/Navbar';
 import Footer from '../Components/Footer/Footer';
 import CustomerNavbar from '../Components/Body/CustomerNavbar';
 
-function MyOrders() {
+function Commonpage02() {
   // Example data, replace with backend API data
   const [orders, setOrders] = useState([
     {
@@ -119,4 +119,4 @@ function MyOrders() {
   );
 }
 
-export default MyOrders;
+export default Commonpage02;
