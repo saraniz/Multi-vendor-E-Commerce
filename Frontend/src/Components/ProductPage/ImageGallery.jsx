@@ -1,6 +1,9 @@
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 
 const ImageGallery = () => {
+
+  const { products,loading,error } = useSelector((state) => state );
   // Sample images
   const images = [
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTrw78VZdNIC2FxfdXp2EQZB4nDlY2SXWDGHL55UV3ftjXtoXSeCFb_3e6lDsyJgmw-sFM&usqp=CAU",
@@ -17,7 +20,7 @@ const ImageGallery = () => {
     {images.map((image, index) => (
       <img
         key={index}
-        src={image}
+        src={products?.product?.product_image}
         alt={`Thumbnail ${index + 1}`}
         className={`w-24 h-24 border rounded-md cursor-pointer ${
           selectedImage === image ? "border-black" : "border-gray-300"
@@ -30,7 +33,7 @@ const ImageGallery = () => {
   {/* Main Image */}
   <div className="flex items-center justify-center border rounded-md w-96 h-96">
     <img
-      src={selectedImage}
+      src={products?.product?.product_image}
       alt="Main Display"
       className="object-contain w-full h-full rounded-md"
     />

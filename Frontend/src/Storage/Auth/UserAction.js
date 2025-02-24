@@ -42,7 +42,8 @@ export const userRegister = (registerData)=>async(dispatch)=>{
 export const getUserProfile = () => async (dispatch) => {
     try {
         // Sending GET request to fetch user profile
-        const { data } = await axios.get(`${API_BASE_URL}/api/user`, {
+        const { data } = await axios.get(`${API_BASE_URL}/api/user
+            `, {
             headers: {
                 "Authorization": `Bearer ${localStorage.getItem("jwt")}`, // Attach token from localStorage
             },
