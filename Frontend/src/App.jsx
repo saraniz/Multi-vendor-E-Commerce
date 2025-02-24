@@ -35,11 +35,12 @@ function App() {
         <Route  path= "/ShopHome" element={<ShopHome/>}></Route>
         <Route  path= "/RegistrationForm" element={<RegistrationForm/>}></Route>
         <Route  path= "/LoginPage" element={<LoginPage/>}></Route>
-        <Route  path= "/Productpage" element={<Productpage/>}></Route>
+        <Route  path= "/Productpage/:product_id" element={<Productpage/>}></Route>
         <Route  path= "/CartPage" element={<CartPage/>}></Route>
         <Route  path= "/CustomerProfile" element={<CustomerProfile/>}></Route>
         <Route  path= "/MyOrders" element={<MyOrders/>}></Route>
         <Route  path= "/EditProfile" element={<EditProfile/>}></Route>
+        {/* <Route path="/product/:product_id" element={<ProductDetails />} /> */}
       
         
       </Routes>

@@ -1,25 +1,39 @@
-import React from 'react'
-import ProductCard from './ProductCard'
+import { useEffect } from 'react'; // Only import 'useEffect' here
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchAllProducts } from '../../Storage/Product/productAction';
+import ProductCard from './ProductCard';
+
+
+
+
+
 
 function ProductList() {
+
+    // Use the selector with a default value in case the state is undefined
+    const { products } = useSelector((state) => state );
+    console.log("products",products)
+
+    // You can add a loading check if you're fetching data asynchronously
+    const { loading = false } = useSelector((state) => state.products || { loading: false });
+  
+    if (loading) {
+      return <div>Loading...</div>;
+    }
+
+  
   return (
     <div>    
     <div className="p-10">
         <div className='flex justify-center'>
       <div className="grid grid-cols-1 gap-20 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-        {/* Render multiple ProductCard components */}
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
+      {products?.allproducts.length > 0 ? (
+            products?.allproducts.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))
+          ) : (
+            <p>No products available</p>
+          )}
       </div>
       </div>
     </div>
