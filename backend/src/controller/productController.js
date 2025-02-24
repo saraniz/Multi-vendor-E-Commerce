@@ -244,4 +244,7 @@ const product_image_update = async (req, res) => {
 )}
 
 
+
+
+
 module.exports = {addProduct,updateProduct,deleteProduct,getSellerProduct, addProductImg};

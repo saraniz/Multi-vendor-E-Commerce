@@ -27,22 +27,31 @@ model user {
   isSeller  Boolean  @default(false)
 }
 
-  
 //product model
+// products model
 model product {
-  product_id  Int  @id @default(autoincrement())
-  name String
-  description String
-  price Float
-  stock Int
-  //store_id Int
-  //store Store @relation(fields: [storeId], references: [id])
-  category String
+  product_id    Int     @id @default(autoincrement())
+  name          String
+  description   String
+  price         Float
+  stock         Int
+  store_id      Int
+  store         store   @relation(fields: [store_id], references: [id]) // Correct relation with store
+  category      String
+  isPremium     Boolean
+  product_image String
+  store_name String
+  store_image String
+
+  @@map("product") // Map to actual table "product"
 }
 
-//store model
-model store{
-  id Int @id @default(autoincrement())
-  name String
-  //products Product[]
+// store model
+model store {
+  id        Int        @id @default(autoincrement())
+  name      String
+  products  product[]  // One store can have many products
+
+  @@map("store") // Map to actual table "store"
 }
+
