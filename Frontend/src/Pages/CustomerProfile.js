@@ -1,78 +1,149 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar from '../Components/Header/Navbar';
 import Footer from '../Components/Footer/Footer';
 import CustomerNavbar from '../Components/Body/CustomerNavbar';
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
-function Commonpage02() {
+function CustomerProfile() {
+  const [followedShops, setFollowedShops] = useState([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [successPercentage, setSuccessPercentage] = useState(60); // Sample success percentage
+  const [monthlyCosts, setMonthlyCosts] = useState([]);
+
+  useEffect(() => {
+    // Sample data for display
+    const sampleShops = [
+      { id: 1, name: 'Shop A', image: 'https://via.placeholder.com/50' },
+      { id: 2, name: 'Shop B', image: 'https://via.placeholder.com/50' },
+      { id: 3, name: 'Shop C', image: 'https://via.placeholder.com/50' },
+      { id: 4, name: 'Shop D', image: 'https://via.placeholder.com/50' },
+      { id: 5, name: 'Shop E', image: 'https://via.placeholder.com/50' },
+      { id: 6, name: 'Shop F', image: 'https://via.placeholder.com/50' },
+    ];
+
+    const sampleMonthlyCosts = [
+      { shopName: 'Shop A', amount: 120, image: 'https://via.placeholder.com/40' },
+      { shopName: 'Shop B', amount: 80, image: 'https://via.placeholder.com/40' },
+      { shopName: 'Shop C', amount: 50, image: 'https://via.placeholder.com/40' },
+    ];
+
+    // Set the sample data to state
+    setFollowedShops(sampleShops);
+    setMonthlyCosts(sampleMonthlyCosts);
+  }, []);
+
+  const handlePrev = () => {
+    setCurrentIndex((prevIndex) =>
+      prevIndex === 0 ? followedShops.length - 1 : prevIndex - 1
+    );
+  };
+
+  const handleNext = () => {
+    setCurrentIndex((prevIndex) =>
+      prevIndex === followedShops.length - 1 ? 0 : prevIndex + 1
+    );
+  };
+
   return (
     <div>
       <Navbar />
       <div className="flex min-h-screen">
-        {/* Left Sidebar */}
-        <div className="bg-gray-200 ">
-          <CustomerNavbar />
-        </div>
-
+        {/* Sidebar */}
+        <CustomerNavbar />
         {/* Main Content */}
-        <div className="flex-grow p-4 bg-gray-100">
-          {/* Dashboard */}
-          <div className="flex flex-col items-center space-y-10">
-            <div className="w-full px-4 py-1 text-3xl font-bold text-center">Dashboard</div>
-            <h2 className="px-4 py-1 text-center text-white bg-gray-600 rounded-full max-w-44">
-              Followed Shops
-            </h2>
-          </div>
-
-          {/* Followed Shops Section */}
-          <div className="flex items-center justify-center pt-6 mb-6 space-x-4">
-            <div className="flex space-x-2">
-              {[...Array(5)].map((_, index) => (
-                <Link to={'/ShopHome'} key={index}>
-                  <button>
-                    <img
-                      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRpyiXYQlJYE6rBuS5BqGgFtNZmDvfjF5snFw&s"
-                      alt="Shop"
-                      className="w-10 h-10 rounded-full"
-                    />
-                  </button>
-                </Link>
-              ))}
-            </div>
-          </div>
-
-          {/* Review and Order Buttons */}
-          <div className="ml-12">
-            <button className="px-6 py-2 mb-6 text-white bg-gray-500 rounded-lg">My Orders</button>
-
-            {/* Progress Bar */}
-            <div className="h-4 max-w-md mb-6 bg-gray-300 rounded-full">
-              <div className="w-1/3 h-4 bg-gray-700 rounded-full"></div>
-            </div>
-
-            <div className="mb-6 space-x-4">
-              <button className="px-6 py-2 text-white bg-gray-500 rounded-lg">My Reviews</button>
-            </div>
-          </div>
-        </div>
-
-        {/* Right Sidebar */}
-        <div className="w-1/4 p-4 bg-gray-300 rounded-lg">
-          <h3 className="mb-4 font-semibold text-center">Monthly Cost</h3>
-          <div className="space-y-4">
-            {[...Array(3)].map((_, index) => (
-              <div key={index} className="flex items-center justify-between">
-                <img
-                  src="https://via.placeholder.com/30"
-                  alt="Product"
-                  className="w-8 h-8 rounded-full"
-                />
-                <span>.................40$</span>
+        <div className="flex-grow p-6">
+          {/* Followed Shops Slider */}
+          <div className="mb-8 text-center">
+            <h2 className="mb-4 text-lg font-bold">Followed Shops</h2>
+            <div className="flex items-center justify-center space-x-4">
+              <button
+                onClick={handlePrev}
+                className="p-2 border rounded-full"
+                aria-label="Previous"
+              >
+                &lt;
+              </button>
+              <div className="flex space-x-2">
+                {followedShops.slice(currentIndex, currentIndex + 5).map((shop) => (
+                  <img
+                    key={shop.id}
+                    src={shop.image}
+                    alt={shop.name}
+                    className="w-12 h-12 rounded-full"
+                  />
+                ))}
               </div>
-            ))}
+              <button
+                onClick={handleNext}
+                className="p-2 border rounded-full"
+                aria-label="Next"
+              >
+                &gt;
+              </button>
+            </div>
           </div>
-          <div className="mt-4 font-bold text-right">
-            <span>Total 120$</span>
+
+          {/* Complete Orders and Monthly Cost */}
+          <div className="grid grid-cols-2 gap-6">
+            {/* Complete Orders */}
+            <div className="p-4 bg-white rounded-lg shadow">
+              <h3 className="mb-2 font-semibold text-md">Complete Orders</h3>
+              <div className="relative w-32 h-32 mx-auto">
+                <svg viewBox="0 0 36 36" className="w-full h-full">
+                  <path
+                    className="text-gray-200"
+                    strokeWidth="4"
+                    stroke="currentColor"
+                    fill="none"
+                    d="M18 2.0845
+                       a 15.9155 15.9155 0 0 1 0 31.831
+                       a 15.9155 15.9155 0 0 1 0 -31.831"
+                  />
+                  <path
+                    className="text-blue-500"
+                    strokeWidth="4"
+                    strokeDasharray={`${successPercentage}, 100`}
+                    stroke="currentColor"
+                    fill="none"
+                    d="M18 2.0845
+                       a 15.9155 15.9155 0 0 1 0 31.831
+                       a 15.9155 15.9155 0 0 1 0 -31.831"
+                  />
+                </svg>
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <span className="text-lg font-bold">{successPercentage}%</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Monthly Cost */}
+            <div className="p-4 bg-gray-100 rounded-lg shadow">
+              <h3 className="mb-4 font-semibold text-md">Monthly Cost</h3>
+              {monthlyCosts.map((cost, index) => (
+                <div key={index} className="flex items-center justify-between mb-2">
+                  <img
+                    src={cost.image}
+                    alt={cost.shopName}
+                    className="w-10 h-10 rounded-full"
+                  />
+                  <span className="font-medium text-md">${cost.amount}</span>
+                </div>
+              ))}
+              <div className="flex items-center justify-between mt-4 font-bold">
+                <span>Total</span>
+                <span>
+                  $
+                  {monthlyCosts.reduce((total, cost) => total + cost.amount, 0)}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* My Shop Button - Bottom */}
+          <div className="flex justify-center mt-8">
+          <Link to='/SellerDashboard'><button className="px-6 py-3 text-white bg-blue-500 rounded-lg shadow-md hover:bg-blue-600">
+              Seller profile
+            </button></Link>
           </div>
         </div>
       </div>
@@ -81,4 +152,4 @@ function Commonpage02() {
   );
 }
 
-export default Commonpage02;
+export default CustomerProfile;

@@ -2,6 +2,7 @@ import React from 'react';
 import Navbar from '../Components/Header/Navbar';
 import Footer from '../Components/Footer/Footer';
 import SellerNavbar from '../Components/Body/SellerNavbar';
+import { Link } from "react-router-dom";
 
 function SellerDashboard() {
   return (
@@ -71,11 +72,14 @@ function SellerDashboard() {
             </div>
           </div>
 
-          {/* Shop Button */}
+          {/* Buttons: Go to Shop & Seller Profile */}
           <div className="mt-6 text-center">
-            <button className="px-4 py-2 text-white bg-gray-800 rounded shadow hover:bg-gray-700">
-              Go to Shop
-            </button>
+          <Link to='/CustomerProfile'><button className="px-4 py-2 mr-4 text-white bg-blue-600 rounded shadow hover:bg-blue-500">
+              Customer profile
+            </button></Link>
+            <Link to='/MyShop'><button className="px-4 py-2 text-white bg-gray-800 rounded shadow hover:bg-gray-700">
+              My Shop
+            </button></Link>
           </div>
         </div>
       </div>

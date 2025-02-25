@@ -4,7 +4,7 @@ import HomePage from './Pages/HomePage';
 import {useDispatch, useSelector} from 'react-redux'
 import { Navigate, Route, Routes } from 'react-router-dom';
 import RegistrationForm from './Pages/RegistrationForm';
-import ShopHome from './Pages/ShopHome';
+import ShopHome from './Pages/ShopHome.js';
 import LoginPage from './Pages/LoginPage';
 import { getUserProfile } from './Storage/Auth/UserAction';
 import Productpage from './Pages/Productpage';
@@ -18,6 +18,7 @@ import SellerOrders from './Pages/SellerOrders'
 import AddItems from './Pages/AddItems';
 import ItemList from './Pages/ItemList';
 import SellerDashboard from './Pages/SellerDashboard';
+import MyShop from './Pages/MyShop.js';
 import SearchPage from './Pages/SearchPage';
 
 function App() {
@@ -52,6 +53,7 @@ function App() {
         <Route  path= "/AddItems" element={<AddItems/>}></Route>
         <Route  path= "/ItemList" element={<ItemList/>}></Route>
         <Route  path= "/SellerDashboard" element={<SellerDashboard/>}></Route>
+        <Route  path= "/MyShop" element={<MyShop/>}></Route>
         <Route  path= "/SearchPage" element={<SearchPage/>}></Route>
         {/* <Route path="/product/:product_id" element={<ProductDetails />} /> */}
       

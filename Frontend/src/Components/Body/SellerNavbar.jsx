@@ -12,7 +12,6 @@ function SellerNavbar() {
         <Link to='/SellerOrders' className="w-full"><button className="w-full px-4 py-2 text-center transition-all duration-300 ease-in-out bg-gray-400 rounded-lg hover:bg-gray-500 hover:scale-105 hover:shadow-lg">Orders</button></Link>
         <Link to='/AddItems' className="w-full"><button className="w-full px-4 py-2 text-center transition-all duration-300 ease-in-out bg-gray-400 rounded-lg hover:bg-gray-500 hover:scale-105 hover:shadow-lg">Add Items</button></Link>
         <Link to='/ItemList' className="w-full"><button className="w-full px-4 py-2 text-center transition-all duration-300 ease-in-out bg-gray-400 rounded-lg hover:bg-gray-500 hover:scale-105 hover:shadow-lg">Item List</button></Link>
-        <Link to='/CustomerProfile' className="w-full"><button className="w-full px-4 py-2 text-center transition-all duration-300 ease-in-out bg-gray-400 rounded-lg hover:bg-gray-500 hover:scale-105 hover:shadow-lg">Customer Profile</button></Link>
         <Link to='/ShopSettings' className="w-full"><button className="w-full px-4 py-2 text-center transition-all duration-300 ease-in-out bg-gray-400 rounded-lg hover:bg-gray-500 hover:scale-105 hover:shadow-lg">Settings</button></Link>
         <button className="w-full px-4 py-2 text-center transition-all duration-300 ease-in-out bg-gray-400 rounded-lg hover:bg-gray-500 hover:scale-105 hover:shadow-lg">Log Out</button>
       </div>
