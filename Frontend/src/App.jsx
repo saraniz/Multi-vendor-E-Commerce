@@ -12,7 +12,7 @@ import CartPage from './Pages/CartPage';
 import CustomerProfile from './Pages/CustomerProfile';
 import MyOrders from './Pages/MyOrders';
 import EditProfile from './Pages/EditProfile';
-
+import SearchPage from './Pages/SearchPage';
 
 function App() {
 
@@ -40,6 +40,7 @@ function App() {
         <Route  path= "/CustomerProfile" element={<CustomerProfile/>}></Route>
         <Route  path= "/MyOrders" element={<MyOrders/>}></Route>
         <Route  path= "/EditProfile" element={<EditProfile/>}></Route>
+        <Route  path= "/SearchPage" element={<SearchPage/>}></Route>
         {/* <Route path="/product/:product_id" element={<ProductDetails />} /> */}
       
         

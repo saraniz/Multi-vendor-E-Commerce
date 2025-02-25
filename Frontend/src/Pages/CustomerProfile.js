@@ -45,7 +45,7 @@ function CustomerProfile() {
         </div>
         
         <div className="mb-6 space-x-4">
-          <button className="px-6 py-2 text-white bg-gray-500 rounded-lg ">My Reviews</button></div>
+        <Link to={'/SearchPage'}><button className="px-6 py-2 text-white bg-gray-500 rounded-lg ">My Reviews</button></Link></div>
 
       </div>
       </div>
