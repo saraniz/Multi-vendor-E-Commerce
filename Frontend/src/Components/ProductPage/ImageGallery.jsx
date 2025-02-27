@@ -19,14 +19,15 @@ const ImageGallery = () => {
   <div className="flex flex-col justify-between h-full">
     {images.map((image, index) => (
       <img
-        key={index}
-        src={products?.product?.product_image}
-        alt={`Thumbnail ${index + 1}`}
-        className={`w-24 h-24 border rounded-md cursor-pointer ${
-          selectedImage === image ? "border-black" : "border-gray-300"
-        }`}
-        onClick={() => setSelectedImage(image)}
-      />
+      key={index}
+      src={products?.product?.product_image}
+      alt={`Thumbnail ${index + 1}`}
+      className={`w-24 h-24 border rounded-md cursor-pointer object-contain ${
+        selectedImage === image ? "border-black" : "border-gray-300"
+      }`}
+      onClick={() => setSelectedImage(image)}
+    />
+    
     ))}
   </div>
 
