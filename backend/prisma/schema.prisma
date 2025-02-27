@@ -25,6 +25,9 @@ model user {
   address   String
   role      String   @default("customer")
   isSeller  Boolean  @default(false)
+
+  // Add the inverse relation to cart
+  carts         cart[]   // A user can have many carts
 }
 
 //product model
@@ -43,6 +46,9 @@ model product {
   store_name String
   store_image String
 
+  // Add the inverse relation to cart
+  carts         cart[]   // A product can be in many carts
+
   @@map("product") // Map to actual table "product"
 }
 
@@ -55,3 +61,21 @@ model store {
   @@map("store") // Map to actual table "store"
 }
 
+//model cart 
+model cart{
+  cart_id     Int      @id @default(autoincrement()) // Primary key
+  reg_id      Int      // Foreign key to user model
+  product_id  Int      // Foreign key to product model
+  quantity    Int      @default(1)
+  price       String
+  description String
+  created_at  DateTime @default(now())
+  product_image String
+  //size String
+
+  user    user    @relation(fields: [reg_id], references: [reg_id]) // Foreign key relation with user model
+  product product @relation(fields: [product_id], references: [product_id]) // Foreign key relation with product model
+
+  @@map("cart") // Map to actual table "cart"
+  @@unique([reg_id, product_id]) // Ensure a user cannot add the same product multiple times
+}

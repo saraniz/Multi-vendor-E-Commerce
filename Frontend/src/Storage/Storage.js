@@ -3,6 +3,7 @@ import {thunk} from 'redux-thunk';
 import { authenticationReducer } from "./Auth/Authreducers";
 import searchReducer from './Search/SearchReducers';
 import productReducer from "./Product/productReducer";
+import cartReducer from "./Cart/cartReducer";
 
 
 
@@ -10,7 +11,7 @@ const rootReducers = combineReducers({
     auth:authenticationReducer,
     search:searchReducer,
     products: productReducer, // Ensure this key matches your `useSelector` path
-
+    cart: cartReducer,
 })
 
 export const store = legacy_createStore(rootReducers,applyMiddleware(thunk));

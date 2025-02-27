@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchProductDetails } from "../../Storage/Product/productAction";
 import { useParams } from "react-router-dom";
+import { addToCart } from "../../Storage/Cart/cartAction"; // Ensure correct path
 
 
 const ProductDetails = () => {
@@ -23,6 +24,10 @@ const ProductDetails = () => {
 
   const handleQuantityChange = (change) => {
     setQuantity((prev) => Math.max(1, prev + change));
+  };
+
+  const handleAddToCart = () => {
+    dispatch(addToCart(product_id, quantity, size));
   };
 
   if (loading) return <p>Loading...</p>;
@@ -49,8 +54,9 @@ const ProductDetails = () => {
       {/* Price */}
       <div className="flex items-center space-x-4">
         <span className="text-xl font-bold text-black">{products?.product?.price}</span>
-        <span className="text-sm text-gray-500 line-through">{products?.product?.price}</span>
+        {/* <span className="text-sm text-gray-500 line-through">{products?.product?.price}</span> */}
       </div>
+
 
       {/* Description */}
       <p className="text-sm text-gray-600">
@@ -96,7 +102,10 @@ const ProductDetails = () => {
       </div>
 
       {/* Add to Cart */}
-      <button className="px-6 py-2 text-white rounded-md bg-blue-950">
+      <button
+        className="px-6 py-2 text-white rounded-md bg-blue-950"
+        onClick={handleAddToCart}
+      >
         Add to Cart
       </button>
     </div>
