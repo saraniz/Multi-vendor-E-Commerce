@@ -224,6 +224,14 @@ const profile_image_upload = async (req, res) => {
     });
 }
 
+
+//logout customer
+
+
+
+
+
+
 // Export functions
 module.exports = { registerUser, loginUser, admin_login, getUser , updateProfile, profile_image_upload }; 
 

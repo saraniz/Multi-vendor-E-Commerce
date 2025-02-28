@@ -1,5 +1,5 @@
 import { api, API_BASE_URL } from "../APIConfig"
-import { GET_USER_FAILURE, GET_USER_SUCCESS, LOGIN_USER_FAILURE, LOGIN_USER_SUCCESS, REGISTER_USER_FAILURE, REGISTER_USER_SUCCESS,UPDATE_PROFILE_FAILURE,UPDATE_PROFILE_REQUEST,UPDATE_PROFILE_SUCCESS } from "./AuthActionType"
+import { GET_USER_FAILURE, GET_USER_SUCCESS, LOGIN_USER_FAILURE, LOGIN_USER_SUCCESS, LOGOUT, REGISTER_USER_FAILURE, REGISTER_USER_SUCCESS,UPDATE_PROFILE_FAILURE,UPDATE_PROFILE_REQUEST,UPDATE_PROFILE_SUCCESS } from "./AuthActionType"
 import axios from "axios"
 import Swal from 'sweetalert2'
 
@@ -117,11 +117,7 @@ export const userLogin = (loginData)=>async(dispatch)=>{
 // Action to update user profile
 export const updateProfile = (formData) => async (dispatch) => {
     try {
-        // Prepare the FormData for the profile update
-        // const formData = new FormData();
-        // formData.append(field, value);
-        //console.log("redux ",formData)
-        // Send PUT request to update the profile
+        
         const { data } = await axios.put(`${API_BASE_URL}/api/update`, formData,  {
             headers: {
                 "Authorization": `Bearer ${localStorage.getItem("jwt")}`, // Attach token from localStorage
@@ -159,3 +155,15 @@ export const updateProfile = (formData) => async (dispatch) => {
         });
     }
 };
+
+
+ export const logout = ()=>(dispatch) => {
+    // Show a success message using SweetAlert2
+   
+      // Remove the JWT token from local storage
+      localStorage.removeItem("jwt");
+      dispatch({ type:LOGOUT})
+
+
+
+  };

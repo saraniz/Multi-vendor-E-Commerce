@@ -1,8 +1,43 @@
-import React from 'react';
-import { FaUserCircle, FaHeart, FaShoppingCart, FaListAlt, FaEdit, FaSignOutAlt, FaTachometerAlt, FaStore } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
+import React from "react";
+import {
+  FaUserCircle,
+  FaHeart,
+  FaShoppingCart,
+  FaListAlt,
+  FaEdit,
+  FaSignOutAlt,
+  FaTachometerAlt,
+  FaStore,
+} from "react-icons/fa";
+import { Link, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
+import { useDispatch } from 'react-redux';
+import { logout } from "../../Storage/Auth/UserAction";
 
 function CustomerNavbar() {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  //function to handle logout
+  const handleLogout = () => {
+    // Show a success message using SweetAlert2
+    Swal.fire({
+      title: "Logged Out!",
+      text: "You have been successfully logged out.",
+      icon: "success",
+      confirmButtonText: "OK",
+      timer: 2000, // Automatically close after 2 seconds
+      timerProgressBar: true,
+    }).then(() => {
+      // Remove the JWT token from local storage
+      dispatch(logout())
+      navigate('/')
+      
+      // Redirect the user to the login page or home page
+      // Change '/login' to your desired route after logout
+    });
+  };
+
   return (
     <div className="flex justify-center min-h-screen bg-white">
       {/* Sidebar */}
@@ -23,12 +58,12 @@ function CustomerNavbar() {
             <FaShoppingCart className="mr-2" /> My Cart
           </button>
         </Link>
-        <Link to="/my-orders" className="w-full">
+        <Link to="/MyOrders" className="w-full">
           <button className="flex items-center justify-start w-full px-4 py-2 text-center transition-all duration-300 ease-in-out bg-[#848ccf] text-white rounded-lg hover:bg-[#6a73b5] hover:scale-105 hover:shadow-lg pl-6">
             <FaListAlt className="mr-2" /> Order List
           </button>
         </Link>
-        <Link to="/edit-profile" className="w-full">
+        <Link to="/EditProfile" className="w-full">
           <button className="flex items-center justify-start w-full px-4 py-2 text-center transition-all duration-300 ease-in-out bg-[#848ccf] text-white rounded-lg hover:bg-[#6a73b5] hover:scale-105 hover:shadow-lg pl-6">
             <FaEdit className="mr-2" /> Edit Profile
           </button>
@@ -40,7 +75,7 @@ function CustomerNavbar() {
           </button>
         </Link>
         {/* Log Out Button */}
-        <button className="flex items-center justify-start w-full px-4 py-2 text-center transition-all duration-300 ease-in-out bg-[#848ccf] text-white rounded-lg hover:bg-[#6a73b5] hover:scale-105 hover:shadow-lg pl-6">
+        <button onClick = {handleLogout} className="flex items-center justify-start w-full px-4 py-2 text-center transition-all duration-300 ease-in-out bg-[#848ccf] text-white rounded-lg hover:bg-[#6a73b5] hover:scale-105 hover:shadow-lg pl-6">
           <FaSignOutAlt className="mr-2" /> Log Out
         </button>
       </div>

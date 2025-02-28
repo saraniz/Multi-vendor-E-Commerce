@@ -8,7 +8,7 @@ function MyOrders() {
   const [orders, setOrders] = useState([
     {
       id: 1,
-      productImage: 'https://via.placeholder.com/50', // Replace with actual URL
+      productImage: 'https://hameedia.com/wp-content/uploads/2024/02/006-1.jpg', // Replace with actual URL
       productName: 'Gents trouser dark navy blue',
       shopName: 'Kaveeee Fashion',
       productKey: '30DFRR1',
@@ -17,7 +17,7 @@ function MyOrders() {
     },
     {
       id: 2,
-      productImage: 'https://via.placeholder.com/50',
+      productImage: 'https://hameedia.com/wp-content/uploads/2024/02/006-1.jpg',
       productName: 'Gents trouser dark navy blue',
       shopName: 'Kaveeee Fashion',
       productKey: '30DFRR1',
@@ -26,7 +26,7 @@ function MyOrders() {
     },
     {
       id: 3,
-      productImage: 'https://via.placeholder.com/50',
+      productImage: 'https://hameedia.com/wp-content/uploads/2024/02/006-1.jpg',
       productName: 'Gents trouser dark navy blue',
       shopName: 'Kaveeee Fashion',
       productKey: '30DFRR1',
