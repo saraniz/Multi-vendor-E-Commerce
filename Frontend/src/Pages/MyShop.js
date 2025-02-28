@@ -12,4 +12,4 @@ function MyShop() {
   )
 }
 
-export default MyShop
+export default MyShop;
