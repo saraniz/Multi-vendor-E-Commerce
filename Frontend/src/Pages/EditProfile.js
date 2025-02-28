@@ -1,41 +1,47 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getUserProfile, updateProfile } from '../Storage/Auth/UserAction'; // Adjust the path accordingly
 import Navbar from '../Components/Header/Navbar';
 import Footer from '../Components/Footer/Footer';
 import CustomerNavbar from '../Components/Body/CustomerNavbar';
 
 const EditProfile = () => {
+  const dispatch = useDispatch();
+  const { user } = useSelector(state => state.auth);
+
   // State variables for form inputs
   const [fullName, setFullName] = useState('');
   const [profilePicture, setProfilePicture] = useState(null);
   const [teleNumber, setTeleNumber] = useState('');
   const [address, setAddress] = useState('');
 
-  // Handlers for form submission
-  const handleSaveFullName = () => {
-    console.log({ fullName });
-    // Replace with API call
-    // fetch('/api/edit-profile', { method: 'POST', body: JSON.stringify({ fullName }) });
-  };
+  // Fetch user data on component mount
+  useEffect(() => {
+    dispatch(getUserProfile());
+  }, [dispatch]);
 
-  const handleSaveProfilePicture = () => {
-    console.log({ profilePicture });
-    // Replace with API call
-    // Use FormData to upload the file
+  // Populate form fields when user data is fetched
+  useEffect(() => {
+    if (user) {
+      setFullName(user.fullName || '');
+      setTeleNumber(user.teleNumber || '');
+      setAddress(user.address || '');
+      // Assuming profilePicture is a URL or file path
+      setProfilePicture(user.profilePicture || null);
+    }
+  }, [user]);
+
+  // Handler for saving all form data
+  const handleSaveAll = () => {
     const formData = new FormData();
-    formData.append('profilePicture', profilePicture);
-    // fetch('/api/edit-profile-picture', { method: 'POST', body: formData });
-  };
+    formData.append('fullName', fullName);
+    formData.append('teleNumber', teleNumber);
+    formData.append('address', address);
+    if (profilePicture) {
+      formData.append('profilePicture', profilePicture);
+    }
 
-  const handleSaveTeleNumber = () => {
-    console.log({ teleNumber });
-    // Replace with API call
-    // fetch('/api/edit-profile', { method: 'POST', body: JSON.stringify({ teleNumber }) });
-  };
-
-  const handleSaveAddress = () => {
-    console.log({ address });
-    // Replace with API call
-    // fetch('/api/edit-profile', { method: 'POST', body: JSON.stringify({ address }) });
+    dispatch(updateProfile(formData));
   };
 
   return (
@@ -58,12 +64,6 @@ const EditProfile = () => {
                 placeholder="Full Name"
                 className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-indigo-300"
               />
-              <button
-                onClick={handleSaveFullName}
-                className="px-4 py-2 text-sm bg-gray-300 rounded-lg hover:bg-gray-400"
-              >
-                Save
-              </button>
             </div>
           </div>
 
@@ -79,12 +79,6 @@ const EditProfile = () => {
                   className="hidden"
                 />
               </label>
-              <button
-                onClick={handleSaveProfilePicture}
-                className="px-4 py-2 mt-2 text-sm bg-gray-300 rounded-lg hover:bg-gray-400"
-              >
-                Save
-              </button>
             </div>
           </div>
 
@@ -99,12 +93,6 @@ const EditProfile = () => {
                 placeholder="Tele Number"
                 className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-indigo-300"
               />
-              <button
-                onClick={handleSaveTeleNumber}
-                className="px-4 py-2 text-sm bg-gray-300 rounded-lg hover:bg-gray-400"
-              >
-                Save
-              </button>
             </div>
           </div>
 
@@ -119,13 +107,17 @@ const EditProfile = () => {
                 className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-indigo-300"
                 rows="4"
               />
-              <button
-                onClick={handleSaveAddress}
-                className="px-4 py-2 text-sm bg-gray-300 rounded-lg hover:bg-gray-400"
-              >
-                Save
-              </button>
             </div>
+          </div>
+
+          {/* Single Save Button */}
+          <div className="flex justify-end">
+            <button
+              onClick={handleSaveAll}
+              className="px-6 py-2 text-sm bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+            >
+              Save All
+            </button>
           </div>
         </div>
       </div>

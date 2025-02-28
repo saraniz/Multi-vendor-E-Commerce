@@ -1,10 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import Navbar from '../Components/Header/Navbar';
 import Footer from '../Components/Footer/Footer';
 import CustomerNavbar from '../Components/Body/CustomerNavbar';
 import Cart from '../Components/Body/Cart/Cart';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 function CartPage() {
+
+  const navigate = useNavigate()
+  const { auth } = useSelector(state => state)
+
+  useEffect(() => {
+    if (!auth.user) {
+      Swal.fire({
+        title: "Login Required",
+        text: "You need to log in to access your cart.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Login",
+        cancelButtonText: "Cancel",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          navigate("/LoginPage");
+        } else {
+          navigate("/HomePage");
+        }
+      });
+    }
+  }, [auth, navigate]);
+
   // Example data, replace with backend API data
   const [orders, setOrders] = useState([
     {

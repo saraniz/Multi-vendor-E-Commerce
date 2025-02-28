@@ -2,15 +2,50 @@ import React, { useState, useEffect } from 'react';
 import Navbar from '../Components/Header/Navbar';
 import Footer from '../Components/Footer/Footer';
 import CustomerNavbar from '../Components/Body/CustomerNavbar';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from 'react-redux';
+import { getUserProfile } from '../Storage/Auth/UserAction';
+import Swal from 'sweetalert2';
 
 function CustomerProfile() {
+
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const state = useSelector((state) => state)
+  console.log("Redux state:",state)
+
+  const { auth } = useSelector(state => state)
+  const jwt = localStorage.getItem("jwt")
+
   const [followedShops, setFollowedShops] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [successPercentage, setSuccessPercentage] = useState(60); // Sample success percentage
   const [monthlyCosts, setMonthlyCosts] = useState([]);
 
+
   useEffect(() => {
+
+    
+    if (!auth.user) {
+      Swal.fire({
+        title: "Login or Register",
+        text: "You need to log in or register to continue.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Login",
+        cancelButtonText: "Cancel",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          navigate("/LoginPage");
+        } else {
+          navigate("/HomePage"); // Update with your actual register route
+        }
+      });
+    } else {
+      dispatch(getUserProfile());
+    }
+
+
     // Sample data for display
     const sampleShops = [
       { id: 1, name: 'Shop A', image: 'https://via.placeholder.com/50' },
@@ -30,7 +65,7 @@ function CustomerProfile() {
     // Set the sample data to state
     setFollowedShops(sampleShops);
     setMonthlyCosts(sampleMonthlyCosts);
-  }, []);
+  }, [jwt,navigate,dispatch]);
 
   const handlePrev = () => {
     setCurrentIndex((prevIndex) =>
@@ -43,6 +78,7 @@ function CustomerProfile() {
       prevIndex === followedShops.length - 1 ? 0 : prevIndex + 1
     );
   };
+
 
   return (
     <div>

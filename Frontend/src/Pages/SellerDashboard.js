@@ -1,7 +1,7 @@
 import React from 'react';
 import Navbar from '../Components/Header/Navbar';
 import Footer from '../Components/Footer/Footer';
-import SellerNavbar from '../Components/Body/SellerNavbar';
+import { FaTachometerAlt, FaBox, FaChartLine, FaUser, FaStore, FaSignOutAlt, FaUserCircle } from 'react-icons/fa';
 import { Link } from "react-router-dom";
 
 function SellerDashboard() {
@@ -10,8 +10,45 @@ function SellerDashboard() {
       <Navbar />
       <div className="flex min-h-screen">
         {/* Sidebar */}
-        <SellerNavbar />
-        
+        <div className="flex flex-col items-center p-4 space-y-4 bg-white rounded-lg w-64 shadow-lg">
+          <div className="mb-4 text-6xl text-gray-700">
+            <FaUserCircle />
+          </div>
+          <Link to='/SellerDashboard' className="w-full">
+            <button className="flex items-center justify-start w-full px-4 py-2 text-center transition-all duration-300 ease-in-out bg-[#00e640] text-white rounded-lg hover:bg-green-400 hover:scale-105 hover:shadow-lg pl-6">
+              <FaTachometerAlt className="mr-2" /> Dashboard
+            </button>
+          </Link>
+          <Link to='/ShippedOrders' className="w-full">
+            <button className="flex items-center justify-start w-full px-4 py-2 text-center transition-all duration-300 ease-in-out bg-[#00e640] text-white rounded-lg hover:bg-green-400 hover:scale-105 hover:shadow-lg pl-6">
+              <FaBox className="mr-2" /> Shipped Orders
+            </button>
+          </Link>
+          <Link to='/PendingOrders' className="w-full">
+            <button className="flex items-center justify-start w-full px-4 py-2 text-center transition-all duration-300 ease-in-out bg-[#00e640] text-white rounded-lg hover:bg-green-400 hover:scale-105 hover:shadow-lg pl-6">
+              <FaBox className="mr-2" /> Pending Orders
+            </button>
+          </Link>
+          <Link to='/NewOrders' className="w-full">
+            <button className="flex items-center justify-start w-full px-4 py-2 text-center transition-all duration-300 ease-in-out bg-[#00e640] text-white rounded-lg hover:bg-green-400 hover:scale-105 hover:shadow-lg pl-6">
+              <FaBox className="mr-2" /> New Orders
+            </button>
+          </Link>
+          <Link to='/SellerProfile' className="w-full">
+            <button className="flex items-center justify-start w-full px-4 py-2 text-center transition-all duration-300 ease-in-out bg-[#00e640] text-white rounded-lg hover:bg-green-400 hover:scale-105 hover:shadow-lg pl-6">
+              <FaUser className="mr-2" /> Seller Profile
+            </button>
+          </Link>
+          <Link to='/MyShop' className="w-full">
+            <button className="flex items-center justify-start w-full px-4 py-2 text-center transition-all duration-300 ease-in-out bg-[#00e640] text-white rounded-lg hover:bg-green-400 hover:scale-105 hover:shadow-lg pl-6">
+              <FaStore className="mr-2" /> My Shop
+            </button>
+          </Link>
+          {/* <button className="flex items-center justify-start w-full px-4 py-2 text-center transition-all duration-300 ease-in-out bg-[#00e640] text-white rounded-lg hover:bg-green-400 hover:scale-105 hover:shadow-lg pl-6">
+            <FaSignOutAlt className="mr-2" /> Log Out
+          </button> */}
+        </div>
+
         {/* Main Content */}
         <div className="flex-grow p-4">
           <div className="grid grid-cols-3 gap-4">
@@ -74,12 +111,16 @@ function SellerDashboard() {
 
           {/* Buttons: Go to Shop & Seller Profile */}
           <div className="mt-6 text-center">
-          <Link to='/CustomerProfile'><button className="px-4 py-2 mr-4 text-white bg-blue-600 rounded shadow hover:bg-blue-500">
-              Customer profile
-            </button></Link>
-            <Link to='/MyShop'><button className="px-4 py-2 text-white bg-gray-800 rounded shadow hover:bg-gray-700">
-              My Shop
-            </button></Link>
+            <Link to='/CustomerProfile'>
+              <button className="px-4 py-2 mr-4 text-white bg-blue-600 rounded shadow hover:bg-blue-500">
+                Customer profile
+              </button>
+            </Link>
+            <Link to='/MyShop'>
+              <button className="px-4 py-2 text-white bg-gray-800 rounded shadow hover:bg-gray-700">
+                My Shop
+              </button>
+            </Link>
           </div>
         </div>
       </div>
