@@ -28,6 +28,7 @@ model user {
 
   // Add the inverse relation to cart
   carts         cart[]   // A user can have many carts
+  favorites     favorite[] // A user can favorite many products
 }
 
 //product model
@@ -48,6 +49,7 @@ model product {
 
   // Add the inverse relation to cart
   carts         cart[]   // A product can be in many carts
+  favorites     favorite[] // A product can be favorited by many users
 
   @@map("product") // Map to actual table "product"
 }
@@ -78,4 +80,16 @@ model cart{
 
   @@map("cart") // Map to actual table "cart"
   @@unique([reg_id, product_id]) // Ensure a user cannot add the same product multiple times
+}
+
+//favorite model
+model favorite{
+  fav_id Int @id @default(autoincrement())
+  reg_id Int //foreign key
+  product_id Int //foreign key
+
+  user      user     @relation(fields: [reg_id], references: [reg_id]) // Corrected field name and reference
+  product   product  @relation(fields: [product_id], references: [product_id]) // Corrected field name and reference
+
+  @@unique([reg_id, product_id]) // Ensure a user can only favorite a product once
 }

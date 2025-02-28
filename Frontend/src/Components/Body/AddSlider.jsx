@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
 import Banner1 from '../../Assests/Banner1.jpg';
+import Elegant from '../../Assests/Elegant.png'
+import Grey from '../../Assests/Grey.png'
+
 
 const advertisements = [
   {
@@ -8,12 +11,21 @@ const advertisements = [
   },
   {
     id: 2,
-    image: "https://t4.ftcdn.net/jpg/03/35/23/69/360_F_335236928_yHOokJcL9Ban3Z3mR0SkGZdfktTHGB05.jpg",
+    image: Elegant,
   },
   {
     id: 3,
-    image: "https://c8.alamy.com/comp/2F61C5F/flash-sale-business-facebook-cover-page-timeline-web-ad-banner-template-design-with-photo-place-modern-layout-2F61C5F.jpg",
+    image: Grey,
   },
+  // {
+  //   id: 4,
+    // image: "https://t4.ftcdn.net/jpg/03/35/23/69/360_F_335236928_yHOokJcL9Ban3Z3mR0SkGZdfktTHGB05.jpg",
+  // },
+  // {
+  //   id:5,
+  //   image: "https://c8.alamy.com/comp/2F61C5F/flash-sale-business-facebook-cover-page-timeline-web-ad-banner-template-design-with-photo-place-modern-layout-2F61C5F.jpg",
+
+  // }
 ];
 
 function AdvertisementSlider() {

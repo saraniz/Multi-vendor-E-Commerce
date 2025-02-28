@@ -4,6 +4,10 @@ import Swal from 'sweetalert2'
 import { FETCH_ALLPRODUCT_FAILURE, FETCH_ALLPRODUCT_REQUEST, FETCH_ALLPRODUCT_SUCCESS, FETCH_PRODUCT_FAILURE, FETCH_PRODUCT_REQUEST, FETCH_PRODUCT_SUCCESS } from "./productActionType";
 
 // Action to fetch product details
+
+
+
+
 export const fetchProductDetails = (product_id) => async (dispatch) => {
   dispatch({ type: 'FETCH_PRODUCT_REQUEST' }); // Dispatching request action
 

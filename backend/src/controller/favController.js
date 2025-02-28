@@ -1,0 +1,88 @@
+//handle favorite products
+
+const { PrismaClient } = require('@prisma/client')
+const prisma = new PrismaClient()
+
+//add a product to favorites
+const addFavorite = async(req,res) =>{
+    const {reg_id,product_id} = req.body
+    console.log("fav ",reg_id,product_id)
+
+    try{
+        const favorite = await prisma.favorite.create({
+            data:{
+                reg_id: parseInt(reg_id),
+                product_id: parseInt(product_id),
+            },
+        })
+        res.status(201).json(favorite)
+    } catch(error){
+        res.status(400).json({error:'Product already in favorites or invalid data'})
+    }
+
+}
+
+//remove a product from favorites
+const removeFavorite = async (req,res) =>{
+    const{reg_id,product_id} = req.body
+
+    try{
+        await prisma.favorite.delete({
+            where:{
+                reg_id: parseInt(reg_id),
+                product_id: parseInt(product_id),
+            },
+        })
+        res.status(200).json({message:"Product removed from favorites"})
+    } catch(error){
+        res.status(404).json({error:"Favorite not found"})
+    }
+}
+
+//fetch all the favorite products for a user
+const getUserFavorites = async (req, res) => {
+    const { reg_id } = req.params;
+
+    try {
+        console.log("fav id:", reg_id);
+
+        // Validate reg_id
+        if (!reg_id) {
+            return res.status(400).json({ error: "User ID (reg_id) is required" });
+        }
+
+        const userId = parseInt(reg_id, 10);
+        if (isNaN(userId)) {
+            return res.status(400).json({ error: "Invalid User ID format" });
+        }
+
+        // Fetch favorite products for the user
+        const favorites = await prisma.favorite.findMany({
+            where: { reg_id: userId },
+            include: { product: true },
+        });
+
+        console.log("Favorites:", favorites);
+
+        // Format the favorite items
+        const formattedFavItems = favorites
+            .filter(item => item.product) // Ensure product exists
+            .map(item => ({
+                product_id: item.product.product_id,
+                name: item.product.name,
+                price: item.product.price,
+                product_image: item.product.product_image,
+                description: item.product.description,
+                store_image: item.product.store_image,
+                store_name: item.product.store_name,
+            }));
+
+        res.status(200).json(formattedFavItems);
+    } catch (error) {
+        console.error("Error fetching favorites:", error);
+        res.status(500).json({ error: "Something went wrong" });
+    }
+};
+
+
+module.exports = {addFavorite,removeFavorite,getUserFavorites}

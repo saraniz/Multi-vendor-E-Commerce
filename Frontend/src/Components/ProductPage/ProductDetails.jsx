@@ -3,20 +3,31 @@ import { useSelector, useDispatch } from "react-redux";
 import { fetchProductDetails } from "../../Storage/Product/productAction";
 import { useParams } from "react-router-dom";
 import { addToCart } from "../../Storage/Cart/cartAction"; // Ensure correct path
-
+import loadingAnimation from "../Loading/loadingAnimation";
 
 const ProductDetails = () => {
   const { product_id } = useParams();
   const [size, setSize] = useState("Large");
   const [quantity, setQuantity] = useState(1);
-  const { products,loading,error } = useSelector((state) => state );
+  const { products, error } = useSelector((state) => state);
+  const [loading, setLoading] = useState(false);
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
-  
   useEffect(() => {
-    dispatch(fetchProductDetails(product_id))
-  }, [dispatch,product_id])
+    const getProducts = async () => {
+      try {
+        setLoading(true);
+        await dispatch(fetchProductDetails(product_id));
+        setLoading(false); // Assuming fetchProductDetails is an async action
+      } catch (error) {
+        console.error("Error fetching product details:", error);
+      } finally {
+      }
+    };
+
+    getProducts();
+  }, [dispatch, product_id]);
 
   const handleSizeChange = (selectedSize) => {
     setSize(selectedSize);
@@ -30,10 +41,9 @@ const ProductDetails = () => {
     dispatch(addToCart(product_id, quantity, size));
   };
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <loadingAnimation />;
   if (error) return <p>Error: {error}</p>;
   if (!products || !products.product) return <p>Product not found</p>;
-
 
   return (
     <div className="flex flex-col space-y-4">
@@ -53,15 +63,14 @@ const ProductDetails = () => {
 
       {/* Price */}
       <div className="flex items-center space-x-4">
-        <span className="text-xl font-bold text-black">{products?.product?.price}</span>
+        <span className="text-xl font-bold text-black">
+          {products?.product?.price}
+        </span>
         {/* <span className="text-sm text-gray-500 line-through">{products?.product?.price}</span> */}
       </div>
 
-
       {/* Description */}
-      <p className="text-sm text-gray-600">
-      {products?.product.description}
-      </p>
+      <p className="text-sm text-gray-600">{products?.product.description}</p>
 
       {/* Size Selection */}
       <div>

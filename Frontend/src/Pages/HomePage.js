@@ -12,7 +12,7 @@ function HomePage() {
   const tabRef = useRef(null);
   const { auth } = useSelector((store) => store);
   const dispatch = useDispatch();
-  console.log("User from homepage", auth?.user);
+
 
   useEffect(()=>{
     try {

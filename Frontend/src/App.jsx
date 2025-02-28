@@ -20,6 +20,7 @@ import ItemList from './Pages/ItemList';
 import SellerDashboard from './Pages/SellerDashboard';
 import MyShop from './Pages/MyShop.js';
 import SearchPage from './Pages/SearchPage';
+// import SellerLogin from './Pages/SellerLogin.js'
 
 function App() {
 
@@ -55,6 +56,7 @@ function App() {
         <Route  path= "/SellerDashboard" element={<SellerDashboard/>}></Route>
         <Route  path= "/MyShop" element={<MyShop/>}></Route>
         <Route  path= "/SearchPage" element={<SearchPage/>}></Route>
+        {/* <Route path="/SellerLogin" element={<SellerLogin/>}></Route> */}
         {/* <Route path="/product/:product_id" element={<ProductDetails />} /> */}
       
         

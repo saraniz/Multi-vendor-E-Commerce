@@ -1,8 +1,24 @@
 import React from 'react';
 import { FaHeart, FaShoppingCart } from 'react-icons/fa';
 import { Link, useRoutes } from "react-router-dom";
+import { useDispatch,useSelector} from 'react-redux'
+import { addFavorite  } from '../../Storage/Favorite/favAction';
 
 const ProductCard = ({product}) => {
+const dispatch = useDispatch();
+ const { auth } = useSelector(store=>store)
+ 
+  const reg_id = auth.user?.reg_id
+
+  console.log("reg_id:",auth.user?.reg_id ); // Debug the reg_id
+
+  const handleAddToFavorites = () => {
+    if (!reg_id) {
+      alert("Please log in to add favorites.");
+      return;
+    }
+    dispatch(addFavorite(reg_id, product.product_id));
+  };
 
 console.log("pro ",product)
 
@@ -10,6 +26,7 @@ console.log("pro ",product)
   const itemName="Red Frock";
   // const shopname="D-Mart";
 
+ 
   return (
     <div className="w-64 p-4 transition-all duration-300 ease-in-out rounded-lg hover:border hover:scale-105 hover:shadow-lg">
       {/* Product Image */}
@@ -26,8 +43,9 @@ console.log("pro ",product)
         </div>
         {/* Icons for like and cart */}
         <div className="absolute bottom-0 right-0 flex p-2 space-x-2">
-          <button className=''><FaHeart className="text-white" /></button>
-          <button className=''><FaShoppingCart className="text-white" /></button>
+        <button onClick={handleAddToFavorites}>
+        <FaHeart className="text-white cursor-pointer hover:text-red-500 transition duration-300" />
+          </button>          <button className=''><FaShoppingCart className="text-white" /></button>
         </div>
       </div>
 
