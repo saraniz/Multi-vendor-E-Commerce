@@ -180,6 +180,9 @@ function CustomerProfile() {
           <Link to='/SellerDashboard'><button className="px-6 py-3 text-white bg-blue-500 rounded-lg shadow-md hover:bg-blue-600">
               Seller profile
             </button></Link>
+            <Link to='/BusinessRegistrationForm'><button className="flex items-center px-6 py-3 mx-3 text-white bg-blue-500 rounded-lg shadow-md hover:bg-blue-600">
+              Be A seller
+            </button></Link>
           </div>
         </div>
       </div>
