@@ -181,8 +181,15 @@ function Navbar() {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-      
-            Search results..
+
+           {/* ✅ Bold and Large "Search Result for {sQuery}" */}
+           <Typography 
+            variant="h5" 
+            fontWeight="bold" 
+            gutterBottom
+          >
+            Search Result for "{sQuery}"
+          </Typography>
          
         
             {searchResults?(
