@@ -4,9 +4,12 @@ import Footer from "../Components/Footer/Footer";
 import { useDispatch, useSelector } from "react-redux";
 import { userRegister } from "../Storage/Auth/UserAction";
 import { store } from "../Storage/Storage";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 function RegistrationForm() {
   const dispatch = useDispatch()   //call methods
+  const navigate = useNavigate()
   const {auth} = useSelector(store=>store)
   const [profileImage, setProfileImage] = useState(null);
   const [formData, setFormData] = useState({
@@ -36,6 +39,14 @@ function RegistrationForm() {
     console.log("jwt",auth?.jwt)
   };
 
+  // Redirect when authentication is successful
+  useEffect(() => {
+    if (auth?.jwt) {
+      navigate("/CustomerProfile"); // Change the route accordingly
+    }
+  }, [auth, navigate]);
+
+ 
   return (
     <div>
     <div className="flex flex-col items-center justify-center min-h-screen bg-white text-gray-800 my-20">
