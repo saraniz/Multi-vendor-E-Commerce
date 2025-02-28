@@ -1,21 +1,17 @@
 import React, { useState } from "react";
-import axios from "axios"; // Added axios for backend integration
 import Footer from "../Components/Footer/Footer";
-import { useDispatch, useSelector } from "react-redux";
-import { userRegister } from "../Storage/Auth/UserAction";
 
-function RegistrationForm() {
-  const dispatch = useDispatch()   //call methods
-  const {auth} = useSelector(store=>store)
+function BusinessRegistrationForm() {
   const [profileImage, setProfileImage] = useState(null);
   const [formData, setFormData] = useState({
-    fullName: "",
-    username: "",
+    businessName: "",
+    businessUsername: "",
     email: "",
     password: "",
     confirmPassword: "",
-    mobileNo: "",
-    gender: "Male",
+    businessRegNo: "",
+    contactNumber1: "",
+    contactNumber2: "",
     address: ""
   });
 
@@ -28,19 +24,16 @@ function RegistrationForm() {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Form data",formData)
-    dispatch(userRegister(formData))
-    console.log("jwt",auth?.jwt)
+    console.log("Form submitted", formData);
   };
 
   return (
     <div>
-    <div className="flex flex-col items-center justify-center min-h-screen my-20 text-gray-800 bg-white">
-      <h2 className="mb-4 text-3xl font-semibold text-blue-950">Create Your KLOSET Account</h2>
-      <p className="mb-8 text-lg font-light text-gray-600">Join the world's largest online fashion space</p>
-
+    <div className="flex flex-col items-center justify-center min-h-screen my-10 text-gray-800 bg-white">
+        <h2 className="mb-4 text-3xl font-semibold text-blue-950">Create Your KLOSET Shop</h2>
+        <p className="mb-8 text-lg font-light text-gray-600">Join the world's largest online fashion space</p>
       <div className="flex flex-col items-center mb-6">
         <label htmlFor="profileImage" className="cursor-pointer">
           <img
@@ -50,26 +43,28 @@ function RegistrationForm() {
           />
         </label>
         <input
-          id="profileImage"
+          id="businessprofileImage"
           type="file"
           accept="image/*"
           className="hidden"
           onChange={handleImageChange}
         />
-        <p className="mt-2 text-sm text-gray-500">Profile Picture</p>
+        <p className="mt-2 text-sm text-gray-500">Business Profile Picture</p>
       </div>
 
       <form
         onSubmit={handleSubmit}
-        className="w-full max-w-md px-8 py-8 bg-white border border-gray-200 rounded-lg shadow-lg"
+        className="w-full max-w-md px-8 py-6 bg-white border border-gray-200 rounded-lg shadow-md"
       >
-        {[ 
-          { label: "Full Name", name: "fullName", type: "text" },
-          { label: "Username", name: "username", type: "text" },
-          { label: "Email", name: "email", type: "email" },
-          { label: "Password", name: "password", type: "password" },
+        {[
+          { label: "Business Name", name: "businessName", type: "text" },
+          { label: "Business Username", name: "businessUsername", type: "text" },
+          { label: "Email", name: "businesemail", type: "email" },
+          { label: "Password", name: "businesspassword", type: "password" },
           { label: "Confirm Password", name: "confirmPassword", type: "password" },
-          { label: "Mobile-No", name: "mobileNo", type: "tel" }
+          { label: "Business Reg No", name: "businessRegNo", type: "text" },
+          { label: "Contact Number 1", name: "businesscontactNumber1", type: "tel" },
+          { label: "Contact Number 2", name: "businesscontactNumber2", type: "tel" }
         ].map((field) => (
           <div key={field.name} className="mb-4">
             <label className="block mb-2 text-sm font-semibold text-gray-600">{field.label}</label>
@@ -82,19 +77,6 @@ function RegistrationForm() {
             />
           </div>
         ))}
-
-        <div className="mb-4">
-          <label className="block mb-2 text-sm font-semibold text-gray-600">Gender</label>
-          <select
-            name="gender"
-            value={formData.gender}
-            onChange={handleInputChange}
-            className="w-full px-4 py-2 text-gray-800 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-600"
-          >
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-          </select>
-        </div>
 
         <div className="mb-4">
           <label className="block mb-2 text-sm font-semibold text-gray-600">Address</label>
@@ -110,15 +92,13 @@ function RegistrationForm() {
           type="submit"
           className="w-full px-4 py-2 mt-4 font-semibold text-white rounded-md bg-blue-950 hover:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-indigo-600"
         >
-          Register
+          Make Shop
         </button>
       </form>
-
-      
     </div>
     <Footer />
     </div>
   );
 }
 
-export default RegistrationForm;
+export default BusinessRegistrationForm;

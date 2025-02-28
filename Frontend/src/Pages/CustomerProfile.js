@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Navbar from '../Components/Header/Navbar';
 import Footer from '../Components/Footer/Footer';
 import CustomerNavbar from '../Components/Body/CustomerNavbar';
+import {FaStore} from 'react-icons/fa';
 import { Link } from "react-router-dom";
 
 function CustomerProfile() {
@@ -141,8 +142,11 @@ function CustomerProfile() {
 
           {/* My Shop Button - Bottom */}
           <div className="flex justify-center mt-8">
-          <Link to='/SellerDashboard'><button className="px-6 py-3 text-white bg-blue-500 rounded-lg shadow-md hover:bg-blue-600">
-              Seller profile
+          <Link to='/SellerDashboard'><button className="flex items-center px-6 py-3 text-white bg-blue-500 rounded-lg shadow-md hover:bg-blue-600">
+             <FaStore className="mr-2" /> Seller profile
+            </button></Link>
+            <Link to='/BusinessRegistrationForm'><button className="flex items-center px-6 py-3 text-white bg-blue-500 rounded-lg shadow-md hover:bg-blue-600">
+             <FaStore className="mr-2" /> Be A seller
             </button></Link>
           </div>
         </div>

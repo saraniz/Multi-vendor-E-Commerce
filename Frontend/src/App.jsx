@@ -19,6 +19,7 @@ import AddItems from './Pages/AddItems';
 import ItemList from './Pages/ItemList';
 import SellerDashboard from './Pages/SellerDashboard';
 import MyShop from './Pages/MyShop.js';
+import BusinessRegistrationForm from './Pages/BusinessRegistrationForm.js';
 import SearchPage from './Pages/SearchPage';
 
 function App() {
@@ -54,6 +55,7 @@ function App() {
         <Route  path= "/ItemList" element={<ItemList/>}></Route>
         <Route  path= "/SellerDashboard" element={<SellerDashboard/>}></Route>
         <Route  path= "/MyShop" element={<MyShop/>}></Route>
+        <Route  path= "/BusinessRegistrationForm" element={<BusinessRegistrationForm/>}></Route>
         <Route  path= "/SearchPage" element={<SearchPage/>}></Route>
         {/* <Route path="/product/:product_id" element={<ProductDetails />} /> */}
       

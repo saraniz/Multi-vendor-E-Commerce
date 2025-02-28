@@ -4,7 +4,7 @@ import whitelogo from '../../Assests/white logo.png'
 
 const Footer = () => {
   return (
-    <footer className="py-12 text-white bg-gradient-to-t from-black to-blue-950">
+    <footer className="py-12 text-white bg-gradient-to-t from-black to-gray-800">
       <div className="container px-6 mx-auto md:px-12">
         <div className="flex flex-col items-center justify-between md:flex-row md:space-x-12">
           {/* Left Section */}
