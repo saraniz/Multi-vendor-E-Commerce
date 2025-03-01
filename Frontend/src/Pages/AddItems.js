@@ -9,6 +9,7 @@ function AddItems() {
   const [beforePrice, setBeforePrice] = useState('');
   const [description, setDescription] = useState('');
   const [keywords, setKeywords] = useState('');
+  const [category, setCategory] = useState(''); // New state for category
   const [images, setImages] = useState([]);
 
   const handleImageUpload = (e, index) => {
@@ -27,6 +28,7 @@ function AddItems() {
     formData.append('beforePrice', beforePrice);
     formData.append('description', description);
     formData.append('keywords', keywords);
+    formData.append('category', category); // Include category in the form data
     images.forEach((image, index) => {
       formData.append(`image_${index}`, image);
     });
@@ -46,7 +48,7 @@ function AddItems() {
       <Navbar />
       <div className="flex">
         <SellerNavbar />
-        <div className="flex-1 p-10 mx-10 my-3 bg-white border border-gray-200 rounded-lg shadow-xl">
+        <div className="flex-1 p-10 mx-10 bg-white border border-gray-200 rounded-lg shadow-xl">
           <h1 className="mb-6 text-3xl font-semibold text-gray-800">Add Items</h1>
           <div className="grid grid-cols-2 gap-8">
             {/* Image Upload */}
@@ -66,48 +68,64 @@ function AddItems() {
               </div>
             </div>
             {/* Form Fields */}
-            <div className="space-y-4">
-  <input 
-    type="text" 
-    placeholder="Item Name" 
-    value={itemName} 
-    onChange={(e) => setItemName(e.target.value)} 
-    className="w-full p-4 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none" 
-  />
-  <div className="flex gap-2">
-    <input 
-      type="text" 
-      placeholder="Price" 
-      value={price} 
-      onChange={(e) => setPrice(e.target.value)} 
-      className="w-full p-4 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none" 
-    />
-    <input 
-      type="text" 
-      placeholder="Before Price (Optional)" 
-      value={beforePrice} 
-      onChange={(e) => setBeforePrice(e.target.value)} 
-      className="w-full p-4 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none" 
-    />
-  </div>
-  <textarea 
-    placeholder="Description" 
-    value={description} 
-    onChange={(e) => setDescription(e.target.value)} 
-    className="w-full p-4 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
-  ></textarea>
-  <input 
-    type="text" 
-    placeholder="Key Words" 
-    value={keywords} 
-    onChange={(e) => setKeywords(e.target.value)} 
-    className="w-full p-4 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none" 
-  />
-</div>
-
+            <div className="space-y-2">
+              <input 
+                type="text" 
+                placeholder="Item Name" 
+                value={itemName} 
+                onChange={(e) => setItemName(e.target.value)} 
+                className="w-full p-4 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none" 
+              />
+              <div className="flex gap-2">
+                <input 
+                  type="text" 
+                  placeholder="Price" 
+                  value={price} 
+                  onChange={(e) => setPrice(e.target.value)} 
+                  className="w-full p-4 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none" 
+                />
+                <input 
+                  type="text" 
+                  placeholder="Before Price (Optional)" 
+                  value={beforePrice} 
+                  onChange={(e) => setBeforePrice(e.target.value)} 
+                  className="w-full p-4 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none" 
+                />
+              </div>
+              <textarea 
+                placeholder="Description" 
+                value={description} 
+                onChange={(e) => setDescription(e.target.value)} 
+                className="w-full p-4 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              ></textarea>
+              <input 
+                type="text" 
+                placeholder="Key Words" 
+                value={keywords} 
+                onChange={(e) => setKeywords(e.target.value)} 
+                className="w-full p-4 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none" 
+              />
+              {/* Category Dropdown */}
+              <select
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+                className="w-full p-4 text-gray-500 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              >
+                <option value="" disabled>Select Category</option>
+                <option value="T-Shirt">T-Shirt</option>
+                <option value="Shirt">Shirt</option>
+                <option value="Trouser">Trousers</option>
+                <option value="Blouse">Blouse</option>
+                <option value="Jean">Jeans</option>
+                <option value="Skirt">Skirts</option>
+                <option value="Frock">Frocks</option>
+                <option value="Short">Shorts</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
           </div>
           {/* Buttons */}
-          <div className="flex gap-6 mt-6">
+          <div className="flex gap-6">
             <button onClick={() => handleSubmit(false)} className="px-8 py-4 text-lg font-semibold text-white transition bg-gray-600 rounded-lg shadow-md hover:bg-gray-700">Add</button>
             <button onClick={() => handleSubmit(true)} className="px-8 py-4 text-lg font-semibold text-white transition bg-yellow-500 rounded-lg shadow-md hover:bg-yellow-600">Add as Premium</button>
           </div>
