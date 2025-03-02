@@ -33,7 +33,7 @@ function App() {
     if(jwt){
     dispatch(getUserProfile())
     }
-  },[])
+  },[jwt])
 
   console.log("your jwt:",jwt)
 

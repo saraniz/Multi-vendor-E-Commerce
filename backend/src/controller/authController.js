@@ -97,6 +97,148 @@ const loginUser = async (req, res) => {
     }
 };
 
+// Seller registration
+// const registerSeller = async (req, res) => {
+//     try {
+//         const { store_name, business_email, business_regNo, mobile_no1, mobile_no2, business_address } = req.body;
+
+//         // Get the authenticated user's ID (assuming the user is logged in)
+//         const reg_id = req.user.reg_id;
+//         console.log("Regid:",reg_id,store_name, business_email, business_regNo, mobile_no1, mobile_no2, business_address)
+//         // Check if the user is already registered as a seller
+//         const existingSeller = await prisma.seller.findUnique({
+//             where: { reg_id },
+//         });
+
+//         if (existingSeller) {
+//             return res.status(400).json({ message: "User is already registered as a seller." });
+//         }
+
+//         // Check if the store details are already used
+//         const existingStore = await prisma.store.findMany({
+//             where: {
+//                 OR: [
+//                     { store_name:store_name },
+//                     { business_email:business_email },
+//                     { business_regNo:business_regNo },
+//                 ],
+//             },
+//         });
+
+//         if (existingStore) {
+//             return res.status(400).json({ message: "Store details are already used. Try new details." });
+//         }
+
+//         // Create a new store
+//         const newStore = await prisma.store.create({
+//             data: {
+//                 store_name,
+//                 business_email,
+//                 business_regNo,
+//                 business_address,
+//             },
+//         });
+
+//         // Extract store ID
+//         const store_id = newStore.store_id;
+
+//         // Create a new seller entry with reg_id and store_id
+//         const newSeller = await prisma.seller.create({
+//             data: {
+//                 reg_id,
+//                 store_id,
+//                 mobile_no1,
+//                 mobile_no2,
+//             },
+//         });
+
+//         // Update the user's role and seller status
+//         await prisma.user.update({
+//             where: { reg_id },
+//             data: { role: "Seller", isSeller: true },
+//         });
+
+//         return res.status(201).json({
+//             message: "Seller registered successfully",
+//             seller: newSeller,
+//         });
+//     } catch (error) {
+//         console.error("Error during seller registration:", error);
+//         return res.status(500).json({ error: error.message });
+//     }
+// };
+
+const registerSeller = async (req, res) => {
+    try {
+        const { store_name, business_email, business_regNo, mobile_no1, mobile_no2, business_address } = req.body;
+
+        // Get the authenticated user's ID (assuming the user is logged in)
+        const reg_id = req.user.reg_id;
+        console.log("Regid:", reg_id, store_name, business_email, business_regNo, mobile_no1, mobile_no2, business_address);
+
+        // Check if the user is already registered as a seller
+        const existingSeller = await prisma.seller.findUnique({
+            where: { reg_id },
+        });
+
+        if (existingSeller) {
+            return res.status(400).json({ message: "User is already registered as a seller." });
+        }
+
+        // Check if the store details are already used
+        const existingStore = await prisma.store.findFirst({
+            where: {
+                OR: [
+                    { store_name: store_name },
+                    { business_email: business_email },
+                    { business_regNo: business_regNo },
+                ],
+            },
+        });
+
+        if (existingStore) {
+            return res.status(400).json({ message: "Store details are already used. Try new details." });
+        }
+
+        // Create a new store
+        const newStore = await prisma.store.create({
+            data: {
+                store_name:store_name,
+                business_email:business_email,
+                business_regNo:business_regNo,
+                business_address:business_address,
+            },
+        });
+
+        // Extract store ID
+        const store_id = newStore.store_id;
+
+        // Create a new seller entry with reg_id and store_id
+        const newSeller = await prisma.seller.create({
+            data: {
+                reg_id:reg_id,
+                store_id:store_id,
+                mobile_no1:mobile_no1,
+                mobile_no2:mobile_no2,
+            },
+        });
+
+        // Update the user's role and seller status
+        await prisma.user.update({
+            where: { reg_id },
+            data: { role: "Seller", isSeller: true },
+        });
+
+        return res.status(201).json({
+            message: "Seller registered successfully",
+            seller: newSeller,
+        });
+    } catch (error) {
+        console.error("Error during seller registration:", error);
+        return res.status(500).json({ error: error.message });
+    }
+};
+
 
 
 // Admin login
@@ -225,7 +367,7 @@ const profile_image_upload = async (req, res) => {
 }
 
 
-//logout customer
+
 
 
 
@@ -233,6 +375,6 @@ const profile_image_upload = async (req, res) => {
 
 
 // Export functions
-module.exports = { registerUser, loginUser, admin_login, getUser , updateProfile, profile_image_upload }; 
+module.exports = { registerUser, loginUser, admin_login, getUser , updateProfile, profile_image_upload,registerSeller }; 
 
 

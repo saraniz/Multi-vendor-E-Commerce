@@ -26,8 +26,6 @@ function Navbar() {
   const [dialogMessage, setDialogMessage] = useState(""); // To store the message for the dialog
   const dispatch = useDispatch();
 
-  console.log("Results ", searchResults);
-
   const style = {
     position: 'absolute',
     top: '50%',
@@ -63,7 +61,7 @@ function Navbar() {
 
     try {
       // Dispatch the Redux action and get the results
-      const response = await dispatch(searchItems(searchQuery));
+      const response =  dispatch(searchItems(searchQuery));
 
       if (response && response.length > 0) {
         setSearchResults(response); // Update the results state

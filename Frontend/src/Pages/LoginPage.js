@@ -28,6 +28,9 @@ function LoginPage() {
 
     //redirect to homepage
     navigate('/HomePage')
+
+   
+    
   };
 
 

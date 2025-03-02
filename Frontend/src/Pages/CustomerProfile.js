@@ -24,7 +24,6 @@ function CustomerProfile() {
 
 
   useEffect(() => {
-
     
     if (!auth.user) {
       Swal.fire({
@@ -42,7 +41,8 @@ function CustomerProfile() {
         }
       });
     } else {
-      dispatch(getUserProfile());
+      // dispatch(getUserProfile());
+      navigate("/CustomerProfile")
     }
 
 
@@ -65,7 +65,7 @@ function CustomerProfile() {
     // Set the sample data to state
     setFollowedShops(sampleShops);
     setMonthlyCosts(sampleMonthlyCosts);
-  }, [jwt,navigate,dispatch]);
+  }, [jwt,auth]);
 
   const handlePrev = () => {
     setCurrentIndex((prevIndex) =>
@@ -79,6 +79,8 @@ function CustomerProfile() {
     );
   };
 
+
+  console.log("seller? ",auth.user?.isSeller)
 
   return (
     <div>
@@ -176,10 +178,14 @@ function CustomerProfile() {
           </div>
 
           {/* My Shop Button - Bottom */}
+
           <div className="flex justify-center mt-8">
+            {auth.user?.isSeller && (
           <Link to='/SellerDashboard'><button className="px-6 py-3 text-white bg-blue-500 rounded-lg shadow-md hover:bg-blue-600">
               Seller profile
             </button></Link>
+            )}
+
             <Link to='/BusinessRegistrationForm'><button className="flex items-center px-6 py-3 mx-3 text-white bg-blue-500 rounded-lg shadow-md hover:bg-blue-600">
               Be A seller
             </button></Link>

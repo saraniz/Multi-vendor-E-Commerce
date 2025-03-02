@@ -29,9 +29,25 @@ model user {
   // Add the inverse relation to cart
   carts         cart[]   // A user can have many carts
   favorites     favorite[] // A user can favorite many products
+  seller     seller?    // Optional one-to-one relation (a user may become a seller)
 }
 
-//product model
+//seller model
+model seller{
+  seller_id Int             @id @default(autoincrement())
+  mobile_no1     String     
+  mobile_no2     String
+  reg_id Int     @unique
+  store_id Int   @unique
+  
+
+  // Relationships
+  user  user  @relation(fields: [reg_id], references: [reg_id]) // One-to-One with user
+  store store @relation(fields: [store_id], references: [store_id])   // One-to-One with store
+
+  @@map("seller") // Map to actual table "seller"
+}
+
 // products model
 model product {
   product_id    Int     @id @default(autoincrement())
@@ -40,10 +56,10 @@ model product {
   price         Float
   stock         Int
   store_id      Int
-  store         store   @relation(fields: [store_id], references: [id]) // Correct relation with store
+  store         store   @relation(fields: [store_id], references: [store_id]) // Correct relation with store
   category      String
   isPremium     Boolean
-  product_image String
+  product_image String?
   store_name String
   store_image String
 
@@ -56,9 +72,14 @@ model product {
 
 // store model
 model store {
-  id        Int        @id @default(autoincrement())
-  name      String
+  store_id        Int        @id @default(autoincrement())
   products  product[]  // One store can have many products
+  store_name String      @unique
+  business_email String     @unique
+  business_regNo String     @unique
+  business_address String?
+  seller   seller?    // Each store is owned by one seller
+  store_image String
 
   @@map("store") // Map to actual table "store"
 }
