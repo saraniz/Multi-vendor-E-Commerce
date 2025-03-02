@@ -1,31 +1,35 @@
-import React from 'react';
-import Navbar from '../Components/Header/Navbar';
-import Footer from '../Components/Footer/Footer';
-import SellerNavbar from '../Components/Body/SellerNavbar';
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer, Legend } from 'recharts';
+import Navbar from "../Components/Header/Navbar";
+import Footer from "../Components/Footer/Footer";
+import SellerNavbar from "../Components/Body/SellerNavbar";
+import { BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer, Legend } from "recharts";
 
 function SellerDashboard() {
-  // Product sales data (Replace with actual backend data in the future)
-  const NoOfTShirts = 750;
-  const NoOfShirts = 600;
-  const NoOfTrousers = 450;
-  const NoOfBlouses = 300;
-  const NoOfJeans = 500;
-  const NoOfSkirts = 400;
-  const NoOfFrocks = 650;
-  const NoOfShorts = 550;
-
+  // Sample Product Sales Data (Replace with Backend Data in Future)
   const salesData = [
-    { category: "T-Shirt", sold: NoOfTShirts },
-    { category: "Shirt", sold: NoOfShirts },
-    { category: "Trouser", sold: NoOfTrousers },
-    { category: "Blouse", sold: NoOfBlouses },
-    { category: "Jean", sold: NoOfJeans },
-    { category: "Skirt", sold: NoOfSkirts },
-    { category: "Frock", sold: NoOfFrocks },
-    { category: "Short", sold: NoOfShorts }
+    { category: "T-Shirt", sold: 750 },
+    { category: "Shirt", sold: 600 },
+    { category: "Trouser", sold: 450 },
+    { category: "Blouse", sold: 300 },
+    { category: "Jean", sold: 500 },
+    { category: "Skirt", sold: 400 },
+    { category: "Frock", sold: 650 },
+    { category: "Short", sold: 550 },
   ];
+
+  // Sample Monthly Revenue Data (Replace with API data later)
+  const [monthlyRevenue, setMonthlyRevenue] = useState([
+    { orderId: "Order 1", amount: 40 },
+    { orderId: "Order 2", amount: 40 },
+    { orderId: "Order 3", amount: 40 },
+    { orderId: "Order 4", amount: 40 },
+    { orderId: "Order 5", amount: 40 },
+    { orderId: "Order 6", amount: 40 },
+  ]);
+
+  // Calculate Total Revenue
+  const totalRevenue = monthlyRevenue.reduce((total, order) => total + order.amount, 0);
 
   return (
     <div>
@@ -33,11 +37,11 @@ function SellerDashboard() {
       <div className="flex min-h-screen">
         {/* Sidebar */}
         <SellerNavbar />
-        
+
         {/* Main Content */}
-        <div className="flex-grow p-4">
+        <div className="flex-grow px-4">
           <div className="grid grid-cols-3 gap-4">
-            {/* Statistics Cards as Buttons */}
+            {/* Statistics Cards */}
             <button className="p-4 text-center bg-blue-100 rounded shadow hover:bg-blue-200">
               <h3 className="text-xl font-bold">Shipped Orders</h3>
               <p className="text-4xl text-blue-600">67</p>
@@ -52,10 +56,10 @@ function SellerDashboard() {
             </button>
           </div>
 
-          {/* Chart and Account Status */}
-          <div className="grid grid-cols-2 gap-4 mt-3">
+          {/* Chart & Monthly Revenue */}
+          <div className="grid grid-cols-2 gap-4 mt-3 ">
             {/* Bar Chart */}
-            <div className="p-4 bg-white rounded-lg shadow-lg">
+            <div className="p-4 bg-white border border-gray-200 rounded-lg shadow-lg">
               <h3 className="mb-0 text-lg font-bold">Product Sales Overview</h3>
               <ResponsiveContainer width="100%" height={250}>
                 <BarChart data={salesData} margin={{ top: 20, right: 20, left: 20, bottom: 10 }}>
@@ -74,33 +78,32 @@ function SellerDashboard() {
               </ResponsiveContainer>
             </div>
 
-            {/* Monthly Revenue */}
-            <div className="p-4 bg-white rounded-lg shadow-lg">
-              <h3 className="mb-4 text-lg font-bold">Monthly Revenue</h3>
-              <ul className="space-y-2">
-                <li className="flex justify-between">
-                  <span>Order 1</span>
-                  <span>$40</span>
-                </li>
-                <li className="flex justify-between">
-                  <span>Order 2</span>
-                  <span>$40</span>
-                </li>
-                <li className="flex justify-between">
-                  <span>Order 3</span>
-                  <span>$40</span>
-                </li>
-              </ul>
-              <div className="flex justify-between mt-4 font-bold">
-                <span>Total</span>
-                <span>$120</span>
-              </div>
-            </div>
+            {/* Monthly Revenue Section */}
+<div className="w-full p-4 bg-white border border-gray-200 rounded-lg shadow-lg">
+  <h3 className="mb-4 text-lg font-bold text-gray-800">Monthly Revenue</h3>
+  
+  <div className="overflow-y-auto border-t border-b border-gray-200 max-h-40">
+    <ul className="divide-y divide-gray-200">
+      {monthlyRevenue.map((order, index) => (
+        <li key={index} className="flex justify-between p-3 transition hover:bg-gray-100">
+          <span className="text-gray-700">{order.orderId}</span>
+          <span className="font-semibold text-blue-600">${order.amount}</span>
+        </li>
+      ))}
+    </ul>
+  </div>
+
+  <div className="flex justify-between p-3 mt-4 font-semibold text-gray-800 rounded-md bg-gray-50">
+    <span>Total Revenue</span>
+    <span>${totalRevenue}</span>
+  </div>
+</div>
+
           </div>
 
           {/* Buttons: Go to Shop & Seller Profile */}
           <div className="mt-6 text-center">
-            <Link to='/CustomerProfile'>
+            <Link to="/CustomerProfile">
               <button className="px-4 py-2 mr-4 text-white bg-blue-500 rounded shadow hover:bg-blue-600">
                 Customer Profile
               </button>

@@ -66,7 +66,7 @@ function CustomerNavbar() {
           </Link>
           <Link to="/MyOrders" className="w-full">
             <button className="flex items-center w-full px-6 py-3 my-2 text-left transition-all duration-300 ease-in-out bg-gray-700 rounded-lg hover:bg-gray-600 hover:scale-105 hover:shadow-md">
-              <FaListAlt className="mr-4 text-xl" /> Order List
+              <FaListAlt className="mr-4 text-xl" /> My Orders
             </button>
           </Link>
           <Link to="/EditProfile" className="w-full">
