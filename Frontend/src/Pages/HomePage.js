@@ -31,18 +31,14 @@ function HomePage() {
       <Navbar />
       <AdvertisementSlider />
       <div className="flex justify-center m-10">
-  <button
-    onClick={scrollToTabComponent}
-    className="relative bg-gradient-to-r from-blue-950 to-gray-900 text-white text-[28px] py-4 px-10 font-semibold rounded-full w-80 
-    transition-all duration-300 ease-in-out transform shadow-md shadow-blue-900/40 
-    hover:scale-105 hover:shadow-lg hover:shadow-blue-500/50 
-    active:scale-100 active:shadow-inner border border-blue-800/50"
-  >
-    SHOP NOW!
-    <span className="absolute inset-0 transition-opacity duration-300 rounded-full opacity-0 bg-gradient-to-r from-blue-950 to-gray-800 hover:opacity-20"></span>
-  </button>
-</div>
-
+        <button
+          onClick={scrollToTabComponent}
+          className="bg-gradient-to-l from-slate-900 via-blue-950 to-gray-900 text-white text-center text-[30px] py-3 px-6 font-semibold rounded-full w-80 transition-transform duration-300 ease-in-out hover:scale-105 hover:shadow-xl
+    hover:from-slate-800 hover:via-blue-900 hover:to-slate-800 shadow-lg shadow-blue-100"
+        >
+          SHOP NOW!
+        </button>
+      </div>
       <div className="flex justify-center">
         <div className="w-[90%] h-1 bg-slate-300"></div>
       </div>

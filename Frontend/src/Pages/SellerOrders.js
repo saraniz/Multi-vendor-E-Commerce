@@ -63,7 +63,7 @@ function OrderList() {
           <div className="mt-4">
             <table className="w-full border border-collapse border-gray-300">
               <thead>
-                <tr className="text-left text-white bg-gray-800">
+                <tr className="text-left bg-gray-100">
                   <th className="p-2 border">Product</th>
                   <th className="p-2 border">Product Code</th>
                   <th className="p-2 border">Quantity</th>
