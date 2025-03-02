@@ -8,9 +8,10 @@ import { addProducts } from '../Storage/Product/productAction';
 function AddItems() {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
-  const [keywords, setKeywords] = useState('');
-  const [category, setCategory] = useState(''); // New state for category
-  const [images, setImages] = useState([]);
+  const [price, setPrice] = useState('');
+  const [stock, setStock] = useState('');
+  const [category, setCategory] = useState('');
+  const [productImage, setProductImage] = useState(null); // Single image (optional)
 
   const dispatch = useDispatch();
   const { loading } = useSelector(state => state || { loading: false });
@@ -22,26 +23,27 @@ function AddItems() {
     }
   };
 
-  const handleSubmit = (isPremium) => {
-    const formData = new FormData();
-    formData.append('itemName', itemName);
-    formData.append('price', price);
-    formData.append('beforePrice', beforePrice);
-    formData.append('description', description);
-    formData.append('keywords', keywords);
-    formData.append('category', category); // Include category in the form data
-    images.forEach((image, index) => {
-      formData.append(`image_${index}`, image);
-    });
-    formData.append('isPremium', isPremium);
-    
-    fetch('/api/add-item', {
-      method: 'POST',
-      body: formData,
-    })
-    .then(response => response.json())
-    .then(data => console.log(data))
-    .catch(error => console.error('Error:', error));
+  const handleSubmit = (premiumStatus) => {
+    const formData = {
+      name,
+      description,
+      price: parseFloat(price),
+      stock: parseInt(stock),
+      category,
+      isPremium: premiumStatus,
+      productImage: "" // Default to empty if no image
+    };
+
+    if (productImage) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        formData.productImage = reader.result; // Assign base64 image
+        dispatch(addProducts(formData));
+      };
+      reader.readAsDataURL(productImage);
+    } else {
+      dispatch(addProducts(formData)); // Submit without image
+    }
   };
 
   return (
@@ -49,8 +51,8 @@ function AddItems() {
       <Navbar />
       <div className="flex">
         <SellerNavbar />
-        <div className="flex-1 p-10 mx-10 bg-white border border-gray-200 rounded-lg shadow-xl">
-          <h1 className="mb-6 text-3xl font-semibold text-gray-800">Add Items</h1>
+        <div className="flex-1 p-10 mx-10 my-3 bg-white border border-gray-200 rounded-lg shadow-xl">
+          <h1 className="mb-6 text-3xl font-semibold text-gray-800">Add Product</h1>
           <div className="grid grid-cols-2 gap-8">
             
             {/* Optional Image Upload */}
@@ -75,67 +77,25 @@ function AddItems() {
             </div>
 
             {/* Form Fields */}
-            <div className="space-y-2">
-              <input 
-                type="text" 
-                placeholder="Item Name" 
-                value={itemName} 
-                onChange={(e) => setItemName(e.target.value)} 
-                className="w-full p-4 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none" 
-              />
+            <div className="space-y-4">
+              <input type="text" placeholder="Product Name" value={name} onChange={(e) => setName(e.target.value)} className="w-full p-4 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none" />
+              <input type="text" placeholder="Category" value={category} onChange={(e) => setCategory(e.target.value)} className="w-full p-4 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none" />
               <div className="flex gap-2">
-                <input 
-                  type="text" 
-                  placeholder="Price" 
-                  value={price} 
-                  onChange={(e) => setPrice(e.target.value)} 
-                  className="w-full p-4 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none" 
-                />
-                <input 
-                  type="text" 
-                  placeholder="Before Price (Optional)" 
-                  value={beforePrice} 
-                  onChange={(e) => setBeforePrice(e.target.value)} 
-                  className="w-full p-4 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none" 
-                />
+                <input type="text" placeholder="Price" value={price} onChange={(e) => setPrice(e.target.value)} className="w-full p-4 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none" />
+                <input type="text" placeholder="Stock" value={stock} onChange={(e) => setStock(e.target.value)} className="w-full p-4 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none" />
               </div>
-              <textarea 
-                placeholder="Description" 
-                value={description} 
-                onChange={(e) => setDescription(e.target.value)} 
-                className="w-full p-4 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
-              ></textarea>
-              <input 
-                type="text" 
-                placeholder="Key Words" 
-                value={keywords} 
-                onChange={(e) => setKeywords(e.target.value)} 
-                className="w-full p-4 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none" 
-              />
-              {/* Category Dropdown */}
-              <select
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
-                className="w-full p-4 text-gray-500 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
-              >
-                <option value="" disabled>Select Category</option>
-                <option value="T-Shirt">T-Shirt</option>
-                <option value="Shirt">Shirt</option>
-                <option value="Trouser">Trousers</option>
-                <option value="Blouse">Blouse</option>
-                <option value="Jean">Jeans</option>
-                <option value="Skirt">Skirts</option>
-                <option value="Frock">Frocks</option>
-                <option value="Short">Shorts</option>
-                <option value="Other">Other</option>
-              </select>
+              <textarea placeholder="Description" value={description} onChange={(e) => setDescription(e.target.value)} className="w-full p-4 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"></textarea>
             </div>
           </div>
 
           {/* Buttons */}
-          <div className="flex gap-6">
-            <button onClick={() => handleSubmit(false)} className="px-8 py-4 text-lg font-semibold text-white transition bg-gray-600 rounded-lg shadow-md hover:bg-gray-700">Add</button>
-            <button onClick={() => handleSubmit(true)} className="px-8 py-4 text-lg font-semibold text-white transition bg-yellow-500 rounded-lg shadow-md hover:bg-yellow-600">Add as Premium</button>
+          <div className="flex gap-6 mt-6">
+            <button onClick={() => handleSubmit(false)} className="px-8 py-4 text-lg font-semibold text-white transition bg-gray-600 rounded-lg shadow-md hover:bg-gray-700">
+              {loading ? 'Adding...' : 'Add'}
+            </button>
+            <button onClick={() => handleSubmit(true)} className="px-8 py-4 text-lg font-semibold text-white transition bg-yellow-500 rounded-lg shadow-md hover:bg-yellow-600">
+              {loading ? 'Adding...' : 'Add as Premium'}
+            </button>
           </div>
         </div>
       </div>
