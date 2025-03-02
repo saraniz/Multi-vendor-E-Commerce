@@ -108,6 +108,9 @@ function LoginPage() {
             <Link to={'/RegistrationForm'}>
               <button className="font-semibold text-indigo-600 hover:underline">Register</button>
             </Link>
+            <Link to={'/AdminDashboard'}>
+            <button className="font-semibold text-indigo-600 hover:underline">Admin Login</button>
+            </Link>
           </p>
         </div>
       </div>
