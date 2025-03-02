@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import ProductList from './Productlist';
+import { useSelector } from 'react-redux';
 
 function TabComponent() {
   const [activeTab, setActiveTab] = useState('All');
+  const {products} = useSelector(store => store)
+  console.log("producttab:",products)
 
   return (
     <div>
@@ -44,10 +47,13 @@ function TabComponent() {
 
         {/* Tab Content */}
         <div className="w-full p-6 bg-wh rounded max-w-7xl">
-          {activeTab === 'All' && <div><ProductList /></div>}
+          {activeTab === 'All' && <div><ProductList products={products.allproducts} /></div>}
           {activeTab === 'Following' && <div><ProductList /></div>}
-          {activeTab === 'Premium' && <div><ProductList /></div>}
-        </div>
+          {activeTab === 'Premium' && (
+    <div>
+      <ProductList products={products.allproducts.filter(product => product.isPremium )} />
+    </div>
+  )}        </div>
       </div>
     </div>
   );

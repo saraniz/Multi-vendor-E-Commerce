@@ -234,8 +234,8 @@ const getSellerProduct = async (req,res) =>{
 
         
 
-//     }
-// )}
+    }
+)}
 
 
 module.exports = {addProduct,updateProduct,deleteProduct,getSellerProduct};

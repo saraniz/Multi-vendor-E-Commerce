@@ -212,6 +212,14 @@ const updateProfile = async (req, res) => {
 //     });
 // }
 
+
+//logout customer
+
+
+
+
+
+
 // Export functions
 module.exports = { registerUser, loginUser, admin_login, getUser , updateProfile }; 
 

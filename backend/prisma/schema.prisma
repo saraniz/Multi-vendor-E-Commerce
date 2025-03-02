@@ -25,24 +25,71 @@ model user {
   address   String
   role      String   @default("customer")
   isSeller  Boolean  @default(false)
+
+  // Add the inverse relation to cart
+  carts         cart[]   // A user can have many carts
+  favorites     favorite[] // A user can favorite many products
 }
 
-  
 //product model
+// products model
 model product {
-  product_id  Int  @id @default(autoincrement())
-  name String
-  description String
-  price Float
-  stock Int
-  //store_id Int
-  //store Store @relation(fields: [storeId], references: [id])
-  category String
+  product_id    Int     @id @default(autoincrement())
+  name          String
+  description   String
+  price         Float
+  stock         Int
+  store_id      Int
+  store         store   @relation(fields: [store_id], references: [id]) // Correct relation with store
+  category      String
+  isPremium     Boolean
+  product_image String
+  store_name String
+  store_image String
+
+  // Add the inverse relation to cart
+  carts         cart[]   // A product can be in many carts
+  favorites     favorite[] // A product can be favorited by many users
+
+  @@map("product") // Map to actual table "product"
 }
 
-//store model
-model store{
-  id Int @id @default(autoincrement())
-  name String
-  //products Product[]
+// store model
+model store {
+  id        Int        @id @default(autoincrement())
+  name      String
+  products  product[]  // One store can have many products
+
+  @@map("store") // Map to actual table "store"
+}
+
+//model cart 
+model cart{
+  cart_id     Int      @id @default(autoincrement()) // Primary key
+  reg_id      Int      // Foreign key to user model
+  product_id  Int      // Foreign key to product model
+  quantity    Int      @default(1)
+  price       String
+  description String
+  created_at  DateTime @default(now())
+  product_image String
+  //size String
+
+  user    user    @relation(fields: [reg_id], references: [reg_id]) // Foreign key relation with user model
+  product product @relation(fields: [product_id], references: [product_id]) // Foreign key relation with product model
+
+  @@map("cart") // Map to actual table "cart"
+  @@unique([reg_id, product_id]) // Ensure a user cannot add the same product multiple times
+}
+
+//favorite model
+model favorite{
+  fav_id Int @id @default(autoincrement())
+  reg_id Int //foreign key
+  product_id Int //foreign key
+
+  user      user     @relation(fields: [reg_id], references: [reg_id]) // Corrected field name and reference
+  product   product  @relation(fields: [product_id], references: [product_id]) // Corrected field name and reference
+
+  @@unique([reg_id, product_id]) // Ensure a user can only favorite a product once
 }

@@ -24,11 +24,15 @@ app.use(jsonMiddleware);
 // Import routes
 const authRoutes = require('./routes/auth');
 const itemRoutes = require('./routes/itemRoutes')
+const cartRoutes = require('./routes/cartRoutes')
+const favRoutes = require('./routes/favRoutes')
 // const profileRoutes = require('./routes/profileRoutes')
 
 // Public API routes
 app.use('/api', authRoutes);
 app.use('/api/items',itemRoutes)
+app.use('/api/cart',cartRoutes)
+app.use('/api/fav',favRoutes)
 // app.use('/api/profileedit',profileRoutes)
 
 // Protected routes
@@ -41,6 +45,9 @@ app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(err.status || 500).json({ error: err.message || 'Internal Server Error' });
 });
+
+// JWT Secret Key
+const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
 
 // Connect to database and start server
 prisma.$connect()

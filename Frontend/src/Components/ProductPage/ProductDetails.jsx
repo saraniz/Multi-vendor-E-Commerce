@@ -1,8 +1,33 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchProductDetails } from "../../Storage/Product/productAction";
+import { useParams } from "react-router-dom";
+import { addToCart } from "../../Storage/Cart/cartAction"; // Ensure correct path
+import loadingAnimation from "../Loading/loadingAnimation";
 
 const ProductDetails = () => {
+  const { product_id } = useParams();
   const [size, setSize] = useState("Large");
   const [quantity, setQuantity] = useState(1);
+  const { products, error } = useSelector((state) => state);
+  const [loading, setLoading] = useState(false);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const getProducts = async () => {
+      try {
+        setLoading(true);
+        await dispatch(fetchProductDetails(product_id));
+        setLoading(false); // Assuming fetchProductDetails is an async action
+      } catch (error) {
+        console.error("Error fetching product details:", error);
+      } finally {
+      }
+    };
+
+    getProducts();
+  }, [dispatch, product_id]);
 
   const handleSizeChange = (selectedSize) => {
     setSize(selectedSize);
@@ -12,12 +37,20 @@ const ProductDetails = () => {
     setQuantity((prev) => Math.max(1, prev + change));
   };
 
+  const handleAddToCart = () => {
+    dispatch(addToCart(product_id, quantity, size));
+  };
+
+  if (loading) return <loadingAnimation />;
+  if (error) return <p>Error: {error}</p>;
+  if (!products || !products.product) return <p>Product not found</p>;
+
   return (
     <div className="flex flex-col space-y-4">
       {/* Product Name */}
-      <h1 className="text-2xl font-bold">Product Name</h1>
+      <h1 className="text-2xl font-bold">{products?.product?.name}</h1>
 
-      {/* Rating */}
+      {/* Rating
       <div className="flex items-center space-x-2">
         <div className="flex text-yellow-500">
           {[...Array(4)].map((_, index) => (
@@ -26,19 +59,18 @@ const ProductDetails = () => {
           <span className="text-gray-300">&#9733;</span>
         </div>
         <span className="text-sm text-gray-500">4.5/5</span>
-      </div>
+      </div> */}
 
       {/* Price */}
       <div className="flex items-center space-x-4">
-        <span className="text-xl font-bold text-black">$260</span>
-        <span className="text-sm text-gray-500 line-through">$300</span>
+        <span className="text-xl font-bold text-black">
+          {products?.product?.price}
+        </span>
+        {/* <span className="text-sm text-gray-500 line-through">{products?.product?.price}</span> */}
       </div>
 
       {/* Description */}
-      <p className="text-sm text-gray-600">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua.
-      </p>
+      <p className="text-sm text-gray-600">{products?.product.description}</p>
 
       {/* Size Selection */}
       <div>
@@ -79,7 +111,10 @@ const ProductDetails = () => {
       </div>
 
       {/* Add to Cart */}
-      <button className="px-6 py-2 text-white rounded-md bg-blue-950">
+      <button
+        className="px-6 py-2 text-white rounded-md bg-blue-950"
+        onClick={handleAddToCart}
+      >
         Add to Cart
       </button>
     </div>
