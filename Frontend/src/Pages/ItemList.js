@@ -30,7 +30,7 @@ function ItemList() {
           <div className="overflow-hidden bg-white rounded-lg shadow-md">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="bg-gray-200">
+                <tr className="text-white bg-gray-800">
                   <th className="p-3 border">Product</th>
                   <th className="p-3 border">Product Code</th>
                   <th className="p-3 border">Quantity</th>
