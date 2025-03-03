@@ -111,12 +111,20 @@ const ProductDetails = () => {
       </div>
 
       {/* Add to Cart */}
-      <button
-        className="px-6 py-2 text-white rounded-md bg-blue-950"
-        onClick={handleAddToCart}
-      >
-        Add to Cart
-      </button>
+<div className="flex space-x-4">
+  <button
+    className="px-6 py-2 text-white rounded-md bg-blue-950 hover:bg-blue-800"
+    onClick={handleAddToCart}
+  >
+    Add to Cart
+  </button>
+
+  <button className="px-6 py-2 text-white rounded-md bg-blue-950 hover:bg-blue-800">
+    Buy Now
+  </button>
+</div>
+
+
     </div>
   );
 };
