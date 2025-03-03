@@ -6,25 +6,26 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserProfile } from '../Storage/Auth/UserAction';
 import Swal from 'sweetalert2';
+import { Doughnut } from 'react-chartjs-2';
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+import { HiOutlineUserCircle, HiOutlineShoppingBag, HiOutlineUserAdd } from 'react-icons/hi'; // Import icons
+
+ChartJS.register(ArcElement, Tooltip, Legend);
 
 function CustomerProfile() {
-
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
-  const state = useSelector((state) => state)
-  console.log("Redux state:",state)
-
-  const { auth } = useSelector(state => state)
-  const jwt = localStorage.getItem("jwt")
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const state = useSelector((state) => state);
+  const { auth } = useSelector(state => state);
+  const jwt = localStorage.getItem("jwt");
 
   const [followedShops, setFollowedShops] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [successPercentage, setSuccessPercentage] = useState(60); // Sample success percentage
+  const [successPercentage, setSuccessPercentage] = useState(60);
   const [monthlyCosts, setMonthlyCosts] = useState([]);
-
+  const [recentActivities, setRecentActivities] = useState([]);
 
   useEffect(() => {
-    
     if (!auth.user) {
       Swal.fire({
         title: "Login or Register",
@@ -37,16 +38,13 @@ function CustomerProfile() {
         if (result.isConfirmed) {
           navigate("/LoginPage");
         } else {
-          navigate("/HomePage"); // Update with your actual register route
+          navigate("/HomePage");
         }
       });
     } else {
-      // dispatch(getUserProfile());
-      navigate("/CustomerProfile")
+      navigate("/CustomerProfile");
     }
 
-
-    // Sample data for display
     const sampleShops = [
       { id: 1, name: 'Shop A', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS12497t9DLWo6-xa-wqQRFdKFh-0OSwUZCfQ&s' },
       { id: 2, name: 'Shop B', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhp5hhn9RNbii41Y8wjvgWF9UOqyYKihh1cw&s' },
@@ -65,10 +63,18 @@ function CustomerProfile() {
       { shopName: 'Shop F', amount: 60, image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnlkDM_rm4CQmJrffCzh9n6K8p21zDbqBNPiGI_B1sUq8ndYUB-4lap9FbtvXBWw7ztwE&usqp=CAU' }
     ];
 
-    // Set the sample data to state
+    const sampleRecentActivities = [
+      { id: 1, activity: 'Ordered from Shop A', date: '2023-10-01' },
+      { id: 2, activity: 'Followed Shop B', date: '2023-10-02' },
+      { id: 3, activity: 'Reviewed Shop C', date: '2023-10-03' },
+      { id: 4, activity: 'Cancelled order from Shop D', date: '2023-10-04' },
+      { id: 5, activity: 'Received order from Shop E', date: '2023-10-05' },
+    ];
+
     setFollowedShops(sampleShops);
     setMonthlyCosts(sampleMonthlyCosts);
-  }, [jwt,auth]);
+    setRecentActivities(sampleRecentActivities);
+  }, [jwt, auth]);
 
   const handlePrev = () => {
     setCurrentIndex((prevIndex) =>
@@ -82,24 +88,39 @@ function CustomerProfile() {
     );
   };
 
-
-  console.log("seller? ",auth.user?.isSeller)
+  const data = {
+    labels: ['Completed', 'Pending', 'Cancelled'],
+    datasets: [
+      {
+        label: 'Orders',
+        data: [60, 30, 10],
+        backgroundColor: ['#4F46E5', '#FBBF24', '#EF4444'],
+        hoverOffset: 4,
+      },
+    ],
+  };
 
   return (
-    <div>
+    <div className="bg-gray-50">
       <Navbar />
       <div className="flex min-h-screen">
-        {/* Sidebar */}
         <CustomerNavbar />
-        {/* Main Content */}
         <div className="flex-grow p-6">
+          {/* Welcome Back Message with Icon */}
+          <div className="flex items-center mb-8">
+            <HiOutlineUserCircle className="w-10 h-10 text-blue-500" /> {/* Icon */}
+            <h1 className="ml-4 text-2xl font-bold text-gray-800">
+              Welcome Back, {auth.user?.name || "Customer"}!
+            </h1>
+          </div>
+
           {/* Followed Shops Slider */}
           <div className="mb-8 text-center">
-            <h2 className="mb-4 text-lg font-bold">Followed Shops</h2>
+            <h2 className="mb-4 text-2xl font-bold text-gray-800">Followed Shops</h2>
             <div className="flex items-center justify-center space-x-4">
               <button
                 onClick={handlePrev}
-                className="p-2 border rounded-full"
+                className="p-2 text-white bg-blue-500 rounded-full shadow-md hover:bg-blue-600"
                 aria-label="Previous"
               >
                 &lt;
@@ -110,13 +131,13 @@ function CustomerProfile() {
                     key={shop.id}
                     src={shop.image}
                     alt={shop.name}
-                    className="w-12 h-12 rounded-full"
+                    className="w-12 h-12 rounded-full shadow-md"
                   />
                 ))}
               </div>
               <button
                 onClick={handleNext}
-                className="p-2 border rounded-full"
+                className="p-2 text-white bg-blue-500 rounded-full shadow-md hover:bg-blue-600"
                 aria-label="Next"
               >
                 &gt;
@@ -124,76 +145,70 @@ function CustomerProfile() {
             </div>
           </div>
 
-          {/* Complete Orders and Monthly Cost */}
-          <div className="grid grid-cols-2 gap-6 ">
+          {/* Complete Orders, Monthly Expenses, and Recent Activity */}
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
             {/* Complete Orders */}
-            <div className="p-4 border border-gray-200 rounded-lg shadow-md">
-              <h3 className="mb-2 font-semibold text-md">Complete Orders</h3>
-              <div className="relative w-32 h-32 mx-auto">
-                <svg viewBox="0 0 36 36" className="w-full h-full">
-                  <path
-                    className="text-gray-200"
-                    strokeWidth="4"
-                    stroke="currentColor"
-                    fill="none"
-                    d="M18 2.0845
-                       a 15.9155 15.9155 0 0 1 0 31.831
-                       a 15.9155 15.9155 0 0 1 0 -31.831"
-                  />
-                  <path
-                    className="text-blue-500"
-                    strokeWidth="4"
-                    strokeDasharray={`${successPercentage}, 100`}
-                    stroke="currentColor"
-                    fill="none"
-                    d="M18 2.0845
-                       a 15.9155 15.9155 0 0 1 0 31.831
-                       a 15.9155 15.9155 0 0 1 0 -31.831"
-                  />
-                </svg>
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="text-lg font-bold">{successPercentage}%</span>
-                </div>
+            <div className="p-6 bg-white rounded-lg shadow-md">
+              <h3 className="mb-4 text-xl font-bold text-gray-800">Complete Orders</h3>
+              <div className="w-64 h-64 mx-auto"> {/* Increased size */}
+                <Doughnut data={data} />
               </div>
             </div>
 
-           {/* Monthly Cost */}
-<div className="p-2 bg-white border border-gray-200 rounded-lg shadow-md">
-  <h3 className="mb-4 font-semibold text-md">Monthly Expenses</h3>
-  <div className="space-y-3 overflow-y-auto max-h-32">
-    {monthlyCosts.map((cost, index) => (
-      <div key={index} className="flex items-center justify-between p-3 transition-all rounded-md shadow-sm bg-gray-50 hover:bg-gray-100">
-        <div className="flex items-center">
-          <img
-            src={cost.image}
-            alt={cost.shopName}
-            className="w-8 h-8 border border-gray-300 rounded-full shadow-sm"
-          />
-          <span className="ml-4 font-medium text-gray-700 text-md">{cost.shopName}</span>
-        </div>
-        <span className="font-semibold text-blue-600 text-md">${cost.amount}</span>
-      </div>
-    ))}
-  </div>
-  <div className="flex items-center justify-between p-4 mt-4 text-lg font-bold border-t-2 border-gray-200 rounded-b-lg bg-gradient-to-r from-gray-100 to-gray-50">
-    <span className="text-gray-800">Total Spent:</span>
-    <span className="text-xl text-green-600">${monthlyCosts.reduce((total, cost) => total + cost.amount, 0)}</span>
-  </div>
-</div>
+            {/* Monthly Expenses */}
+            <div className="p-6 bg-white rounded-lg shadow-md">
+              <h3 className="mb-4 text-xl font-bold text-gray-800">Monthly Expenses</h3>
+              <div className="space-y-3 overflow-y-auto max-h-48">
+                {monthlyCosts.map((cost, index) => (
+                  <div key={index} className="flex items-center justify-between p-3 transition-all rounded-md shadow-sm bg-gray-50 hover:bg-gray-100">
+                    <div className="flex items-center">
+                      <img
+                        src={cost.image}
+                        alt={cost.shopName}
+                        className="w-8 h-8 border border-gray-300 rounded-full shadow-sm"
+                      />
+                      <span className="ml-4 font-medium text-gray-700">{cost.shopName}</span>
+                    </div>
+                    <span className="font-semibold text-blue-600">${cost.amount}</span>
+                  </div>
+                ))}
+              </div>
+              <div className="flex items-center justify-between p-4 mt-4 text-lg font-bold border-t-2 border-gray-200 rounded-b-lg bg-gradient-to-r from-gray-100 to-gray-50">
+                <span className="text-gray-800">Total Spent:</span>
+                <span className="text-xl text-green-600">${monthlyCosts.reduce((total, cost) => total + cost.amount, 0)}</span>
+              </div>
+            </div>
+
+            {/* Recent Activity */}
+            <div className="p-6 bg-white rounded-lg shadow-md">
+              <h3 className="mb-4 text-xl font-bold text-gray-800">Recent Activity</h3>
+              <div className="space-y-3 overflow-y-auto max-h-48">
+                {recentActivities.map((activity) => (
+                  <div key={activity.id} className="p-3 transition-all rounded-md shadow-sm bg-gray-50 hover:bg-gray-100">
+                    <p className="text-sm text-gray-700">{activity.activity}</p>
+                    <p className="text-xs text-gray-500">{activity.date}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
 
-          {/* My Shop Button - Bottom */}
-
+          {/* Seller Profile and Be A Seller Buttons */}
           <div className="flex justify-center mt-8">
             {auth.user?.isSeller && (
-          <Link to='/SellerDashboard'><button className="px-6 py-3 text-white bg-blue-500 rounded-lg shadow-md hover:bg-blue-600">
-              Seller profile
-            </button></Link>
+              <Link to='/SellerDashboard'>
+                <button className="flex items-center px-6 py-3 mx-3 text-white bg-[#00498D] rounded-lg shadow-md hover:bg-[#003366] hover:scale-105 transform transition-all duration-300 w-48 justify-center">
+                  <HiOutlineShoppingBag className="w-5 h-5 mr-2" /> {/* Icon */}
+                  Seller Profile
+                </button>
+              </Link>
             )}
-
-            <Link to='/BusinessRegistrationForm'><button className="flex items-center px-6 py-3 mx-3 text-white bg-blue-500 rounded-lg shadow-md hover:bg-blue-600">
-              Be A seller
-            </button></Link>
+            <Link to='/BusinessRegistrationForm'>
+              <button className="flex items-center px-6 py-3 mx-3 text-white bg-[#00498D] rounded-lg shadow-md hover:bg-[#003366] hover:scale-105 transform transition-all duration-300 w-48 justify-center">
+                <HiOutlineUserAdd className="w-5 h-5 mr-2" /> {/* Icon */}
+                Be A Seller
+              </button>
+            </Link>
           </div>
         </div>
       </div>

@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Navbar from "../Components/Header/Navbar";
 import Footer from "../Components/Footer/Footer";
 import SellerNavbar from "../Components/Body/SellerNavbar";
-import { BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer, Legend } from "recharts";
+import { BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer } from "recharts";
+import { HiOutlineSun, HiOutlineMoon, HiOutlineCloud, HiOutlineUser } from "react-icons/hi"; // Icons for greeting and customer profile
 
 function SellerDashboard() {
   // Sample Product Sales Data (Replace with Backend Data in Future)
@@ -31,8 +32,32 @@ function SellerDashboard() {
   // Calculate Total Revenue
   const totalRevenue = monthlyRevenue.reduce((total, order) => total + order.amount, 0);
 
+  // Dynamic Greeting Message
+  const [greeting, setGreeting] = useState("");
+  const [greetingIcon, setGreetingIcon] = useState(<HiOutlineSun />);
+
+  useEffect(() => {
+    const updateGreeting = () => {
+      const hour = new Date().getHours();
+      if (hour < 12) {
+        setGreeting("Good Morning");
+        setGreetingIcon(<HiOutlineSun className="w-6 h-6 text-yellow-500" />);
+      } else if (hour < 18) {
+        setGreeting("Good Afternoon");
+        setGreetingIcon(<HiOutlineCloud className="w-6 h-6 text-blue-500" />);
+      } else {
+        setGreeting("Good Evening");
+        setGreetingIcon(<HiOutlineMoon className="w-6 h-6 text-gray-700" />);
+      }
+    };
+
+    updateGreeting();
+    const interval = setInterval(updateGreeting, 60000); // Update every minute
+    return () => clearInterval(interval);
+  }, []);
+
   return (
-    <div className="flex flex-col min-h-screen bg-gray-50">
+    <div className="flex flex-col min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
       <Navbar />
       <div className="flex flex-1">
         {/* Sidebar */}
@@ -40,27 +65,33 @@ function SellerDashboard() {
 
         {/* Main Content */}
         <main className="flex-1 p-6 overflow-hidden">
+          {/* Greeting Message */}
+          <div className="flex items-center mb-4">
+            {greetingIcon}
+            <h1 className="ml-2 text-2xl font-bold text-gray-800">{greeting}, Seller!</h1>
+          </div>
+
           {/* Statistics Cards */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-            <div className="p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow">
-              <h3 className="text-lg font-semibold text-gray-700">Shipped Orders</h3>
-              <p className="text-3xl font-bold text-blue-600">67</p>
+            <div className="p-6 bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1">
+              <h3 className="text-lg font-semibold text-white">Shipped Orders</h3>
+              <p className="text-3xl font-bold text-white">67</p>
             </div>
-            <div className="p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow">
-              <h3 className="text-lg font-semibold text-gray-700">Pending Orders</h3>
-              <p className="text-3xl font-bold text-red-600">09</p>
+            <div className="p-6 bg-gradient-to-r from-red-500 to-red-600 rounded-lg shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1">
+              <h3 className="text-lg font-semibold text-white">Pending Orders</h3>
+              <p className="text-3xl font-bold text-white">09</p>
             </div>
-            <div className="p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow">
-              <h3 className="text-lg font-semibold text-gray-700">New Orders</h3>
-              <p className="text-3xl font-bold text-purple-600">35</p>
+            <div className="p-6 bg-gradient-to-r from-purple-500 to-purple-600 rounded-lg shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1">
+              <h3 className="text-lg font-semibold text-white">New Orders</h3>
+              <p className="text-3xl font-bold text-white">35</p>
             </div>
           </div>
 
           {/* Chart & Monthly Revenue */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Bar Chart */}
-            <div className="p-6 bg-white rounded-lg shadow-md">
-              <h3 className="text-lg font-semibold text-gray-800 mb-4">Product Sales Overview</h3>
+            <div className="p-6 bg-white rounded-lg shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1">
+              <h3 className="text-lg font-semibold text-gray-800 mb-2">Product Sales Overview</h3>
               <ResponsiveContainer width="100%" height={300}>
                 <BarChart data={salesData} margin={{ top: 20, right: 20, left: 20, bottom: 10 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#eee" />
@@ -91,19 +122,22 @@ function SellerDashboard() {
             </div>
 
             {/* Monthly Revenue Section */}
-            <div className="p-6 bg-white rounded-lg shadow-md">
+            <div className="p-6 bg-white rounded-lg shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1">
               <h3 className="text-lg font-semibold text-gray-800 mb-4">Monthly Revenue</h3>
               <div className="overflow-y-auto border-t border-b border-gray-200 max-h-48">
                 <ul className="divide-y divide-gray-200">
-                  {monthlyRevenue.map((order, index) => (
-                    <li key={index} className="flex justify-between p-3 transition hover:bg-gray-50">
+                  {monthlyRevenue.slice(0, 5).map((order, index) => (
+                    <li
+                      key={index}
+                      className="flex justify-between p-3 transition-all hover:bg-gray-50 hover:shadow-sm rounded-md"
+                    >
                       <span className="text-gray-700">{order.orderId}</span>
                       <span className="font-semibold text-blue-600">${order.amount}</span>
                     </li>
                   ))}
                 </ul>
               </div>
-              <div className="flex justify-between p-3 mt-4 font-semibold text-gray-800 bg-gray-50 rounded-md">
+              <div className="flex justify-between p-3 mt-4 font-semibold text-gray-800 bg-gradient-to-r from-gray-100 to-gray-50 rounded-md">
                 <span>Total</span>
                 <span>${totalRevenue}</span>
               </div>
@@ -111,9 +145,10 @@ function SellerDashboard() {
           </div>
 
           {/* Buttons: Go to Shop & Seller Profile */}
-          <div className="mt-6 text-center">
+          <div className="mt-6 flex justify-center">
             <Link to="/CustomerProfile">
-              <button className="px-6 py-2 text-white bg-blue-600 rounded-lg shadow-md hover:bg-blue-700 transition-colors">
+              <button className="px-6 py-2 text-white bg-[#00498D] rounded-lg shadow-md hover:bg-[#003366] transition-colors transform hover:scale-105 flex items-center justify-center">
+                <HiOutlineUser className="mr-2" />
                 Customer Profile
               </button>
             </Link>

@@ -4,6 +4,7 @@ import { fetchProductDetails } from "../../Storage/Product/productAction";
 import { useParams } from "react-router-dom";
 import { addToCart } from "../../Storage/Cart/cartAction"; // Ensure correct path
 import loadingAnimation from "../Loading/loadingAnimation";
+import { HiOutlineShoppingCart, HiOutlineShoppingBag } from "react-icons/hi"; // Import icons from react-icons/hi
 
 const ProductDetails = () => {
   const { product_id } = useParams();
@@ -22,7 +23,6 @@ const ProductDetails = () => {
         setLoading(false); // Assuming fetchProductDetails is an async action
       } catch (error) {
         console.error("Error fetching product details:", error);
-      } finally {
       }
     };
 
@@ -50,23 +50,11 @@ const ProductDetails = () => {
       {/* Product Name */}
       <h1 className="text-2xl font-bold">{products?.product?.name}</h1>
 
-      {/* Rating
-      <div className="flex items-center space-x-2">
-        <div className="flex text-yellow-500">
-          {[...Array(4)].map((_, index) => (
-            <span key={index}>&#9733;</span>
-          ))}
-          <span className="text-gray-300">&#9733;</span>
-        </div>
-        <span className="text-sm text-gray-500">4.5/5</span>
-      </div> */}
-
       {/* Price */}
       <div className="flex items-center space-x-4">
         <span className="text-xl font-bold text-black">
-          {products?.product?.price}
+          {`Rs.${products?.product?.price.toFixed(2)}`}
         </span>
-        {/* <span className="text-sm text-gray-500 line-through">{products?.product?.price}</span> */}
       </div>
 
       {/* Description */}
@@ -110,13 +98,21 @@ const ProductDetails = () => {
         </div>
       </div>
 
-      {/* Add to Cart */}
-      <button
-        className="px-6 py-2 text-white rounded-md bg-blue-950"
-        onClick={handleAddToCart}
-      >
-        Add to Cart
-      </button>
+      {/* Buttons */}
+      <div className="flex space-x-4">
+        <button
+          className="wd=100 px-6 py-2 text-white rounded-md bg-blue-950 hover:bg-blue-800 flex items-center justify-center space-x-2"
+          onClick={handleAddToCart}
+        >
+          <HiOutlineShoppingCart size={20} /> {/* Larger Shopping Cart Icon */}
+          <span>Add to Cart</span>
+        </button>
+
+        <button className="wd=100 px-6 py-2 text-white rounded-md bg-blue-950 hover:bg-blue-800 flex items-center justify-center space-x-2">
+          <HiOutlineShoppingBag size={20} /> {/* Larger Shopping Bag Icon */}
+          <span>Buy Now</span>
+        </button>
+      </div>
     </div>
   );
 };
