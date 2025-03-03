@@ -35,7 +35,9 @@ const ProductCard = ({ product }) => {
           />
         </Link>
         <div className="absolute bottom-0 left-0 w-full px-4 py-2 text-white bg-gradient-to-r from-black to-transparent">
+        <Link to={`/Productpage/${product.product_id}`}>
           <p className="font-semibold">{product.name}</p>
+          </Link>
         </div>
 
         {/* Icons for like and cart */}
@@ -51,10 +53,10 @@ const ProductCard = ({ product }) => {
 
       {/* Product Information */}
       <div className="mt-3">
-        <Link to={`/Productpage/${product.product_id}`}>
+      
           <p className="text-gray-600 truncate">{product.description}</p>
-        </Link>
-        <p className="text-xl font-bold">${product.price}</p>
+        
+        <p className="text-xl font-bold">Rs.{product.price}</p>
       </div>
 
       {/* Star Rating Display */}
