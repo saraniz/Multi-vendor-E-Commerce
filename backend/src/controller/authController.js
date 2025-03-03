@@ -100,28 +100,28 @@ const loginUser = async (req, res) => {
 
 
 // Admin login
-const admin_login = async (req, res) => {
-    const { email, password } = req.body;
-    try {
-        const admin = await prisma.admin.findUnique({
-            where: {email},
-        })
+// const admin_login = async (req, res) => {
+//     const { email, password } = req.body;
+//     try {
+//         const admin = await prisma.admin.findUnique({
+//             where: {email},
+//         })
 
-        if (admin) {
-            const match = await bcrypt.compare(password, admin.password);
-            if (match) {
-                return res.status(200).json({ message: 'Login successful' });
-            } else {
-                return res.status(401).json({ message: 'Incorrect password' });
-            }
-        } else {
-            return res.status(401).json({ message: 'Admin email not found' });
-        }
-    } catch (error) {
-        console.error('Error during admin login:', error);
-        res.status(500).json({ error: error.message });
-    }
-};
+//         if (admin) {
+//             const match = await bcrypt.compare(password, admin.password);
+//             if (match) {
+//                 return res.status(200).json({ message: 'Login successful' });
+//             } else {
+//                 return res.status(401).json({ message: 'Incorrect password' });
+//             }
+//         } else {
+//             return res.status(401).json({ message: 'Admin email not found' });
+//         }
+//     } catch (error) {
+//         console.error('Error during admin login:', error);
+//         res.status(500).json({ error: error.message });
+//     }
+// };
 
 // Get User Details
 const getUser = async (req, res) => {
@@ -221,6 +221,6 @@ const updateProfile = async (req, res) => {
 
 
 // Export functions
-module.exports = { registerUser, loginUser, admin_login, getUser , updateProfile }; 
+module.exports = { registerUser, loginUser,  getUser , updateProfile }; 
 
 
