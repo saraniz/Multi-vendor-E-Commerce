@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchProductDetails } from "../../Storage/Product/productAction";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { addToCart } from "../../Storage/Cart/cartAction"; // Ensure correct path
-import StarRating from "../Body/StarRating";
-import { Link } from "react-router-dom";
 import loadingAnimation from "../Loading/loadingAnimation";
+import { HiOutlineShoppingCart, HiOutlineShoppingBag } from "react-icons/hi"; // Import icons from react-icons/hi
+import StarRating from "../Body/StarRating"; // Assuming StarRating is a custom component
 
 const ProductDetails = () => {
   const { product_id } = useParams();
@@ -24,7 +24,7 @@ const ProductDetails = () => {
         setLoading(false); // Assuming fetchProductDetails is an async action
       } catch (error) {
         console.error("Error fetching product details:", error);
-      } finally {
+        setLoading(false);
       }
     };
 
@@ -43,7 +43,6 @@ const ProductDetails = () => {
     dispatch(addToCart(product_id, quantity, size));
   };
 
-  
   if (loading) return <loadingAnimation />;
   if (error) return <p>Error: {error}</p>;
   if (!products || !products.product) return <p>Product not found</p>;
@@ -53,25 +52,17 @@ const ProductDetails = () => {
       {/* Product Name */}
       <h1 className="text-2xl font-bold">{products?.product?.name}</h1>
 
-      <StarRating currentRating={products?.product?.rating} onRate={(newRating) => console.log("New rating:", newRating)} />
-
-      {/* Rating
-      <div className="flex items-center space-x-2">
-        <div className="flex text-yellow-500">
-          {[...Array(4)].map((_, index) => (
-            <span key={index}>&#9733;</span>
-          ))}
-          <span className="text-gray-300">&#9733;</span>
-        </div>
-        <span className="text-sm text-gray-500">4.5/5</span>
-      </div>
+      {/* Star Rating */}
+      <StarRating
+        currentRating={products?.product?.rating}
+        onRate={(newRating) => console.log("New rating:", newRating)}
+      />
 
       {/* Price */}
       <div className="flex items-center space-x-4">
         <span className="text-xl font-bold text-black">
-          {products?.product?.price}
+          {`Rs.${products?.product?.price.toFixed(2)}`}
         </span>
-        {/* <span className="text-sm text-gray-500 line-through">{products?.product?.price}</span> */}
       </div>
 
       {/* Description */}
@@ -115,23 +106,23 @@ const ProductDetails = () => {
         </div>
       </div>
 
-      {/* Add to Cart */}
-<div className="flex space-x-4">
-  <button
-    className="px-6 py-2 text-white rounded-md bg-blue-950 hover:bg-blue-800"
-    onClick={handleAddToCart}
-  >
-    Add to Cart
-  </button>
+      {/* Buttons */}
+      <div className="flex space-x-4">
+        <button
+          className="px-6 py-2 text-white rounded-md bg-blue-950 hover:bg-blue-800 flex items-center justify-center space-x-2"
+          onClick={handleAddToCart}
+        >
+          <HiOutlineShoppingCart size={20} /> {/* Larger Shopping Cart Icon */}
+          <span>Add to Cart</span>
+        </button>
 
-<Link to="/PaymentMethods">
-  <button className="px-6 py-2 text-white rounded-md bg-blue-950 hover:bg-blue-800">
-    Buy Now
-  </button>
-  </Link>
-</div>
-
-
+        <Link to="/PaymentMethods">
+          <button className="px-6 py-2 text-white rounded-md bg-blue-950 hover:bg-blue-800 flex items-center justify-center space-x-2">
+            <HiOutlineShoppingBag size={20} /> {/* Larger Shopping Bag Icon */}
+            <span>Buy Now</span>
+          </button>
+        </Link>
+      </div>
     </div>
   );
 };

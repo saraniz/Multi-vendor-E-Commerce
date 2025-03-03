@@ -56,7 +56,7 @@ const ProductCard = ({ product }) => {
       
           <p className="text-gray-600 truncate">{product.description}</p>
         
-        <p className="text-xl font-bold">Rs.{product.price}</p>
+        <p className="text-xl font-bold">Rs.{product.price}.00</p>
       </div>
 
       {/* Star Rating Display */}
@@ -76,7 +76,7 @@ const ProductCard = ({ product }) => {
             ))}
           </div>
         </div>
-        <span className="text-sm text-gray-600">({product.totalRatings} Ratings)</span>
+        <span className="text-sm text-gray-600">{product.totalRatings} </span>
       </div>
 
       {/* Seller Information */}
