@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchCartItems } from '../../../Storage/Cart/cartAction';
 import CartItem from './CartItem';
 import CartSummary from './CartSummary';
+import { Link } from "react-router-dom";
 
 const Cart = () => {
   const dispatch = useDispatch();
@@ -55,12 +56,20 @@ const Cart = () => {
           />
         ))}
       </div>
-      <CartSummary
-        subtotal={subtotal}
-        serviceCharge={serviceCharge}
-        taxes={taxes}
-        total={total}
-      />
+      <div className="flex flex-col ">
+        <CartSummary
+          subtotal={subtotal}
+          serviceCharge={serviceCharge}
+          taxes={taxes}
+          total={total}
+        />
+        <Link to="/PaymentMethods" className="w-full">
+  <button className="w-full px-6 py-3 mt-4 font-bold text-white transition duration-300 bg-blue-500 rounded-lg hover:bg-blue-600">
+    Buy Now
+  </button>
+</Link>
+
+      </div>
     </div>
   );
 };

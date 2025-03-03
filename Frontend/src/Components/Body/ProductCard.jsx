@@ -1,16 +1,16 @@
 import React from "react";
-import { FaHeart, FaShoppingCart } from "react-icons/fa";
-import { Link, useRoutes } from "react-router-dom";
+import { FaHeart, FaShoppingCart, FaStar } from "react-icons/fa";
+import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { addFavorite } from "../../Storage/Favorite/favAction";
 
 const ProductCard = ({ product }) => {
   const dispatch = useDispatch();
   const { auth } = useSelector((store) => store);
-
   const reg_id = auth.user?.reg_id;
 
-  console.log("reg_id:", auth.user?.reg_id); // Debug the reg_id
+  console.log("reg_id:", reg_id); // Debugging reg_id
+  console.log("Product:", product); // Debugging product data
 
   const handleAddToFavorites = () => {
     if (!reg_id) {
@@ -20,15 +20,13 @@ const ProductCard = ({ product }) => {
     dispatch(addFavorite(reg_id, product.product_id));
   };
 
-  console.log("pro ", product);
-
-  const itemName = "Red Frock";
-  // const shopname="D-Mart";
+  // Calculate rating percentage
+  const ratingPercentage = (product.rating / 5) * 100;
 
   return (
     <div className="w-64 p-4 transition-all duration-300 ease-in-out rounded-lg hover:border hover:scale-105 hover:shadow-lg">
       {/* Product Image */}
-      <div className="relative group">
+      <div className="relative">
         <Link to={`/Productpage/${product.product_id}`}>
           <img
             src={product.product_image}
@@ -36,14 +34,14 @@ const ProductCard = ({ product }) => {
             className="object-cover w-full h-40 rounded-lg cursor-pointer"
           />
         </Link>
-        {/* Hoverable Name Section */}
-        <div className="absolute bottom-0 left-0 w-full px-4 py-2 text-white bg-gradient-to-r from-black to-transparent opacity-0 group-hover:opacity-100">
+        <div className="absolute bottom-0 left-0 w-full px-4 py-2 text-white bg-gradient-to-r from-black to-transparent">
           <p className="font-semibold">{product.name}</p>
         </div>
+
         {/* Icons for like and cart */}
         <div className="absolute bottom-0 right-0 flex p-2 space-x-2">
           <button onClick={handleAddToFavorites}>
-            <FaHeart className="text-white cursor-pointer hover:text-red-500 transition duration-300" />
+            <FaHeart className="text-white transition duration-300 cursor-pointer hover:text-red-500" />
           </button>
           <button>
             <FaShoppingCart className="text-white" />
@@ -53,24 +51,37 @@ const ProductCard = ({ product }) => {
 
       {/* Product Information */}
       <div className="mt-3">
-        <Link to={"/Productpage"}>
-          <a href="">
-            <p className="text-gray-600 truncate">{product.description}</p>
-          </a>
+        <Link to={`/Productpage/${product.product_id}`}>
+          <p className="text-gray-600 truncate">{product.description}</p>
         </Link>
-        <p className="text-xl font-bold">{`Rs.${product.price.toFixed(2)}`}</p>
+        <p className="text-xl font-bold">${product.price}</p>
+      </div>
+
+      {/* Star Rating Display */}
+      <div className="flex items-center mt-2 space-x-2">
+        <div className="relative w-24 h-5">
+          <div className="absolute flex w-full text-gray-300">
+            {[...Array(5)].map((_, index) => (
+              <FaStar key={index} />
+            ))}
+          </div>
+          <div
+            className="absolute top-0 left-0 flex overflow-hidden text-yellow-500"
+            style={{ width: `${ratingPercentage}%` }}
+          >
+            {[...Array(5)].map((_, index) => (
+              <FaStar key={index} />
+            ))}
+          </div>
+        </div>
+        <span className="text-sm text-gray-600">({product.totalRatings} Ratings)</span>
       </div>
 
       {/* Seller Information */}
       <div className="flex items-center mt-3">
         <Link to={"/ShopHome"}>
-          <img
-            src={product.store_image}
-            alt="Seller"
-            className="w-10 h-10 rounded-full"
-          />
+          <img src={product.store_image} alt="Seller" className="w-10 h-10 rounded-full" />
         </Link>
-
         <Link to={"/ShopHome"}>
           <p className="ml-3 text-sm font-semibold">{product.store_name}</p>
         </Link>

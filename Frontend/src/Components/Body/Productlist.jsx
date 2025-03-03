@@ -9,7 +9,7 @@ function ProductList({ products }) {
   return (
 
 
-    <div className="w-full flex flex-wrap justify-between">
+    <div className="flex flex-wrap justify-between w-full">
     {products && products.length > 0 ? (
       products.map((product) => (
         <div key={product.id} className="w-[23%] mb-5">
