@@ -36,7 +36,7 @@ function PaymentMethods() {
   return (
     <div>
       <Navbar />
-      <div className="flex max-w-6xl gap-10 p-8 mx-auto mt-10 bg-white shadow-lg mb-28 rounded-2xl">
+      <div className="flex max-w-6xl gap-10 p-8 mx-auto mt-10 mb-20 bg-white shadow-lg rounded-2xl">
         {/* Left Side: Payment Methods */}
         <div className="w-1/3 space-y-6">
           <h2 className="mb-4 text-2xl font-semibold">Select Payment Method</h2>
