@@ -6,6 +6,7 @@ import Navbar from '../Components/Header/Navbar'
 import Footer from '../Components/Footer/Footer'
 import { useParams } from "react-router-dom";
 import { fetchProductDetails } from "../Storage/Product/productAction";
+import ReviewComponent from "../Components/Body/ReviewComponent";
 import { useDispatch } from "react-redux";
 
 const Productpage = () => {
@@ -21,13 +22,17 @@ const Productpage = () => {
   
   return (
     <div><Navbar/>
-    <div className="flex justify-center p-8 mb-40 space-x-8">
+    <div className="flex justify-center pt-8 mb-10 space-x-8">
       {/* Left Side - Image Gallery */}
       <ImageGallery />
 
       {/* Right Side - Product Details */}
       <ProductDetails  />
     </div>
+    {/* Review Section */}
+<div className="w-full px-8">
+  <ReviewComponent />
+</div>
     <Footer/>
     </div>
   );
