@@ -24,7 +24,6 @@ function CustomerProfile() {
 
 
   useEffect(() => {
-
     
     if (!auth.user) {
       Swal.fire({
@@ -42,30 +41,34 @@ function CustomerProfile() {
         }
       });
     } else {
-      dispatch(getUserProfile());
+      // dispatch(getUserProfile());
+      navigate("/CustomerProfile")
     }
 
 
     // Sample data for display
     const sampleShops = [
-      { id: 1, name: 'Shop A', image: 'https://via.placeholder.com/50' },
-      { id: 2, name: 'Shop B', image: 'https://via.placeholder.com/50' },
-      { id: 3, name: 'Shop C', image: 'https://via.placeholder.com/50' },
-      { id: 4, name: 'Shop D', image: 'https://via.placeholder.com/50' },
-      { id: 5, name: 'Shop E', image: 'https://via.placeholder.com/50' },
-      { id: 6, name: 'Shop F', image: 'https://via.placeholder.com/50' },
+      { id: 1, name: 'Shop A', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS12497t9DLWo6-xa-wqQRFdKFh-0OSwUZCfQ&s' },
+      { id: 2, name: 'Shop B', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhp5hhn9RNbii41Y8wjvgWF9UOqyYKihh1cw&s' },
+      { id: 3, name: 'Shop C', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxajfI2O_L2XDi8bp7uKuIrbCATwDu1EofrA&s' },
+      { id: 4, name: 'Shop D', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRraPTdnA9jhvj69HW2tiwJrNnxxnfb2Pm5_g&s' },
+      { id: 5, name: 'Shop E', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQEwPH6-25Hs055SvThklDXy3-vBFHMJ_7U2g&s' },
+      { id: 6, name: 'Shop F', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnlkDM_rm4CQmJrffCzh9n6K8p21zDbqBNPiGI_B1sUq8ndYUB-4lap9FbtvXBWw7ztwE&usqp=CAU' },
     ];
 
     const sampleMonthlyCosts = [
-      { shopName: 'Shop A', amount: 120, image: 'https://via.placeholder.com/40' },
-      { shopName: 'Shop B', amount: 80, image: 'https://via.placeholder.com/40' },
-      { shopName: 'Shop C', amount: 50, image: 'https://via.placeholder.com/40' },
+      { shopName: 'Shop A', amount: 120, image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS12497t9DLWo6-xa-wqQRFdKFh-0OSwUZCfQ&s' },
+      { shopName: 'Shop B', amount: 80, image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhp5hhn9RNbii41Y8wjvgWF9UOqyYKihh1cw&s' },
+      { shopName: 'Shop C', amount: 50, image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxajfI2O_L2XDi8bp7uKuIrbCATwDu1EofrA&s' },
+      { shopName: 'Shop D', amount: 40, image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRraPTdnA9jhvj69HW2tiwJrNnxxnfb2Pm5_g&s' },
+      { shopName: 'Shop E', amount: 100, image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQEwPH6-25Hs055SvThklDXy3-vBFHMJ_7U2g&s' },
+      { shopName: 'Shop F', amount: 60, image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnlkDM_rm4CQmJrffCzh9n6K8p21zDbqBNPiGI_B1sUq8ndYUB-4lap9FbtvXBWw7ztwE&usqp=CAU' }
     ];
 
     // Set the sample data to state
     setFollowedShops(sampleShops);
     setMonthlyCosts(sampleMonthlyCosts);
-  }, [jwt,navigate,dispatch]);
+  }, [jwt,auth]);
 
   const handlePrev = () => {
     setCurrentIndex((prevIndex) =>
@@ -79,6 +82,8 @@ function CustomerProfile() {
     );
   };
 
+
+  console.log("seller? ",auth.user?.isSeller)
 
   return (
     <div>
@@ -120,9 +125,9 @@ function CustomerProfile() {
           </div>
 
           {/* Complete Orders and Monthly Cost */}
-          <div className="grid grid-cols-2 gap-6">
+          <div className="grid grid-cols-2 gap-6 ">
             {/* Complete Orders */}
-            <div className="p-4 bg-white rounded-lg shadow">
+            <div className="p-4 border border-gray-200 rounded-lg shadow-md">
               <h3 className="mb-2 font-semibold text-md">Complete Orders</h3>
               <div className="relative w-32 h-32 mx-auto">
                 <svg viewBox="0 0 36 36" className="w-full h-full">
@@ -152,34 +157,40 @@ function CustomerProfile() {
               </div>
             </div>
 
-            {/* Monthly Cost */}
-            <div className="p-4 bg-gray-100 rounded-lg shadow">
-              <h3 className="mb-4 font-semibold text-md">Monthly Cost</h3>
-              {monthlyCosts.map((cost, index) => (
-                <div key={index} className="flex items-center justify-between mb-2">
-                  <img
-                    src={cost.image}
-                    alt={cost.shopName}
-                    className="w-10 h-10 rounded-full"
-                  />
-                  <span className="font-medium text-md">${cost.amount}</span>
-                </div>
-              ))}
-              <div className="flex items-center justify-between mt-4 font-bold">
-                <span>Total</span>
-                <span>
-                  $
-                  {monthlyCosts.reduce((total, cost) => total + cost.amount, 0)}
-                </span>
-              </div>
-            </div>
+           {/* Monthly Cost */}
+<div className="p-2 bg-white border border-gray-200 rounded-lg shadow-md">
+  <h3 className="mb-4 font-semibold text-md">Monthly Expenses</h3>
+  <div className="space-y-3 overflow-y-auto max-h-32">
+    {monthlyCosts.map((cost, index) => (
+      <div key={index} className="flex items-center justify-between p-3 transition-all rounded-md shadow-sm bg-gray-50 hover:bg-gray-100">
+        <div className="flex items-center">
+          <img
+            src={cost.image}
+            alt={cost.shopName}
+            className="w-8 h-8 border border-gray-300 rounded-full shadow-sm"
+          />
+          <span className="ml-4 font-medium text-gray-700 text-md">{cost.shopName}</span>
+        </div>
+        <span className="font-semibold text-blue-600 text-md">${cost.amount}</span>
+      </div>
+    ))}
+  </div>
+  <div className="flex items-center justify-between p-4 mt-4 text-lg font-bold border-t-2 border-gray-200 rounded-b-lg bg-gradient-to-r from-gray-100 to-gray-50">
+    <span className="text-gray-800">Total Spent:</span>
+    <span className="text-xl text-green-600">${monthlyCosts.reduce((total, cost) => total + cost.amount, 0)}</span>
+  </div>
+</div>
           </div>
 
           {/* My Shop Button - Bottom */}
+
           <div className="flex justify-center mt-8">
+            {auth.user?.isSeller && (
           <Link to='/SellerDashboard'><button className="px-6 py-3 text-white bg-blue-500 rounded-lg shadow-md hover:bg-blue-600">
               Seller profile
             </button></Link>
+            )}
+
             <Link to='/BusinessRegistrationForm'><button className="flex items-center px-6 py-3 mx-3 text-white bg-blue-500 rounded-lg shadow-md hover:bg-blue-600">
               Be A seller
             </button></Link>

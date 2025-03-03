@@ -20,6 +20,7 @@ import ItemList from './Pages/ItemList';
 import SellerDashboard from './Pages/SellerDashboard';
 import MyShop from './Pages/MyShop.js';
 import BusinessRegistrationForm from './Pages/BusinessRegistrationForm.js';
+import AdminDashboard from './Pages/AdminDashboard.js';
 import SearchPage from './Pages/SearchPage';
 // import SellerLogin from './Pages/SellerLogin.js'
 
@@ -33,7 +34,7 @@ function App() {
     if(jwt){
     dispatch(getUserProfile())
     }
-  },[])
+  },[jwt])
 
   console.log("your jwt:",jwt)
 
@@ -57,6 +58,7 @@ function App() {
         <Route  path= "/SellerDashboard" element={<SellerDashboard/>}></Route>
         <Route  path= "/MyShop" element={<MyShop/>}></Route>
         <Route  path= "/BusinessRegistrationForm" element={<BusinessRegistrationForm/>}></Route>
+        <Route  path= "/AdminDashboard" element={<AdminDashboard/>}></Route>
         <Route  path= "/SearchPage" element={<SearchPage/>}></Route>
         {/* <Route path="/SellerLogin" element={<SellerLogin/>}></Route> */}
         {/* <Route path="/product/:product_id" element={<ProductDetails />} /> */}
