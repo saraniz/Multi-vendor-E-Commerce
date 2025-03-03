@@ -3,6 +3,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { fetchProductDetails } from "../../Storage/Product/productAction";
 import { useParams } from "react-router-dom";
 import { addToCart } from "../../Storage/Cart/cartAction"; // Ensure correct path
+import StarRating from "../Body/StarRating";
+import { Link } from "react-router-dom";
 import loadingAnimation from "../Loading/loadingAnimation";
 
 const ProductDetails = () => {
@@ -41,6 +43,7 @@ const ProductDetails = () => {
     dispatch(addToCart(product_id, quantity, size));
   };
 
+  
   if (loading) return <loadingAnimation />;
   if (error) return <p>Error: {error}</p>;
   if (!products || !products.product) return <p>Product not found</p>;
@@ -49,6 +52,8 @@ const ProductDetails = () => {
     <div className="flex flex-col space-y-4">
       {/* Product Name */}
       <h1 className="text-2xl font-bold">{products?.product?.name}</h1>
+
+      <StarRating currentRating={products?.product?.rating} onRate={(newRating) => console.log("New rating:", newRating)} />
 
       {/* Rating
       <div className="flex items-center space-x-2">
@@ -59,7 +64,7 @@ const ProductDetails = () => {
           <span className="text-gray-300">&#9733;</span>
         </div>
         <span className="text-sm text-gray-500">4.5/5</span>
-      </div> */}
+      </div>
 
       {/* Price */}
       <div className="flex items-center space-x-4">
@@ -119,9 +124,11 @@ const ProductDetails = () => {
     Add to Cart
   </button>
 
+<Link to="/PaymentMethods">
   <button className="px-6 py-2 text-white rounded-md bg-blue-950 hover:bg-blue-800">
     Buy Now
   </button>
+  </Link>
 </div>
 
 

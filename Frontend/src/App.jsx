@@ -22,6 +22,7 @@ import MyShop from './Pages/MyShop.js';
 import BusinessRegistrationForm from './Pages/BusinessRegistrationForm.js';
 import AdminDashboard from './Pages/AdminDashboard.js';
 import SearchPage from './Pages/SearchPage';
+import PaymentMethods from './Pages/PaymentMethods.js';
 // import SellerLogin from './Pages/SellerLogin.js'
 
 function App() {
@@ -60,6 +61,7 @@ function App() {
         <Route  path= "/BusinessRegistrationForm" element={<BusinessRegistrationForm/>}></Route>
         <Route  path= "/AdminDashboard" element={<AdminDashboard/>}></Route>
         <Route  path= "/SearchPage" element={<SearchPage/>}></Route>
+        <Route  path= "/PaymentMethods" element={<PaymentMethods/>}></Route>
         {/* <Route path="/SellerLogin" element={<SellerLogin/>}></Route> */}
         {/* <Route path="/product/:product_id" element={<ProductDetails />} /> */}
       
