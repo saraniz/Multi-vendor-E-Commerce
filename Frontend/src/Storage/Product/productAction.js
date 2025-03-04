@@ -63,6 +63,7 @@ export const fetchAllProducts = () => async (dispatch) => {
   }
 };
 
+//addproduct
 export const addProducts = (productData) => async (dispatch) => {
   dispatch({ type: ADD_PRODUCT_REQUEST });
 
@@ -72,8 +73,6 @@ export const addProducts = (productData) => async (dispatch) => {
 
     console.log('add items 2: ',productData)
     const token = localStorage.getItem("jwt");
-
- 
 
     // Debug: Check FormData contents
     // console.log("Form Data contents:");
