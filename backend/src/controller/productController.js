@@ -151,91 +151,85 @@ const getSellerProduct = async (req,res) =>{
 // }
 
 // Product Image ADD ⭕
-const addProductImg = async (req, res) => {
-    const {id} = req;
-    const form = formidable({ multiples: true });
+// const addProductImg = async (req, res) => {
+//     const {id} = req;
+//     const form = formidable({ multiples: true });
 
-    // Configure Cloudinary
-    cloudinary.config({
-        cloud_name: process.env.CLOUD_NAME,
-        api_key: process.env.API_KEY,
-        api_secret: process.env.API_SECRET,
-        secure: true
-    });
-    // <--- 🔴We need to add image (file-url) field  & (shopName <-- IF you like)
-    form.parse(req, async (err, fields, files) => {
-        if (err) {
-            return res.status(400).json({ error: 'Form parsing failed' });
-        }
+//     // Configure Cloudinary
+//     cloudinary.config({
+//         cloud_name: process.env.CLOUD_NAME,
+//         api_key: process.env.API_KEY,
+//         api_secret: process.env.API_SECRET,
+//         secure: true
+//     });
+//     // <--- 🔴We need to add image (file-url) field  & (shopName <-- IF you like)
+//     form.parse(req, async (err, fields, files) => {
+//         if (err) {
+//             return res.status(400).json({ error: 'Form parsing failed' });
+//         }
 
-        let { name, description, stock, price } = fields;   
+//         let { name, description, stock, price } = fields;   
         
-        // Trim names <------ ex - "  dunith   " --> "dunith"
-        name = name.trim();
-        description = description.trim();
+//         // Trim names <------ ex - "  dunith   " --> "dunith"
+//         name = name.trim();
+//         description = description.trim();
 
-        // lets upload images to the cloudinary 
-        try{
-            let imageUrls = [];
-            if (files.images) {
-                const imageFiles = Array.isArray(files.images) ? files.images : [files.images];
-                for (const image of imageFiles) {
-                    const result = await cloudinary.uploader.upload(image.filepath, {
-                        folder: 'Products'
-                    });
-                    imageUrls.push(result.secure_url);
-                }
-            }
+//         // lets upload images to the cloudinary 
+//         try{
+//             let imageUrls = [];
+//             if (files.images) {
+//                 const imageFiles = Array.isArray(files.images) ? files.images : [files.images];
+//                 for (const image of imageFiles) {
+//                     const result = await cloudinary.uploader.upload(image.filepath, {
+//                         folder: 'Products'
+//                     });
+//                     imageUrls.push(result.secure_url);
+//                 }
+//             }
 
-            // Insert data into Supabase
-            const { data, error } = await supabase
-                .from('Products') // Folder in Cloudinary ('Products')
-                .insert([
-                    {
-                        seller_id: id,     //  Find a way to get the seller id (DataBase Side ())
-                        name,
-                        description,
-                        stock: parseInt(stock),
-                        price: parseFloat(price),
-                        //shop_name: shopName,
-                        images: imageUrls
-                    }
-                ]);
-
-                if (error) {
-                    throw error;
-                }
+//             const product = await prisma.product.create({
+//                 data: {
+//                   // There is not a seller Model 🔴🔴
+//                   seller_id: id, 
+//                   name,
+//                   description,
+//                   stock: parseInt(stock),
+//                   price: parseFloat(price),
+//                   images: imageUrls,
+//                 },
+//               });
     
-                res.status(200).json({ message: 'Product Iamge added successfully', data });
-        }
-        catch(error){
-            res.status(500).json({ error: error.message });
-        }
+//                 res.status(200).json({ message: 'Product Iamge added successfully', data });
+//         }
+//         catch(error){
+//             res.status(500).json({ error: error.message });
+//         }
         
-    })
-}
+//     })
+// }
 
-// product Image Update 
-const product_image_update = async (req, res) => {
-    const form = formidable({ multiples: true });
+// product Image Update ⭕
+// const product_image_update = async (req, res) => {
+//     const form = formidable({ multiples: true });
 
-    // Configure Cloudinary
-    cloudinary.config({
-        cloud_name: process.env.CLOUD_NAME,
-        api_key: process.env.API_KEY,
-        api_secret: process.env.API_SECRET,
-        secure: true
-    });
+//     // Configure Cloudinary
+//     cloudinary.config({
+//         cloud_name: process.env.CLOUD_NAME,
+//         api_key: process.env.API_KEY,
+//         api_secret: process.env.API_SECRET,
+//         secure: true
+//     });
 
-    form.parse(req, async (err, field, files) => {
-        const { oldImage, id } = field;
-        const { newImage } = files;
+//     form.parse(req, async (err, field, files) => {
+//         const { oldImage, id } = field;
+//         const { newImage } = files;
 
-        if (err) {
-            return responseReturn(res, 400, { error: err.message });
-        }
+//         if (err) {
+//             return responseReturn(res, 400, { error: err.message });
+//         }
 
-
+//         const result = await cloudinary.uploader.upload(newImage.filepath, { folder: 'Products' });
+        
 
 
         
@@ -244,7 +238,4 @@ const product_image_update = async (req, res) => {
 )}
 
 
-
-
-
-module.exports = {addProduct,updateProduct,deleteProduct,getSellerProduct, addProductImg};
+module.exports = {addProduct,updateProduct,deleteProduct,getSellerProduct};
