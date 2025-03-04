@@ -59,17 +59,17 @@ const getAdminDashboardData = async (req, res) => {
     res.json({
         message: "Admin Dashboard Data",
         data: {
-            totalProducts
-            //totalCarts
-            //totalRevenue: totalRevenue._sum.price || 0
+            totalProducts,
+            //totalCarts,
+            //totalRevenue: totalRevenue._sum.price ?? 0
         }
     });
     
 } catch (error) {
     res.status(500).json({ message: "Error fetching dashboard data", error: error.message });
-} finally {
-    await prisma.$disconnect();  
-  }
+ } //finally {
+//     await prisma.$disconnect();  
+//   }
 }
 
 // Block Store 

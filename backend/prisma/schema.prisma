@@ -114,3 +114,16 @@ model favorite{
 
   @@unique([reg_id, product_id]) // Ensure a user can only favorite a product once
 }
+
+// admin model 
+model admin {
+    admin_id  Int @id @default(autoincrement()) // Primary key
+    reg_id    Int   // Foreign key 
+    email     String  @unique
+    password  String
+    role      String  @default("admin")
+
+    // Relations
+    user user   @relation(fields: [reg_id], references: [reg_id])  
+  @@map("admin")
+}
