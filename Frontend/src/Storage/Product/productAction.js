@@ -4,6 +4,7 @@ import Swal from "sweetalert2";
 import {
   ADD_PRODUCT_FAILURE,
   ADD_PRODUCT_REQUEST,
+  ADD_PRODUCT_SUCCESS,
   FETCH_ALLPRODUCT_FAILURE,
   FETCH_ALLPRODUCT_REQUEST,
   FETCH_ALLPRODUCT_SUCCESS,
@@ -62,7 +63,6 @@ export const fetchAllProducts = () => async (dispatch) => {
   }
 };
 
-//action to add a new product
 export const addProducts = (productData) => async (dispatch) => {
   dispatch({ type: ADD_PRODUCT_REQUEST });
 

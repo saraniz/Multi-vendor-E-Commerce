@@ -2,6 +2,7 @@ const express = require('express');
 const {searchItems, productDetails, getProductDetails, getAllProducts, addProduct} = require('../controller/itemController')
 const router = express.Router();
 const authenticate = require('../middleware/authMiddleware')
+// const upload = require ('../middleware/upload')
 
 // Route for searching items
 router.post('/search', searchItems);

@@ -26,7 +26,6 @@ const EditProfile = () => {
       setFullName(user.fullName || '');
       setTeleNumber(user.teleNumber || '');
       setAddress(user.address || '');
-      // Assuming profilePicture is a URL or file path
       setProfilePicture(user.profilePicture || null);
     }
   }, [user]);
@@ -45,34 +44,32 @@ const EditProfile = () => {
   };
 
   return (
-    <div>
+    <div className="bg-gray-50 min-h-screen">
       <Navbar />
       <div className="flex min-h-screen">
         {/* Sidebar */}
         <CustomerNavbar />
 
         {/* Main Content */}
-        <div className="flex-grow p-6 space-y-8">
+        <div className="flex-grow p-8 space-y-6 max-w-3xl mx-auto">
           {/* Edit Name */}
           <div className="space-y-2">
-            <h2 className="text-lg font-medium">Edit Name</h2>
-            <div className="flex items-center space-x-4">
-              <input
-                type="text"
-                value={fullName}
-                onChange={(e) => setFullName(e.target.value)}
-                placeholder="Full Name"
-                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-indigo-300"
-              />
-            </div>
+            <h2 className="text-lg font-semibold text-gray-700">Edit Name</h2>
+            <input
+              type="text"
+              value={fullName}
+              onChange={(e) => setFullName(e.target.value)}
+              placeholder="Full Name"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
+            />
           </div>
 
           {/* Edit Profile Picture */}
           <div className="space-y-2">
-            <h2 className="text-lg font-medium">Edit Profile Picture</h2>
+            <h2 className="text-lg font-semibold text-gray-700">Edit Profile Picture</h2>
             <div className="flex flex-col items-center">
-              <label className="flex items-center justify-center w-24 h-24 bg-gray-300 rounded-full cursor-pointer">
-                <span className="text-2xl font-bold">+</span>
+              <label className="flex items-center justify-center w-24 h-24 bg-gray-200 rounded-full cursor-pointer hover:bg-gray-300 transition-colors">
+                <span className="text-2xl font-bold text-gray-600">+</span>
                 <input
                   type="file"
                   onChange={(e) => setProfilePicture(e.target.files[0])}
@@ -84,37 +81,33 @@ const EditProfile = () => {
 
           {/* Edit Tele Number */}
           <div className="space-y-2">
-            <h2 className="text-lg font-medium">Edit Tele Number</h2>
-            <div className="flex items-center space-x-4">
-              <input
-                type="text"
-                value={teleNumber}
-                onChange={(e) => setTeleNumber(e.target.value)}
-                placeholder="Tele Number"
-                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-indigo-300"
-              />
-            </div>
+            <h2 className="text-lg font-semibold text-gray-700">Edit Phone Number</h2>
+            <input
+              type="text"
+              value={teleNumber}
+              onChange={(e) => setTeleNumber(e.target.value)}
+              placeholder="Phone Number"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
+            />
           </div>
 
           {/* Edit Address */}
           <div className="space-y-2">
-            <h2 className="text-lg font-medium">Edit Address</h2>
-            <div className="space-y-2">
-              <textarea
-                value={address}
-                onChange={(e) => setAddress(e.target.value)}
-                placeholder="Address"
-                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-indigo-300"
-                rows="4"
-              />
-            </div>
+            <h2 className="text-lg font-semibold text-gray-700">Edit Address</h2>
+            <textarea
+              value={address}
+              onChange={(e) => setAddress(e.target.value)}
+              placeholder="Address"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
+              rows="3"
+            />
           </div>
 
           {/* Single Save Button */}
           <div className="flex justify-end">
             <button
               onClick={handleSaveAll}
-              className="px-6 py-2 text-sm bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+              className="px-6 py-2 text-sm bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors shadow-md"
             >
               Save All
             </button>

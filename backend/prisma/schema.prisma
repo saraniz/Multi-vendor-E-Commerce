@@ -114,3 +114,19 @@ model favorite{
 
   @@unique([reg_id, product_id]) // Ensure a user can only favorite a product once
 }
+
+//review model
+model review{
+  review_id Int @id @default(autoincrement())
+  content String
+  rating Int
+  reg_id Int
+  product_id Int
+
+  // Relationships
+  user       user     @relation(fields: [reg_id], references: [reg_id]) // Foreign key to the user model
+  product    product  @relation(fields: [product_id], references: [product_id]) // Foreign key to the product model
+
+  @@map("review") // Map to actual table "review"
+  @@unique([reg_id, product_id]) // Ensure a user can only review a product once
+}
