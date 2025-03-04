@@ -61,7 +61,7 @@ function Navbar() {
 
     try {
       // Dispatch the Redux action and get the results
-      const response =  dispatch(searchItems(searchQuery));
+      const response =  await dispatch(searchItems(searchQuery));
 
       if (response && response.length > 0) {
         setSearchResults(response); // Update the results state

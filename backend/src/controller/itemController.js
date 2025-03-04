@@ -5,6 +5,12 @@ const prisma = new PrismaClient();
 const searchItems = async (req, res) => {
   const { searchQuery } = req.body;
 
+  console.log("Received search query:", searchQuery); // Debugging line
+
+  if (!searchQuery) {
+    return res.status(400).json({ message: "Search query is required" });
+  }
+
   try {
     // Searches in products only (without store)
     const results = await prisma.product.findMany({
@@ -79,86 +85,8 @@ const getAllProducts = async (req, res) => {
   }
 };
 
-//add items
-// const addProduct = async (req, res) => {
-//   try {
-//     // Extract seller id from JWT
-//     const userId = req.user.reg_id;
 
-//     const { name, description, price, stock, category,productImages} = req.body;
-//     let { isPremium } = req.body;
 
-//     // Convert isPremium to boolean (if user clicks premium button, it's "true")
-//     isPremium = isPremium === "true";
-
-//     // Validate input fields
-//     if (!name || !description || !price || !stock || !category) {
-//       return res.status(400).json({ error: "All product fields are required." });
-//     }
-
-//     // Fetch user and seller details using userId
-//     const user = await prisma.user.findUnique({
-//       where: { reg_id: userId },
-//       select: {
-//         reg_id: true,
-//         isSeller: true,  // Select the 'isSeller' column
-//         seller: {        // Include seller details
-//           select: {
-//             seller_id: true,
-//             store: {      // Include store details for seller
-//               select: {
-//                 store_id: true,
-//                 store_name: true,
-//                 // store_image: true
-//               }
-//             }
-//           }
-//         }
-//       }
-//     });
-
-//     if (!user || !user.isSeller) {
-//       return res.status(400).json({ error: "User is not a seller." });
-//     }
-
-//     // Fetch store details using seller_id
-//     const store = user.seller?.store; // Get the store related to the seller_id
-
-//     if (!store) {
-//       return res.status(400).json({ error: "Store not found for this seller" });
-//     }
-
-//     // Image handling commented out for now
-//     // const productImages = req.files ? req.files.map(file => file.buffer.toString("base64")) : [];
-
-//     // Insert new product into the database
-//     const newProduct = await prisma.product.create({
-//       data: {
-//         name,
-//         description,
-//         price: parseFloat(price),
-//         stock: parseInt(stock),
-//         category,
-//         isPremium,
-//         store_id: store.store_id,
-//         store_name: store.store_name,
-//         store_image: null,
-//         product_image: productImages.length ? JSON.stringify(productImages) : null // Handle image data
-//       }
-//     });
-
-//     res.status(201).json({
-//       message: "Product added successfully",
-//       product: newProduct
-//     });
-
-//   } catch (error) {
-//     console.error("Error adding product:", error);
-//     res.status(500).json({ error: "Internal server error." });
-//   }
-// };
-
-// Add items
 
 const addProduct = async (req, res) => {
   const userId = req.user.reg_id; // Extract the reg_id from JWT token
@@ -237,5 +165,4 @@ const addProduct = async (req, res) => {
     return res.status(500).json({ message: "Internal server error" });
   }
 };
-
 module.exports = { searchItems, getProductDetails, getAllProducts, addProduct };
