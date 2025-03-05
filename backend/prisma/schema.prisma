@@ -66,6 +66,8 @@ model product {
   // Add the inverse relation to cart
   carts         cart[]   // A product can be in many carts
   favorites     favorite[] // A product can be favorited by many users
+  reviews       review[]  // A product can have many reviews
+
 
   @@map("product") // Map to actual table "product"
 }
@@ -115,4 +117,16 @@ model favorite{
   @@unique([reg_id, product_id]) // Ensure a user can only favorite a product once
 }
 
-//delete review model
+//review model
+model review{
+  review_id Int @id @default(autoincrement())
+  content String 
+  userName String
+  product_id Int
+
+  product product @relation(fields: [product_id], references: [product_id]) // Foreign key relation with product model
+
+
+  @@map("review") // Map to the actual table "review" (or any other name if you want to map it differently)
+
+}
