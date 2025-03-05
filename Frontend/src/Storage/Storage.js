@@ -5,6 +5,7 @@ import searchReducer from './Search/SearchReducers';
 import productReducer from "./Product/productReducer";
 import cartReducer from "./Cart/cartReducer";
 import favReducer from "./Favorite/favReducer";
+import reviewReducer from "./Review/reviewReducer";
 
 
 
@@ -14,6 +15,7 @@ const rootReducers = combineReducers({
     products: productReducer, // Ensure this key matches your `useSelector` path
     cart: cartReducer,
     fav: favReducer,
+    review: reviewReducer,
 })
 
 export const store = legacy_createStore(rootReducers,applyMiddleware(thunk));
