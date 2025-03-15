@@ -23,6 +23,9 @@ import BusinessRegistrationForm from './Pages/BusinessRegistrationForm.js';
 import AdminDashboard from './Pages/AdminDashboard.js';
 import SearchPage from './Pages/SearchPage';
 import PaymentMethods from './Pages/PaymentMethods.js';
+import Customerlist from './Pages/Admin/Customerlist.js';
+import Shoplist from './Pages/Admin/Shoplist.js';
+
 // import SellerLogin from './Pages/SellerLogin.js'
 
 function App() {
@@ -62,6 +65,8 @@ function App() {
         <Route  path= "/AdminDashboard" element={<AdminDashboard/>}></Route>
         <Route  path= "/SearchPage" element={<SearchPage/>}></Route>
         <Route  path= "/PaymentMethods" element={<PaymentMethods/>}></Route>
+        <Route  path= "/Customerlist" element={<Customerlist/>}></Route>
+        <Route  path= "/Shoplist" element={<Shoplist/>}></Route>
         {/* <Route path="/SellerLogin" element={<SellerLogin/>}></Route> */}
         {/* <Route path="/product/:product_id" element={<ProductDetails />} /> */}
       

@@ -10,7 +10,8 @@ function ShopSettings() {
       <div className="flex min-h-screen">
         {/* Sidebar */}
         <SellerNavbar />
-        ShopSettings
+        shopsettings
+        <h1 className='text-[50px] pt-10 font-semibold pl-[120px]'>THIS PAGE IS IN UNDER CONSTRUCTION</h1>
       </div>
       <Footer />
     </div>

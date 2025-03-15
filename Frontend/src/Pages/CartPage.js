@@ -1,34 +1,30 @@
-import { useState, useEffect } from "react";
-import { useParams, useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { submitReview } from '../Storage/Review/reviewAction';
-import Swal from "sweetalert2";
+import React, { useState,useEffect } from 'react';
+import Navbar from '../Components/Header/Navbar';
+import Footer from '../Components/Footer/Footer';
+import CustomerNavbar from '../Components/Body/CustomerNavbar';
+import Cart from '../Components/Body/Cart/Cart';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
-const ReviewComponent = () => {
-  const { product_id } = useParams();
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const { reviews, loading, error } = useSelector((state) => state.review);
-  const auth = useSelector((state) => state.auth);
 
-  const [newReview, setNewReview] = useState({
-    userName: "",
-    content: "",
-  });
+function CartPage() {
 
-  // Check authentication on component mount
+  const navigate = useNavigate()
+  const { auth } = useSelector(state => state)
+
   useEffect(() => {
     if (!auth.user) {
       Swal.fire({
         title: "Login Required",
-        text: "You need to log in to submit a review.",
+        text: "You need to log in to access your cart.",
         icon: "warning",
         showCancelButton: true,
         confirmButtonText: "Login",
         cancelButtonText: "Cancel",
       }).then((result) => {
         if (result.isConfirmed) {
-          navigate("/LoginPage", { state: { from: window.location.pathname } });
+          navigate("/LoginPage");
         } else {
           navigate("/HomePage");
         }
@@ -36,103 +32,56 @@ const ReviewComponent = () => {
     }
   }, [auth, navigate]);
 
-  const handleLoginPrompt = (e) => {
-    e.preventDefault(); // Prevent form submission
+  // Example data, replace with backend API data
+  const [orders, setOrders] = useState([
+    {
+      id: 1,
+      productImage: 'https://via.placeholder.com/50', // Replace with actual URL
+      productName: 'Gents trouser dark navy blue',
+      shopName: 'Kaveeee Fashion',
+      productKey: '30DFRR1',
+      quantity: 1,
+      status: 'Shipped',
+    },
+    {
+      id: 2,
+      productImage: 'https://via.placeholder.com/50',
+      productName: 'Gents trouser dark navy blue',
+      shopName: 'Kaveeee Fashion',
+      productKey: '30DFRR1',
+      quantity: 1,
+      status: 'Shipped',
+    },
+    {
+      id: 3,
+      productImage: 'https://via.placeholder.com/50',
+      productName: 'Gents trouser dark navy blue',
+      shopName: 'Kaveeee Fashion',
+      productKey: '30DFRR1',
+      quantity: 1,
+      status: 'Shipped',
+    },
+  ]);
 
-    if (!auth.user) {
-      Swal.fire({
-        title: "Login Required",
-        text: "You need to log in to submit a review.",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonText: "Login",
-        cancelButtonText: "Cancel",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          navigate("/LoginPage", { state: { from: window.location.pathname } });
-        } else {
-          navigate("/HomePage");
-        }
-      });
-    } else {
-      // Submit the review if logged in
-      handleSubmit(e); // Pass the event object to handleSubmit
-    }
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault(); // Prevent form submission
-
-    if (!newReview.userName || !newReview.content) {
-      Swal.fire({
-        title: "Error",
-        text: "All fields are required.",
-        icon: "error",
-      });
-      return;
-    }
-
-    const reviewData = {
-      product_id,
-      userName: newReview.userName,
-      content: newReview.content,
-    };
-
-    dispatch(submitReview(reviewData))
-      .then(() => {
-        Swal.fire({
-          position: "top-end",
-          icon: "success",
-          title: "Review submitted successfully",
-          showConfirmButton: false,
-          timer: 1500,
-        });
-        setNewReview({ userName: "", content: "" }); // Clear the form
-      })
-      .catch((error) => {
-        Swal.fire({
-          title: "Error",
-          text: error.message || "Something went wrong.",
-          icon: "error",
-        });
-      });
-  };
+  // Tab states
+  const [activeTab, setActiveTab] = useState('All');
 
   return (
-    <div className="pb-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      {/* Reviews Heading */}
-      <h2 className="mb-6 text-2xl font-bold text-gray-900">All Reviews ({reviews.length})</h2>
+    <div className="flex flex-col min-h-screen">
+      <Navbar />
+      <div className="flex flex-grow">
+        {/* Sidebar */}
+        <CustomerNavbar className="w-1/4 bg-gray-100" />
 
-      {/* Review Form */}
-      <form onSubmit={handleLoginPrompt} className="mt-8 p-6 bg-white rounded-lg shadow-sm">
-        <h3 className="mb-4 text-xl font-semibold text-gray-900">Write a Review</h3>
-        <div className="space-y-4">
-          <input
-            type="text"
-            placeholder="Your Name"
-            value={newReview.userName}
-            onChange={(e) => setNewReview({ ...newReview, userName: e.target.value })}
-            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
-            required
-          />
-          <textarea
-            placeholder="Your Review"
-            value={newReview.content}
-            onChange={(e) => setNewReview({ ...newReview, content: e.target.value })}
-            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
-            rows="4"
-            required
-          />
-          <button
-            type="submit"
-            className="w-full px-6 py-3 text-white bg-black rounded-lg hover:bg-gray-800 transition-colors duration-300"
-          >
-            Submit Review
-          </button>
+        {/* Main Content */}
+        <div className="flex-grow p-4">
+          {/* Cart Section */}
+          <Cart />
         </div>
-      </form>
+      </div>
+      <Footer />
     </div>
   );
-};
+}
 
-export default ReviewComponent;
+export default CartPage;
