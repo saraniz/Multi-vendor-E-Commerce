@@ -28,7 +28,7 @@ function Customerlist() {
           <div className="overflow-x-auto">
             <table className="min-w-full bg-white border border-gray-300 shadow-md">
               <thead>
-                <tr className="bg-gray-200">
+                <tr className="text-left text-white bg-gray-800">
                   <th className="px-4 py-2 border">Name</th>
                   <th className="px-4 py-2 border">Contact No</th>
                   <th className="px-4 py-2 border">E-mail</th>
