@@ -29,13 +29,14 @@ if(auth.user?.reg_id){
       <div className="flex min-h-screen pr-16">
         {/* Sidebar */}
         <CustomerNavbar />
-
+<div className="ml-14">
         {/* Conditional rendering of ProductList or message */}
         {fav?.favorites?.length > 0 ? (
           <ProductList products={fav.favorites} />
         ) : (
           <p>No Product</p>
         )}
+        </div>
       </div>
       <Footer />
     </div>
