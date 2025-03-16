@@ -25,6 +25,9 @@ import SearchPage from './Pages/SearchPage';
 import PaymentMethods from './Pages/PaymentMethods.js';
 import Customerlist from './Pages/Admin/Customerlist.js';
 import Shoplist from './Pages/Admin/Shoplist.js';
+import AllOrders from './Pages/Admin/AllOrders.js';
+import Actions from './Pages/Admin/Actions.js';
+import Advertistments from './Pages/Admin/Advertistments.js';
 
 // import SellerLogin from './Pages/SellerLogin.js'
 
@@ -67,6 +70,9 @@ function App() {
         <Route  path= "/PaymentMethods" element={<PaymentMethods/>}></Route>
         <Route  path= "/Customerlist" element={<Customerlist/>}></Route>
         <Route  path= "/Shoplist" element={<Shoplist/>}></Route>
+        <Route  path= "/AllOrders" element={<AllOrders/>}></Route>
+        <Route  path= "/Actions" element={<Actions/>}></Route>
+        <Route  path= "/Advertistments" element={<Advertistments/>}></Route>
         {/* <Route path="/SellerLogin" element={<SellerLogin/>}></Route> */}
         {/* <Route path="/product/:product_id" element={<ProductDetails />} /> */}
       
