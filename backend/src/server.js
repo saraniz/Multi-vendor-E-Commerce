@@ -7,7 +7,7 @@ const authenticate = require('./middleware/authMiddleware');
 require('dotenv').config(); 
 
 // Initialize Prisma client
-const prisma = new PrismaClient(); // Correct instantiation
+const prisma = new PrismaClient(); // Correct instantiation 
 
 // Initialize the Express app
 const app = express();
