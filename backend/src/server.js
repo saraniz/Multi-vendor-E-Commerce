@@ -7,7 +7,7 @@ const authenticate = require('./middleware/authMiddleware');
 require('dotenv').config(); 
 
 // Initialize Prisma client
-const prisma = new PrismaClient(); // Correct instantiation
+const prisma = new PrismaClient(); // Correct instantiation 
 
 // Initialize the Express app
 const app = express();
@@ -28,6 +28,7 @@ const cartRoutes = require('./routes/cartRoutes')
 const favRoutes = require('./routes/favRoutes')
 const reviewRoutes = require('./routes/reviewRoutes')
 // const profileRoutes = require('./routes/profileRoutes')
+const paymentRoutes = require('./routes/paymentRoutes');
 
 // Public API routes
 app.use('/api', authRoutes);
@@ -36,6 +37,7 @@ app.use('/api/cart',cartRoutes)
 app.use('/api/fav',favRoutes)
 app.use('/api/review',reviewRoutes)
 // app.use('/api/profileedit',profileRoutes)
+app.use('/api/payments', paymentRoutes);
 
 // Protected routes
 app.use('/api/protected', authenticate, (req, res) => {

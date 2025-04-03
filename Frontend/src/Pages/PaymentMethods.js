@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import Navbar from '../Components/Header/Navbar';
 import Footer from '../Components/Footer/Footer';
 import { FaCreditCard, FaPaypal, FaMoneyBillWave } from 'react-icons/fa';
+//🔴
+import { payForSingleProduct, checkoutCart } from '../Storage/Payment/paymentAction';
+//🔴
 
 function PaymentMethods() {
   const [selectedMethod, setSelectedMethod] = useState('');
@@ -29,6 +32,22 @@ function PaymentMethods() {
       return updatedDetails;
     });
   };
+
+  // 🔴
+const handlePayment = () => {
+  const product_id = 1;
+  const reg_id = 34; 
+  if (selectedMethod === 'credit-card') {
+    payForSingleProduct(product_id); // Trigger payment for a single product
+    // if (window.location.pathname.includes('cart')) {
+    //   checkoutCart(reg_id); // Handle cart checkout 🛒
+    // } else {
+    //   payForSingleProduct(product_id); // Handle single product payment 🛍️
+    // }
+    
+  } 
+};
+// 🔴
 
   const validateDetails = (details) => {
     if (selectedMethod === 'credit-card') {
@@ -168,6 +187,9 @@ function PaymentMethods() {
                     : 'bg-gray-400 cursor-not-allowed'
                 }`}
                 disabled={!isDetailsValid}
+                //🥲
+                onClick={handlePayment} // This is the fix
+                //🥲
               >
                 Pay Now
               </button>
