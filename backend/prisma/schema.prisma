@@ -39,6 +39,10 @@ model seller{
   mobile_no2     String
   reg_id Int     @unique
   store_id Int   @unique
+  isBlocked  Boolean @default(false) // 👈 New field added here
+  warning1    String? 
+  warning2    String?
+  warning3    String?
   
 
   // Relationships

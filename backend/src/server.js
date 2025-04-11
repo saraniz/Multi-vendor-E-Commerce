@@ -29,6 +29,7 @@ const favRoutes = require('./routes/favRoutes')
 const reviewRoutes = require('./routes/reviewRoutes')
 // const profileRoutes = require('./routes/profileRoutes')
 const paymentRoutes = require('./routes/paymentRoutes');
+const adminRoutes = require('./routes/adminRoutes');
 
 // Public API routes
 app.use('/api', authRoutes);
@@ -38,6 +39,7 @@ app.use('/api/fav',favRoutes)
 app.use('/api/review',reviewRoutes)
 // app.use('/api/profileedit',profileRoutes)
 app.use('/api/payments', paymentRoutes);
+app.use('/api/admin', adminRoutes);
 
 // Protected routes
 app.use('/api/protected', authenticate, (req, res) => {
