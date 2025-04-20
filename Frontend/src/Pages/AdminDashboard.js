@@ -4,18 +4,91 @@ import Footer from '../Components/Footer/Footer';
 import AdminNavbar from '../Components/Body/AdminNavbar';
 
 function AdminDashboard() {
+  // Sample dynamic values - replace these with backend data later
+  const revenueData = [
+    { shopName: "Shop 01", amount: 40 },
+    { shopName: "Shop 01", amount: 40 },
+    { shopName: "Shop 01", amount: 40 },
+    { shopName: "Shop 01", amount: 40 },
+    { shopName: "Shop 01", amount: 40 },
+    { shopName: "Shop 01", amount: 40 }, // for scroll demo
+  ];
+  const totalRevenue = revenueData.reduce((acc, curr) => acc + curr.amount, 0);
+  const totalShops = 86;
+  const blockedShops = 3;
+  const warnings = {
+    step01: 5,
+    step02: 2,
+    step03: 0
+  };
+
   return (
     <div>
       <Navbar />
-      <div className="flex min-h-screen">
+      <div className="flex min-h-screen bg-gray-100">
         {/* Sidebar */}
-        <AdminNavbar/>
-       Dashboard
-        <h1 className='text-[50px] pt-10 font-semibold pl-[120px]'>THIS PAGE IS IN UNDER CONSTRUCTION</h1>
+        <AdminNavbar />
+
+        {/* Main Content */}
+        <div className="flex-1 p-6">
+          <div className="grid grid-cols-3 gap-6">
+            {/* Monthly App Revenue */}
+            <div className="col-span-2 p-6 bg-white shadow-md rounded-xl">
+              <h2 className="mb-4 text-xl font-bold">Monthly App Revenue</h2>
+              <div className="h-64 pr-2 overflow-y-auto">
+                {revenueData.map((item, index) => (
+                  <div key={index} className="flex items-center justify-between py-2 border-b">
+                    <div className="flex items-center gap-2">
+                      <img
+                        src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
+                        alt="shop"
+                        className="w-8 h-8 rounded-full"
+                      />
+                      <span className="font-medium">{item.shopName}</span>
+                    </div>
+                    <span className="font-semibold">{item.amount}$</span>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-4 text-lg font-bold text-right">
+                Total: {totalRevenue}$
+              </div>
+            </div>
+
+            {/* Right Panel */}
+            <div className="space-y-6">
+              <div className="p-6 text-center bg-white shadow-md rounded-xl">
+                <h3 className="mb-2 font-medium text-gray-600">All Shops</h3>
+                <p className="text-5xl font-bold text-black">{totalShops}</p>
+              </div>
+              <div className="p-6 text-center bg-white shadow-md rounded-xl">
+                <h3 className="mb-2 font-medium text-gray-600">Blocked Shops</h3>
+                <p className="text-5xl font-bold text-red-500">{String(blockedShops).padStart(2, '0')}</p>
+              </div>
+              <div className="p-6 bg-white shadow-md rounded-xl">
+                <h3 className="mb-4 font-medium text-center text-gray-600">Warnings</h3>
+                <div className="space-y-2 text-sm font-semibold text-gray-700">
+                  <div className="flex justify-between">
+                    <span>Step 01</span>
+                    <span>{String(warnings.step01).padStart(2, '0')}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Step 02</span>
+                    <span>{String(warnings.step02).padStart(2, '0')}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Step 03</span>
+                    <span>{String(warnings.step03).padStart(2, '0')}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       <Footer />
     </div>
-  )
+  );
 }
 
 export default AdminDashboard;

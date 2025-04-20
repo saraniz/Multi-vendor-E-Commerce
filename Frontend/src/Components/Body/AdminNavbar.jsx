@@ -51,39 +51,39 @@ function AdminNavbar() {
         {/* Navigation Links */}
         <nav className="w-full">
           <Link to="/AdminDashboard" className="w-full">
-            <button className="flex items-center w-full px-6 py-3 my-2 text-left transition-all duration-300 ease-in-out bg-gray-700 rounded-lg hover:bg-gray-600 hover:scale-105 hover:shadow-md">
+            <button className="flex items-center w-full px-6 py-2 my-2 text-left transition-all duration-300 ease-in-out bg-gray-700 rounded-lg hover:bg-gray-600 hover:scale-105 hover:shadow-md">
               <FaTachometerAlt className="mr-4 text-xl" /> Dashboard
             </button>
           </Link>
           <Link to="/Shoplist" className="w-full">
-            <button className="flex items-center w-full px-6 py-3 my-2 text-left transition-all duration-300 ease-in-out bg-gray-700 rounded-lg hover:bg-gray-600 hover:scale-105 hover:shadow-md">
+            <button className="flex items-center w-full px-6 py-2 my-2 text-left transition-all duration-300 ease-in-out bg-gray-700 rounded-lg hover:bg-gray-600 hover:scale-105 hover:shadow-md">
               <FaStore className="mr-4 text-xl" /> Shop List
             </button>
           </Link>
           <Link to="/Customerlist" className="w-full">
-            <button className="flex items-center w-full px-6 py-3 my-2 text-left transition-all duration-300 ease-in-out bg-gray-700 rounded-lg hover:bg-gray-600 hover:scale-105 hover:shadow-md">
+            <button className="flex items-center w-full px-6 py-2 my-2 text-left transition-all duration-300 ease-in-out bg-gray-700 rounded-lg hover:bg-gray-600 hover:scale-105 hover:shadow-md">
               <FaUserCircle className="mr-4 text-xl" /> Customer List
             </button>
           </Link>
           <Link to="/AllOrders" className="w-full">
-            <button className="flex items-center w-full px-6 py-3 my-2 text-left transition-all duration-300 ease-in-out bg-gray-700 rounded-lg hover:bg-gray-600 hover:scale-105 hover:shadow-md">
+            <button className="flex items-center w-full px-6 py-2 my-2 text-left transition-all duration-300 ease-in-out bg-gray-700 rounded-lg hover:bg-gray-600 hover:scale-105 hover:shadow-md">
               <FaListAlt className="mr-4 text-xl" /> All Orders
             </button>
           </Link>
           <Link to="/Actions" className="w-full">
-            <button className="flex items-center w-full px-6 py-3 my-2 text-left transition-all duration-300 ease-in-out bg-gray-700 rounded-lg hover:bg-gray-600 hover:scale-105 hover:shadow-md">
+            <button className="flex items-center w-full px-6 py-2 my-2 text-left transition-all duration-300 ease-in-out bg-gray-700 rounded-lg hover:bg-gray-600 hover:scale-105 hover:shadow-md">
               <FaEdit className="mr-4 text-xl" /> Actions
             </button>
           </Link>
           <Link to="/Advertistments" className="w-full">
-            <button className="flex items-center w-full px-6 py-3 my-2 text-left transition-all duration-300 ease-in-out bg-gray-700 rounded-lg hover:bg-gray-600 hover:scale-105 hover:shadow-md">
+            <button className="flex items-center w-full px-6 py-2 my-2 text-left transition-all duration-300 ease-in-out bg-gray-700 rounded-lg hover:bg-gray-600 hover:scale-105 hover:shadow-md">
               <FaBullhorn className="mr-4 text-xl" /> Advertisments
             </button>
           </Link>
         </nav>
 
         {/* Logout Button */}
-        <button onClick = {handleLogout} className="flex items-center w-full px-6 py-3 text-left transition-all duration-300 ease-in-out bg-red-600 rounded-lg hover:bg-red-500 hover:scale-105 hover:shadow-md">
+        <button onClick = {handleLogout} className="flex items-center w-full px-6 py-2 text-left transition-all duration-300 ease-in-out bg-red-600 rounded-lg hover:bg-red-500 hover:scale-105 hover:shadow-md">
           <FaSignOutAlt className="mr-4 text-xl" /> Log Out
         </button>
       </div>
