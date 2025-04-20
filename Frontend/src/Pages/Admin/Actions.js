@@ -2,23 +2,48 @@ import React, { useState } from 'react';
 import Navbar from '../../Components/Header/Navbar';
 import Footer from '../../Components/Footer/Footer';
 import AdminNavbar from '../../Components/Body/AdminNavbar';
+import Swal from 'sweetalert2';
+import { sendWarning, blockSeller } from '../../Storage/admin/adminaction';
 
 function Actions() {
   const [users, setUsers] = useState([
-    { id: 1, name: 'Kaveeee Fashion', status: '', profilePic: '/images/user1.jpg' },
-    { id: 2, name: 'John Doe', status: '', profilePic: '/images/user2.jpg' },
-    { id: 3, name: 'Jane Smith', status: '', profilePic: '/images/user3.jpg' },
-    { id: 4, name: 'Alice Brown', status: '', profilePic: '/images/user4.jpg' },
-    { id: 5, name: 'Bob Johnson', status: '', profilePic: '/images/user5.jpg' },
-    { id: 6, name: 'Charlie Davis', status: '', profilePic: '/images/user6.jpg' },
+    { id: 3, name: 'Kaveeee Fashion', status: '', profilePic: '/images/user1.jpg' },
+    { id: 4, name: 'John Doe', status: '', profilePic: '/images/user2.jpg' },
+    { id: 5, name: 'Jane Smith', status: '', profilePic: '/images/user3.jpg' },
+    { id: 6, name: 'Alice Brown', status: '', profilePic: '/images/user4.jpg' },
+    { id: 7, name: 'Bob Johnson', status: '', profilePic: '/images/user5.jpg' },
+    { id: 8, name: 'Charlie Davis', status: '', profilePic: '/images/user6.jpg' },
   ]);
+
 
   const [selectedTab, setSelectedTab] = useState('All');
 
-  const handleStatusChange = (id, newStatus) => {
+
+
+  const handleStatusChange = async (id, newStatus) => {
     setUsers(users.map(user =>
       user.id === id ? { ...user, status: user.status === newStatus ? '' : newStatus } : user
     ));
+
+    //🟢🟢🟢🟢
+    try {
+      if (newStatus === '01 Warn') {
+        await sendWarning(id, 1);
+        Swal.fire('✅ Success', 'Warning 1 sent', 'success');
+      } else if (newStatus === '02 Warn') {
+        await sendWarning(id, 2);
+        Swal.fire('✅ Success', 'Warning 2 sent', 'success');
+      } else if (newStatus === '03 Warn') {
+        await sendWarning(id, 3);
+        Swal.fire('✅ Success', 'Warning 3 sent', 'success');
+      } else if (newStatus === 'Blocked') {
+        await blockSeller(id);
+        Swal.fire('⛔ Blocked', 'Seller has been blocked', 'warning');
+      }
+    } catch (error) {
+      Swal.fire('❌ Error', error.response?.data?.message || 'Something went wrong', 'error');
+    }
+    //🟢🟢🟢
   };
 
   const tabs = ['All', 'Warned 1 time', 'Warned 2 times', 'Warned 3 times', 'Blocked'];
