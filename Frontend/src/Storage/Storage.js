@@ -6,6 +6,8 @@ import productReducer from "./Product/productReducer";
 import cartReducer from "./Cart/cartReducer";
 import favReducer from "./Favorite/favReducer";
 import reviewReducer from "./Review/reviewReducer";
+import storeReducer from "./Store/storeReducer";
+import followReducer from "./Follow/followReducer";
 
 
 
@@ -16,6 +18,8 @@ const rootReducers = combineReducers({
     cart: cartReducer,
     fav: favReducer,
     review: reviewReducer,
+    store:storeReducer,
+    follow:followReducer,
 })
 
 export const store = legacy_createStore(rootReducers,applyMiddleware(thunk));

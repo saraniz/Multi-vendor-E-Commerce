@@ -23,21 +23,30 @@ const addFavorite = async(req,res) =>{
 }
 
 //remove a product from favorites
-const removeFavorite = async (req,res) =>{
-    const{reg_id,product_id} = req.body
+const removeFavorite = async (req, res) => {
+    const { reg_id, product_id } = req.body;
 
-    try{
-        await prisma.favorite.delete({
-            where:{
+    try {
+        // Delete the favorite item where reg_id and product_id match
+        const deletedFavorite = await prisma.favorite.deleteMany({
+            where: {
                 reg_id: parseInt(reg_id),
                 product_id: parseInt(product_id),
             },
-        })
-        res.status(200).json({message:"Product removed from favorites"})
-    } catch(error){
-        res.status(404).json({error:"Favorite not found"})
+        });
+
+        // If no items were deleted, return error
+        if (deletedFavorite.count === 0) {
+            return res.status(404).json({ message: "Product not found in favorites" });
+        }
+
+        res.json({ message: "Product removed from favorites successfully." });
+    } catch (error) {
+        console.error("Error removing product from favorites:", error);
+        res.status(500).json({ message: "Server error" });
     }
-}
+};
+
 
 //fetch all the favorite products for a user
 const getUserFavorites = async (req, res) => {

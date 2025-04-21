@@ -7,6 +7,7 @@
 
 generator client {
   provider = "prisma-client-js"
+  output   = "./node_modules/@prisma/client"
 }
 
 datasource db {
@@ -25,6 +26,8 @@ model user {
   address   String
   role      String   @default("customer")
   isSeller  Boolean  @default(false)
+  follows follow[]
+
 
   // Add the inverse relation to cart
   carts         cart[]   // A user can have many carts
@@ -86,6 +89,7 @@ model store {
   business_address String?
   seller   seller?    // Each store is owned by one seller
   store_image String
+  follows follow[]
 
   @@map("store") // Map to actual table "store"
 }
@@ -133,4 +137,17 @@ model review{
 
   @@map("review") // Map to the actual table "review" (or any other name if you want to map it differently)
 
+}
+
+//follow stores 
+model follow {
+  follow_id Int @id @default(autoincrement())
+  reg_id    Int
+  store_id  Int
+
+  user   user   @relation(fields: [reg_id], references: [reg_id])
+  store  store  @relation(fields: [store_id], references: [store_id])
+
+  @@unique([reg_id, store_id], name: "reg_id_store_id") // ✅ Named composite key
+  @@map("follow")
 }

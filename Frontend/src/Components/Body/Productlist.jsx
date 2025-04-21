@@ -4,7 +4,7 @@ import { fetchAllProducts } from "../../Storage/Product/productAction";
 import ProductCard from "./ProductCard";
 
 function ProductList({ products }) {
-  console.log("products", products);
+
 
   return (
 

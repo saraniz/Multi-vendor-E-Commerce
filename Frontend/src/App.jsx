@@ -4,7 +4,7 @@ import HomePage from './Pages/HomePage';
 import {useDispatch, useSelector} from 'react-redux'
 import { Navigate, Route, Routes } from 'react-router-dom';
 import RegistrationForm from './Pages/RegistrationForm';
-import ShopHome from './Pages/ShopHome.js';
+import ShopHome from './Pages/ShopPage.js';
 import LoginPage from './Pages/LoginPage';
 import { getUserProfile } from './Storage/Auth/UserAction';
 import Productpage from './Pages/Productpage';
@@ -28,7 +28,7 @@ import Shoplist from './Pages/Admin/Shoplist.js';
 import AllOrders from './Pages/Admin/AllOrders.js';
 import Actions from './Pages/Admin/Actions.js';
 import Advertistments from './Pages/Admin/Advertistments.js';
-
+import ShopPage from './Pages/ShopPage.js';
 // import SellerLogin from './Pages/SellerLogin.js'
 
 function App() {
@@ -49,7 +49,7 @@ function App() {
     <div>
       <Routes>
         <Route path='/*' element={<HomePage/>}></Route>
-        <Route  path= "/ShopHome" element={<ShopHome/>}></Route>
+        <Route path="/store/:storeId" element={<ShopPage />} />
         <Route  path= "/RegistrationForm" element={<RegistrationForm/>}></Route>
         <Route  path= "/LoginPage" element={<LoginPage/>}></Route>
         <Route  path= "/Productpage/:product_id" element={<Productpage/>}></Route>
