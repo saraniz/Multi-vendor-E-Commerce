@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 function TabComponent() {
   const [activeTab, setActiveTab] = useState('All');
   const {products} = useSelector(store => store)
-  console.log("producttab:",products)
+
 
   return (
     <div>

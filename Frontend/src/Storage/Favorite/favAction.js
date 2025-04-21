@@ -42,42 +42,62 @@ export const addFavorite = (reg_id,product_id) => async (dispatch) =>{
 }
 
 //Action to remove product from favorites
-export const removeFavorite = (reg_id,product_id) => async (dispatch) =>{
-    dispatch({type: REMOVE_FAVORITE_REQUEST})
+export const removeFavorite = (reg_id, product_id) => async (dispatch, getState) => {
+  try {
+      const { userLogin } = getState(); // Access user data if needed
 
-    try{
-        await axios.delete(`${API_BASE_URL}/api/fav/removefav`,{
-            data: {reg_id,product_id},
-        })
+      const token = localStorage.getItem("jwt"); // Get JWT token from localStorage
+      if (!token) {
+          throw new Error("User not authenticated");
+      }
 
-        dispatch({type:REMOVE_FAVORITE_SUCCESS, payload:{reg_id,product_id}})
+      const config = {
+          headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+          },
+          data: {
+              reg_id,
+              product_id,
+          },
+      };
 
-        Swal.fire({
-            icon: "success",
-            title: "Removed from Favorites!",
-            text: "The product has been removed from your favorites.",
-          });
-      
-          console.log("Product removed from favorites successfully");
-    } catch(error){
-            // Improved error handling
-            const errorMessage =
-              error.response?.data?.message || error.message || "Something went wrong!";
-        
-            // Dispatch failure action with error message
-            dispatch({ type: REMOVE_FAVORITE_FAILURE, payload: errorMessage });
-        
-            // Show error message using SweetAlert
-            Swal.fire({
-              icon: "error",
-              title: "Failed to Remove Favorite",
-              text: errorMessage,
-            });
-        
-            console.error("Error removing product from favorites:", error);
-          }
-    
-}
+      // Send request to delete the product from favorites
+      await axios.delete(`${API_BASE_URL}/api/fav/removefav`, config);
+
+      // Dispatch action to update the favorites list
+      dispatch({
+          type: REMOVE_FAVORITE_SUCCESS,
+          payload: product_id, // Optionally send reg_id too if needed
+      });
+
+      Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "Removed from Favorites!",
+          showConfirmButton: false,
+          timer: 1500,
+      });
+      window.location.reload();
+  } catch (error) {
+      const errorMessage =
+          error.response?.data?.message || error.message || "Something went wrong!";
+
+      dispatch({
+          type: REMOVE_FAVORITE_FAILURE,
+          payload: errorMessage,
+      });
+
+      Swal.fire({
+          icon: "error",
+          title: "Failed to Remove Favorite",
+          text: errorMessage,
+      });
+
+      console.error("Error removing product from favorites:", error);
+  }
+};
+
 
 //action to fetch favorite products
 export const fetchFavorites = (reg_id) => async(dispatch) =>{

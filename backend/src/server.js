@@ -30,6 +30,9 @@ const reviewRoutes = require('./routes/reviewRoutes')
 // const profileRoutes = require('./routes/profileRoutes')
 const paymentRoutes = require('./routes/paymentRoutes');
 const adminRoutes = require('./routes/adminRoutes');
+const storeRoutes = require('./routes/storeRoutes')
+const followRoutes = require('./routes/followRoutes')
+
 
 // Public API routes
 app.use('/api', authRoutes);
@@ -40,6 +43,9 @@ app.use('/api/review',reviewRoutes)
 // app.use('/api/profileedit',profileRoutes)
 app.use('/api/payments', paymentRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/store',storeRoutes)
+app.use('/api/follow',followRoutes)
+
 
 // Protected routes
 app.use('/api/protected', authenticate, (req, res) => {

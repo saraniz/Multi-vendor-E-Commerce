@@ -10,17 +10,15 @@ import { fetchAllProducts } from "../Storage/Product/productAction";
 
 function HomePage() {
   const tabRef = useRef(null);
-  const { auth } = useSelector((store) => store);
+  const { auth, fav } = useSelector((store) => store);
   const dispatch = useDispatch();
 
 
   useEffect(()=>{
-    try {
+   
       dispatch(fetchAllProducts())
-    } catch (error) {
-      console.error(error)
-    }
-  },[])
+    
+  },[fav.flag])
 
   const scrollToTabComponent = () => {
     tabRef.current?.scrollIntoView({ behavior: "smooth" });

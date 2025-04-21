@@ -14,6 +14,7 @@ import {
     favorites: [],
     loading: false,
     error: null,
+    flag:false
   };
   
   // Reducer function
@@ -33,6 +34,7 @@ import {
           ...state,
           loading: false,
           favorites: [...state.favorites, action.payload], // Add new favorite to list
+          flag: !state.flag, 
         };
   
       case REMOVE_FAVORITE_SUCCESS:
@@ -41,7 +43,8 @@ import {
           loading: false,
           favorites: state.favorites.filter(
             (fav) => fav.product_id !== action.payload.product_id
-          ), // Remove favorite from list
+          ),
+          flag: !state.flag,  // Remove favorite from list
         };
   
       case FETCH_FAVORITES_SUCCESS:

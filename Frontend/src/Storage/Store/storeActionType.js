@@ -1,0 +1,9 @@
+// Store-related action types
+export const STORE_FETCH_REQUEST = 'STORE_FETCH_REQUEST';
+export const STORE_FETCH_SUCCESS = 'STORE_FETCH_SUCCESS';
+export const STORE_FETCH_FAILURE = 'STORE_FETCH_FAILURE';
+
+// Product-related action types
+export const PRODUCT_FETCH_REQUEST = 'PRODUCT_FETCH_REQUEST';
+export const PRODUCT_FETCH_SUCCESS = 'PRODUCT_FETCH_SUCCESS';
+export const PRODUCT_FETCH_FAILURE = 'PRODUCT_FETCH_FAILURE';

@@ -9,33 +9,28 @@ import { fetchFavorites } from "../Storage/Favorite/favAction";
 function Favourites() {
   const { auth, fav } = useSelector((state) => state);
   const dispatch = useDispatch();
-  console.log("Fav:",fav)
-  console.log("id ",auth.user)
+ 
 
-  useEffect(()=>{
+  useEffect(() => {
+    if (auth.user?.reg_id) {
+      dispatch(fetchFavorites(auth.user?.reg_id));
+    }
+  }, [auth,fav.flag]);
 
-if(auth.user?.reg_id){
-
-  dispatch(fetchFavorites(auth.user?.reg_id))
-}
-
-  },[auth])
-
-
-  console.log("favourits ",fav)
+  console.log("favourits ", fav);
   return (
     <div>
       <Navbar />
       <div className="flex min-h-screen pr-16">
         {/* Sidebar */}
         <CustomerNavbar />
-<div className="ml-14">
-        {/* Conditional rendering of ProductList or message */}
-        {fav?.favorites?.length > 0 ? (
-          <ProductList products={fav.favorites} />
-        ) : (
-          <p>No Product</p>
-        )}
+        <div className="ml-14">
+          {/* Conditional rendering of ProductList or message */}
+          {fav?.favorites?.length > 0 ? (
+            <ProductList products={fav.favorites} />
+          ) : (
+            <p>No Product</p>
+          )}
         </div>
       </div>
       <Footer />

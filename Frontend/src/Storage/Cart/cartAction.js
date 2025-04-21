@@ -127,6 +127,11 @@ export const deleteFromCart = (cart_id,product_id) => async (dispatch, getState)
           showConfirmButton: false,
           timer: 1500,
       });
+
+      setTimeout(() => {
+        window.location.reload(); // This is the change for refresh functionality
+      }, 1500);
+      
   } catch (error) {
       console.error("Error removing product from cart:", error);
   }
