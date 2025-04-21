@@ -7,12 +7,14 @@ import { sendWarning, blockSeller } from '../../Storage/admin/adminaction';
 
 function Actions() {
   const [users, setUsers] = useState([
-    { id: 3, name: 'Kaveeee Fashion', status: '', profilePic: '/images/user1.jpg' },
-    { id: 4, name: 'John Doe', status: '', profilePic: '/images/user2.jpg' },
-    { id: 5, name: 'Jane Smith', status: '', profilePic: '/images/user3.jpg' },
-    { id: 6, name: 'Alice Brown', status: '', profilePic: '/images/user4.jpg' },
-    { id: 7, name: 'Bob Johnson', status: '', profilePic: '/images/user5.jpg' },
-    { id: 8, name: 'Charlie Davis', status: '', profilePic: '/images/user6.jpg' },
+    { id: 9, name: 'Dflock', status: '', profilePic: '/images/user1.jpg' },
+    { id: 10, name: 'Dflockbb', status: '', profilePic: '/images/user2.jpg' },
+    { id: 8, name: 'Riya', status: '', profilePic: '/images/user3.jpg' },
+    { id: 3, name: 'Mandy', status: '', profilePic: '/images/user4.jpg' },
+    { id: 7, name: 'Jump Clothing', status: '', profilePic: '/images/user5.jpg' },
+    { id: 4, name: 'Voila', status: '', profilePic: '/images/user6.jpg' },
+    { id: 6, name: 'YFashion', status: '', profilePic: '/images/user6.jpg' },
+    { id: 5, name: 'KM', status: '', profilePic: '/images/user6.jpg' },
   ]);
 
 
