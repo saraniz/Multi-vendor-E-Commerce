@@ -1,61 +1,75 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import Navbar from '../Components/Header/Navbar';
 import Footer from '../Components/Footer/Footer';
 import SellerNavbar from '../Components/Body/SellerNavbar';
+import { fetchSellerProducts } from '../Storage/Store/storeAction';
+import Loader from './Loader';
 
 function ItemList() {
-  const [items, setItems] = useState([]);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { loading, sellerProducts, error } = useSelector((state) => state.store);
 
-  // Simulate fetching data from a backend
   useEffect(() => {
-    // Replace with API call
-    setItems([
-      { id: 1, product: 'Product 1', code: 'P001', quantity: 10, status: 'Available' },
-      { id: 2, product: 'Product 2', code: 'P002', quantity: 5, status: 'Out of Stock' },
-      { id: 3, product: 'Product 3', code: 'P003', quantity: 15, status: 'Available' },
-      { id: 4, product: 'Product 4', code: 'P004', quantity: 7, status: 'Limited' },
-    ]);
-  }, []);
+    dispatch(fetchSellerProducts());
+  }, [dispatch]);
+
+  if (loading) {
+    return <Loader />;
+  }
 
   return (
-    <div>
+    <div className="min-h-screen flex flex-col">
       <Navbar />
-      <div className="flex min-h-screen">
-        {/* Sidebar */}
+      <div className="flex flex-1">
         <SellerNavbar />
-        
-        {/* Main Content */}
-        <div className="flex-1 p-6">
-          <h2 className="mb-4 text-2xl font-bold">Item List</h2>
-          <div className="overflow-hidden bg-white rounded-lg shadow-md">
-            <table className="w-full text-left border-collapse">
-              <thead>
-                <tr className="text-white bg-gray-800">
-                  <th className="p-3 border">Product</th>
-                  <th className="p-3 border">Product Code</th>
-                  <th className="p-3 border">Quantity</th>
-                  <th className="p-3 border">Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                {items.length > 0 ? (
-                  items.map((item) => (
-                    <tr key={item.id} className="border">
-                      <td className="p-3 border">{item.product}</td>
-                      <td className="p-3 border">{item.code}</td>
-                      <td className="p-3 border">{item.quantity}</td>
-                      <td className="p-3 border">{item.status}</td>
-                    </tr>
-                  ))
-                ) : (
+        <main className="flex-1 p-8 bg-gray-50">
+          <h2 className="mb-6 text-3xl font-semibold text-gray-800">Item List</h2>
+
+          {error ? (
+            <div className="text-center text-red-600">{error}</div>
+          ) : (
+            <div className="overflow-x-auto bg-white rounded-lg shadow-md">
+              <table className="min-w-full divide-y divide-gray-200">
+                <thead className="bg-gray-800">
                   <tr>
-                    <td colSpan="4" className="p-3 text-center">No items available</td>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Product</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Code</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Stock</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Edit</th>
                   </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
-        </div>
+                </thead>
+                <tbody className="divide-y divide-gray-200">
+                  {sellerProducts?.length > 0 ? (
+                    sellerProducts.map((item) => (
+                      <tr key={item._id} className="hover:bg-gray-100">
+                        <td className="px-6 py-4">{item.name}</td>
+                        <td className="px-6 py-4">{item.prisma_id}</td>
+                        <td className="px-6 py-4">{item.stock}</td>
+                        <td className="px-6 py-4">
+                          <button
+                            onClick={() => navigate(`/editproduct/${item.prisma_id}`)}
+                            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm rounded"
+                          >
+                            Edit
+                          </button>
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan={4} className="px-6 py-4 text-center text-gray-500">
+                        No items available
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </main>
       </div>
       <Footer />
     </div>

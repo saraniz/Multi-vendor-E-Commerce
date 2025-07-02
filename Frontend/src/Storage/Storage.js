@@ -8,7 +8,7 @@ import favReducer from "./Favorite/favReducer";
 import reviewReducer from "./Review/reviewReducer";
 import storeReducer from "./Store/storeReducer";
 import followReducer from "./Follow/followReducer";
-
+import { orderReducer } from "./Order/orderReducer";
 
 
 const rootReducers = combineReducers({
@@ -20,6 +20,7 @@ const rootReducers = combineReducers({
     review: reviewReducer,
     store:storeReducer,
     follow:followReducer,
+    order: orderReducer,
 })
 
 export const store = legacy_createStore(rootReducers,applyMiddleware(thunk));

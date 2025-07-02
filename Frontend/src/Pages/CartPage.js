@@ -1,84 +1,30 @@
-import React, { useState,useEffect } from 'react';
+import React from 'react';
 import Navbar from '../Components/Header/Navbar';
 import Footer from '../Components/Footer/Footer';
-import CustomerNavbar from '../Components/Body/CustomerNavbar';
 import Cart from '../Components/Body/Cart/Cart';
-import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import Swal from 'sweetalert2';
-
 
 function CartPage() {
-
-  const navigate = useNavigate()
-  const { auth } = useSelector(state => state)
-
-  useEffect(() => {
-    if (!auth.user) {
-      Swal.fire({
-        title: "Login Required",
-        text: "You need to log in to access your cart.",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonText: "Login",
-        cancelButtonText: "Cancel",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          navigate("/LoginPage");
-        } else {
-          navigate("/HomePage");
-        }
-      });
-    }
-  }, [auth, navigate]);
-
-  // Example data, replace with backend API data
-  const [orders, setOrders] = useState([
-    {
-      id: 1,
-      productImage: 'https://via.placeholder.com/50', // Replace with actual URL
-      productName: 'Gents trouser dark navy blue',
-      shopName: 'Kaveeee Fashion',
-      productKey: '30DFRR1',
-      quantity: 1,
-      status: 'Shipped',
-    },
-    {
-      id: 2,
-      productImage: 'https://via.placeholder.com/50',
-      productName: 'Gents trouser dark navy blue',
-      shopName: 'Kaveeee Fashion',
-      productKey: '30DFRR1',
-      quantity: 1,
-      status: 'Shipped',
-    },
-    {
-      id: 3,
-      productImage: 'https://via.placeholder.com/50',
-      productName: 'Gents trouser dark navy blue',
-      shopName: 'Kaveeee Fashion',
-      productKey: '30DFRR1',
-      quantity: 1,
-      status: 'Shipped',
-    },
-  ]);
-
-  // Tab states
-  const [activeTab, setActiveTab] = useState('All');
-
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen bg-gray-50">
       <Navbar />
-      <div className="flex flex-grow">
-        {/* Sidebar */}
-        <CustomerNavbar className="w-1/4 bg-gray-100" />
 
-        {/* Main Content */}
-        <div className="flex-grow p-4">
-          {/* Cart Section */}
-          <Cart />
+      <main className="flex-grow container mx-auto px-4 py-8">
+        <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+          <div className="bg-gradient-to-r from-gray-50 to-white px-6 py-4 border-b border-gray-100">
+            <h1 className="text-2xl font-bold text-gray-800">Your Shopping Cart</h1>
+            <p className="text-sm text-gray-500 mt-1">Review and manage your items</p>
+          </div>
+
+          <div className="p-6">
+            <Cart />
+          </div>
+
+          <div className="bg-gray-50 px-6 py-4 border-t border-gray-100 flex justify-end">
+            {/* Checkout button or other footer actions */}
+          </div>
         </div>
-      </div>
+      </main>
+
       <Footer />
     </div>
   );

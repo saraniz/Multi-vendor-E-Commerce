@@ -1,10 +1,12 @@
-const { PrismaClient, PrismaClient, Prisma } = require('@prisma/client')
+// const { PrismaClient, PrismaClient, Prisma } = require('@prisma/client')
 import formidable, { multipart } from './../../node_modules/formidable/src/index';
 const cloudinary = require('cloudinary').v2
 const formidable = require("formidable")
 
 //initialize prisma client
-const PrismaClient = new PrismaClient()
+// const PrismaClient = new PrismaClient()
+const prisma = require("../../config/database.js");
+
 
 // to interact with file system
 const fs = require('fs');
@@ -35,25 +37,25 @@ const addProduct = async (req,res) => {
 }
 
 
-const updateProduct = async (req,res) => {
-    try{
-        const product  = await Prisma.product.findFirst({
-            where: {id: parseInt(id,10), userId:req.user.body},
-        })
+// const updateProduct = async (req,res) => {
+//     try{
+//         const product  = await Prisma.product.findFirst({
+//             where: {id: parseInt(id,10), userId:req.user.body},
+//         })
 
-        if (!product) {
-            return res.status(404).json({message: 'Product not found'})
-        }
+//         if (!product) {
+//             return res.status(404).json({message: 'Product not found'})
+//         }
 
-        const updateProduct = await Prisma.product.update({
-            where: {id:parseInt(id,10)},
-            data: req.body,
-        })
-            res.status(200).json({message: 'Product updated successfully', updateProduct})
-    } catch(error){
-        res.status(500).json({error: error.message})
-    }
-}
+//         const updateProduct = await Prisma.product.update({
+//             where: {id:parseInt(id,10)},
+//             data: req.body,
+//         })
+//             res.status(200).json({message: 'Product updated successfully', updateProduct})
+//     } catch(error){
+//         res.status(500).json({error: error.message})
+//     }
+// }
 
 
 const deleteProduct = async (req,res) =>{

@@ -1,7 +1,9 @@
-const { PrismaClient } = require('@prisma/client')
+// const { PrismaClient } = require('@prisma/client')
 const { createCheckoutSession, createCartCheckoutSession} = require('../services/stripeService');
 //initialize prismaClient
-const prisma = new PrismaClient();
+// const prisma = new PrismaClient();
+const prisma = require("../../config/database.js");
+
 
 
 // Controller to handle single product payment

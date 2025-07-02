@@ -99,7 +99,7 @@ function Navbar() {
           <input
             type="text"
             placeholder="What are you looking for"
-            className="w-full py-2 pl-10 pr-4 border-gray-300 rounded-full bg-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="font-sans w-full py-2 pl-10 pr-4 border-gray-300 rounded-full bg-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             value={sQuery}
             onChange={(e) => setSearchQuery(e.target.value)} // Update the search query
             onKeyDown={handleKeyPress} // Trigger search on Enter key press
@@ -107,7 +107,7 @@ function Navbar() {
 
           {/* Search Icon */}
           <button onClick={handleSearch}>
-            <div className="absolute text-gray-500 transform -translate-y-1/2 right-4 top-1/2">
+            <div className="absolute text-gray-500 transform -translate-y-1/2 right-4 top-1/2 font-serif-">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"

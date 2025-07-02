@@ -1,21 +1,31 @@
-// cartReducer.js
-import { 
-  ADD_TO_CART_REQUEST, ADD_TO_CART_SUCCESS, ADD_TO_CART_FAILURE, 
-  FETCH_CART_REQUEST, FETCH_CART_SUCCESS, FETCH_CART_FAILURE, 
-  REMOVE_FROM_CART_REQUEST, REMOVE_FROM_CART_SUCCESS, REMOVE_FROM_CART_FAILURE,
-  CLEAR_CART,REMOVE_FROM_CART
-} from '../Cart/cartactionType';
+import {
+  ADD_TO_CART_REQUEST,
+  ADD_TO_CART_SUCCESS,
+  ADD_TO_CART_FAILURE,
+  FETCH_CART_REQUEST,
+  FETCH_CART_SUCCESS,
+  FETCH_CART_FAILURE,
+  REMOVE_FROM_CART_REQUEST,
+  REMOVE_FROM_CART_SUCCESS,
+  REMOVE_FROM_CART_FAILURE,
+  CLEAR_CART,
+  REMOVE_FROM_CART,
+  SET_GUEST_CART_ITEMS,
+  UPDATE_GUEST_CART_ITEM,
+  CLEAR_GUEST_CART,
+  CART_FLAG_TOGGLE, // ✅ new action
+} from "../Cart/cartactionType";
 
 const initialState = {
   loading: false,
   cartItems: [],
-  error: '',
-  flag:false
+  guestCartItems: [],
+  error: "",
+  flag: false,
 };
 
 const cartReducer = (state = initialState, action) => {
   switch (action.type) {
-    // Add to Cart
     case ADD_TO_CART_REQUEST:
       return {
         ...state,
@@ -25,8 +35,8 @@ const cartReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
-        cartItems: [...state.cartItems, action.payload], // Add new item to cart
-        error: '',
+        cartItems: [...state.cartItems, action.payload],
+        error: "",
       };
     case ADD_TO_CART_FAILURE:
       return {
@@ -35,7 +45,6 @@ const cartReducer = (state = initialState, action) => {
         error: action.payload,
       };
 
-    // Fetch Cart Items from Database
     case FETCH_CART_REQUEST:
       return {
         ...state,
@@ -45,9 +54,8 @@ const cartReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
-        cartItems: action.payload, // Replace cart items with fetched data
-        error: '',
-        
+        cartItems: action.payload,
+        error: "",
       };
     case FETCH_CART_FAILURE:
       return {
@@ -56,7 +64,6 @@ const cartReducer = (state = initialState, action) => {
         error: action.payload,
       };
 
-    // Remove from Cart
     case REMOVE_FROM_CART_REQUEST:
       return {
         ...state,
@@ -66,10 +73,9 @@ const cartReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
-        cartItems: state.cartItems.filter(item => item.id !== action.payload), // Remove item by ID
-        error: '',
-        flag: !state.flag
-
+        cartItems: state.cartItems.filter(item => item.id !== action.payload),
+        error: "",
+        flag: !state.flag, // ✅ toggle flag on delete
       };
     case REMOVE_FROM_CART_FAILURE:
       return {
@@ -78,13 +84,37 @@ const cartReducer = (state = initialState, action) => {
         error: action.payload,
       };
 
-    // Clear Cart (e.g., after checkout)
+    case SET_GUEST_CART_ITEMS:
+      return {
+        ...state,
+        loading: false,
+        guestCartItems: action.payload,
+      };
+
+    case UPDATE_GUEST_CART_ITEM:
+      return {
+        ...state,
+        loading: false,
+        guestCartItems: action.payload,
+      };
+
+    case CLEAR_GUEST_CART:
+      return {
+        ...state,
+        guestCartItems: [],
+      };
+
     case CLEAR_CART:
       return {
         ...state,
-        cartItems: [], // Empty the cart
+        cartItems: [],
       };
 
+    case CART_FLAG_TOGGLE:
+      return {
+        ...state,
+        flag: !state.flag,
+      };
 
     default:
       return state;

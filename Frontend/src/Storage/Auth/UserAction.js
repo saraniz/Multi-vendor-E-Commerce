@@ -1,6 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import { api, API_BASE_URL } from "../APIConfig";
 import {
+  FORGOT_PASSWORD_FAILURE,
+  FORGOT_PASSWORD_REQUEST,
+  FORGOT_PASSWORD_SUCCESS,
   GET_USER_FAILURE,
   GET_USER_SUCCESS,
   LOGIN_USER_FAILURE,
@@ -19,36 +22,38 @@ import Swal from "sweetalert2";
 
 //user register
 export const userRegister = (registerData) => async (dispatch) => {
+  console.log("[userRegister] Payload to backend:", registerData);
   try {
     const { data } = await axios.post(
       `${API_BASE_URL}/api/register`,
       registerData
     );
 
+    console.log("[userRegister] Response from backend:", data);
     if (data.jwt) {
       console.log("response:", data);
       localStorage.setItem("jwt", data.jwt);
     }
-    Swal.fire({
-      position: "top-end",
-      icon: "success",
-      title: "Signed up successfully",
-      showConfirmButton: false,
-      timer: 1500,
-    });
+    // Swal.fire({
+    //   position: "top-end",
+    //   icon: "success",
+    //   title: "Signed up successfully",
+    //   showConfirmButton: false,
+    //   timer: 1500,
+    // });
     dispatch({ type: REGISTER_USER_SUCCESS, payload: data });
   //   setTimeout(() => {
   //     window.location.reload();
   // }, 3000);
   } catch (error) {
-    console.log("error", error);
+    console.log("[userRegister] Error from backend:", error);
     dispatch({
       type: REGISTER_USER_FAILURE,
-      payload: error.response.data.message,
+      payload: error.response?.data?.message || error.message,
     });
     Swal.fire({
       title: "SignUp failed",
-      text: error.response.data.message,
+      text: error.response?.data?.message || error.message,
       icon: "error",
     });
   }
@@ -105,13 +110,13 @@ export const userLogin = (loginData,next) => async (dispatch) => {
       localStorage.setItem("jwt", data.jwt); //store jwt token in localstorage
     }
     // Display success notification
-    Swal.fire({
-      position: "top-end",
-      icon: "success",
-      title: "Logged in successfully",
-      showConfirmButton: false,
-      timer: 1500,
-    });
+    // Swal.fire({
+    //   position: "top-end",
+    //   icon: "success",
+    //   title: "Logged in successfully",
+    //   showConfirmButton: false,
+    //   timer: 1500,
+    // });
 
     //dispatch success action
     dispatch({ type: LOGIN_USER_SUCCESS, payload: data });
@@ -193,20 +198,17 @@ export const logout = () => (dispatch) => {
 
 //seller register
 export const sellerRegister = (sellerData) => async (dispatch) => {
-
-  const navigate = useNavigate()
-
   try {
     const { data } = await axios.post(
       `${API_BASE_URL}/api/registerSeller`,
-      sellerData, {
+      sellerData,
+      {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("jwt")}`, // Attach token from localStorage
-        },}
+          Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+        },
+      }
     );
 
-
-    // Success notification
     Swal.fire({
       position: "top-end",
       icon: "success",
@@ -216,20 +218,53 @@ export const sellerRegister = (sellerData) => async (dispatch) => {
     });
 
     dispatch({ type: SELLER_REGISTER_SUCCESS, payload: data });
-    navigate('/SellerDashboard')
   } catch (error) {
-    console.log("Error registering seller:", error);
-
     dispatch({
       type: SELLER_REGISTER_FAIL,
-      payload: error.response.data.message,
+      payload: error.response?.data?.message || "Error occurred",
     });
 
-    // Show failure notification
     Swal.fire({
       title: "Seller registration failed",
-      text: error.response.data.message,
+      text: error.response?.data?.message || "Unknown error",
       icon: "error",
     });
   }
 };
+
+export const forgotPassword = (email) => async (dispatch) => {
+  dispatch({ type: FORGOT_PASSWORD_REQUEST });
+
+  try {
+    const response = await axios.post(`${API_BASE_URL}/api/forgot-password`, {
+      email,
+    });
+
+    console.log("📧 Forgot password email sent:", response.data);
+
+    dispatch({
+      type: FORGOT_PASSWORD_SUCCESS,
+      payload: response.data.message || "Reset email sent successfully",
+    });
+
+    Swal.fire({
+      icon: "success",
+      title: "Email Sent",
+      text: response.data.message || "Check your inbox for reset instructions.",
+    });
+  } catch (error) {
+    const errorMessage =
+      error.response?.data?.message || "Something went wrong. Try again later.";
+
+    console.error("❌ Forgot password error:", errorMessage);
+
+    dispatch({ type: FORGOT_PASSWORD_FAILURE, payload: errorMessage });
+
+    Swal.fire({
+      icon: "error",
+      title: "Reset Failed",
+      text: errorMessage,
+    });
+  }
+};
+

@@ -5,15 +5,24 @@ import { Link,useNavigate} from "react-router-dom";
 import LogoImage from '../Assests/KLOSET.png'; // Path to your logo image
 import {useDispatch} from "react-redux" //import useDispatch for redux
 import { userLogin } from "../Storage/Auth/UserAction";   //import the login action
-
-
+import { toast } from 'react-toastify'; // Import Toastify
 
 function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
   const dispatch = useDispatch()
   const navigate = useNavigate()
+
+  // On mount, check localStorage for remembered username
+  React.useEffect(() => {
+    const rememberedUsername = localStorage.getItem('rememberedUsername');
+    if (rememberedUsername) {
+      setUsername(rememberedUsername);
+      setRememberMe(true);
+    }
+  }, []);
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -23,14 +32,21 @@ function LoginPage() {
     event.preventDefault();
     const loginData = { username, password };
 
+    // Remember username if checked, else remove
+    if (rememberMe) {
+      localStorage.setItem('rememberedUsername', username);
+    } else {
+      localStorage.removeItem('rememberedUsername');
+    }
+
     // Dispatch the login action
     dispatch(userLogin(loginData));
 
+    // Show Toastify success message
+    toast.success('Login Success!');
+
     //redirect to homepage
     navigate('/HomePage')
-
-   
-    
   };
 
 
@@ -87,10 +103,15 @@ function LoginPage() {
             </div>
             <div className="flex items-center justify-between text-sm text-gray-500">
               <label className="flex items-center">
-                <input type="checkbox" className="mr-1" />
+                <input
+                  type="checkbox"
+                  className="mr-1"
+                  checked={rememberMe}
+                  onChange={e => setRememberMe(e.target.checked)}
+                />
                 Remember me
               </label>
-              <a href="#" className="hover:underline">
+              <a href="/ForgotPassword" className="hover:underline">
                 Forgot Password?
               </a>
             </div>

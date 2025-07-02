@@ -2,6 +2,7 @@ import { FAVORITES_LOADING,ADD_FAVORITE_SUCCESS,ADD_FAVORITE_FAILURE,ADD_FAVORIT
 import { api,API_BASE_URL } from "../APIConfig";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { toast } from "react-toastify"; // ✅ import toast
 
 
 //action for add a favorite product
@@ -16,11 +17,14 @@ export const addFavorite = (reg_id,product_id) => async (dispatch) =>{
 
         dispatch({type:ADD_FAVORITE_SUCCESS,payload:data})
 
-        Swal.fire({
-            icon:"success",
-            title:"Added to Favorites!",
-            text:"The product has been added to your favorites",
-        })
+            toast.success("Product added to favorites!");
+
+
+        // Swal.fire({
+        //     icon:"success",
+        //     title:"Added to Favorites!",
+        //     text:"The product has been added to your favorites",
+        // })
         console.log("Product added to favorites successfully:", data)
     } catch(error){
         const errorMessage =
@@ -71,13 +75,8 @@ export const removeFavorite = (reg_id, product_id) => async (dispatch, getState)
           payload: product_id, // Optionally send reg_id too if needed
       });
 
-      Swal.fire({
-          position: "top-end",
-          icon: "success",
-          title: "Removed from Favorites!",
-          showConfirmButton: false,
-          timer: 1500,
-      });
+      toast.success("Product removed from favorites!");
+
       window.location.reload();
   } catch (error) {
       const errorMessage =

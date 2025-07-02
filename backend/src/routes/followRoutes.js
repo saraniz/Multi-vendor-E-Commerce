@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { followStore, fetchFollowedShops } = require('../controller/followController');
+const { followStore, fetchFollowedShops,  } = require('../controller/followController');
 const authenticate = require('../middleware/authMiddleware');
 
 // POST: Follow a store (requires authentication)

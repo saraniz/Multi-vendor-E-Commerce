@@ -1,13 +1,6 @@
-
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
-  output   = "./node_modules/@prisma/client"
+  output   = "app/generated/prisma/client"
 }
 
 datasource db {
@@ -16,46 +9,44 @@ datasource db {
 }
 
 model user {
-  reg_id        Int      @id @default(autoincrement())
-  fullName  String
-  username  String   @unique
-  email     String   @unique
-  password  String
-  mobileNo  String
-  gender    String
-  address   String
-  role      String   @default("customer")
-  isSeller  Boolean  @default(false)
-  follows follow[]
+  reg_id      Int     @id @default(autoincrement())
+  fullName    String
+  username     String  @unique
+  email       String  @unique
+  password    String
+  mobileNo    String
+  gender      String
+  address     String
+  role        String  @default("customer")
+  isSeller    Boolean @default(false)
 
 
-  // Add the inverse relation to cart
-  carts         cart[]   // A user can have many carts
-  favorites     favorite[] // A user can favorite many products
-  seller     seller?    // Optional one-to-one relation (a user may become a seller)
+  follows   follow[]
+  carts     cart[]
+  favorites favorite[]
+  seller    seller?
+  orders    order[]
+
+  @@map("user")
 }
 
-//seller model
-model seller{
-  seller_id Int             @id @default(autoincrement())
-  mobile_no1     String     
-  mobile_no2     String
-  reg_id Int     @unique
-  store_id Int   @unique
-  isBlocked  Boolean @default(false) // 👈 New field added here
-  warning1    String? 
-  warning2    String?
-  warning3    String?
-  
+model seller {
+  seller_id  Int     @id @default(autoincrement())
+  mobile_no1 String
+  mobile_no2 String
+  reg_id     Int     @unique
+  store_id   Int     @unique
+  isBlocked  Boolean @default(false)
+  warning1   String?
+  warning2   String?
+  warning3   String?
 
-  // Relationships
-  user  user  @relation(fields: [reg_id], references: [reg_id]) // One-to-One with user
-  store store @relation(fields: [store_id], references: [store_id])   // One-to-One with store
+  user  user  @relation(fields: [reg_id], references: [reg_id])
+  store store @relation(fields: [store_id], references: [store_id])
 
-  @@map("seller") // Map to actual table "seller"
+  @@map("seller")
 }
 
-// products model
 model product {
   product_id    Int     @id @default(autoincrement())
   name          String
@@ -63,91 +54,116 @@ model product {
   price         Float
   stock         Int
   store_id      Int
-  store         store   @relation(fields: [store_id], references: [store_id]) // Correct relation with store
   category      String
   isPremium     Boolean
   product_image String?
-  store_name String
-  store_image String
+  store_name    String
+  store_image   String?
 
-  // Add the inverse relation to cart
-  carts         cart[]   // A product can be in many carts
-  favorites     favorite[] // A product can be favorited by many users
-  reviews       review[]  // A product can have many reviews
+  store       store        @relation(fields: [store_id], references: [store_id])
+  carts       cart[]
+  favorites   favorite[]
+  reviews     review[]
+  order_items order_item[]
 
-
-  @@map("product") // Map to actual table "product"
+  @@map("product")
 }
 
-// store model
 model store {
-  store_id        Int        @id @default(autoincrement())
-  products  product[]  // One store can have many products
-  store_name String      @unique
-  business_email String     @unique
-  business_regNo String     @unique
+  store_id         Int     @id @default(autoincrement())
+  store_name       String  @unique
+  business_email   String  @unique
+  business_regNo   String  @unique
   business_address String?
-  seller   seller?    // Each store is owned by one seller
-  store_image String
-  follows follow[]
+  store_image      String?
 
-  @@map("store") // Map to actual table "store"
+  seller   seller?
+  products product[]
+  follows  follow[]
+
+  @@map("store")
 }
 
-//model cart 
-model cart{
-  cart_id     Int      @id @default(autoincrement()) // Primary key
-  reg_id      Int      // Foreign key to user model
-  product_id  Int      // Foreign key to product model
-  quantity    Int      @default(1)
-  price       String
-  description String
-  created_at  DateTime @default(now())
+model cart {
+  cart_id       Int      @id @default(autoincrement())
+  reg_id        Int
+  product_id    Int
+  quantity      Int      @default(1)
+  price         String
+  description   String
+  created_at    DateTime @default(now())
   product_image String
-  //size String
 
-  user    user    @relation(fields: [reg_id], references: [reg_id]) // Foreign key relation with user model
-  product product @relation(fields: [product_id], references: [product_id]) // Foreign key relation with product model
+  user    user    @relation(fields: [reg_id], references: [reg_id])
+  product product @relation(fields: [product_id], references: [product_id])
 
-  @@map("cart") // Map to actual table "cart"
-  @@unique([reg_id, product_id]) // Ensure a user cannot add the same product multiple times
+  @@unique([reg_id, product_id])
+  @@map("cart")
 }
 
-//favorite model
-model favorite{
-  fav_id Int @id @default(autoincrement())
-  reg_id Int //foreign key
-  product_id Int //foreign key
-
-  user      user     @relation(fields: [reg_id], references: [reg_id]) // Corrected field name and reference
-  product   product  @relation(fields: [product_id], references: [product_id]) // Corrected field name and reference
-
-  @@unique([reg_id, product_id]) // Ensure a user can only favorite a product once
-}
-
-//review model
-model review{
-  review_id Int @id @default(autoincrement())
-  content String 
-  userName String
+model favorite {
+  fav_id     Int @id @default(autoincrement())
+  reg_id     Int
   product_id Int
 
-  product product @relation(fields: [product_id], references: [product_id]) // Foreign key relation with product model
+  user    user    @relation(fields: [reg_id], references: [reg_id])
+  product product @relation(fields: [product_id], references: [product_id])
 
-
-  @@map("review") // Map to the actual table "review" (or any other name if you want to map it differently)
-
+  @@unique([reg_id, product_id])
+  @@map("favorite")
 }
 
-//follow stores 
+model review {
+  review_id  Int    @id @default(autoincrement())
+  content    String
+  userName   String
+  product_id Int
+
+  product product @relation(fields: [product_id], references: [product_id])
+
+  @@map("review")
+}
+
 model follow {
-  follow_id Int @id @default(autoincrement())
-  reg_id    Int
-  store_id  Int
+  follow_id   Int     @id @default(autoincrement())
+  reg_id      Int
+  store_id    Int
+  is_followed Boolean @default(true)
 
-  user   user   @relation(fields: [reg_id], references: [reg_id])
-  store  store  @relation(fields: [store_id], references: [store_id])
+  user  user  @relation(fields: [reg_id], references: [reg_id])
+  store store @relation(fields: [store_id], references: [store_id])
 
-  @@unique([reg_id, store_id], name: "reg_id_store_id") // ✅ Named composite key
+  @@unique([reg_id, store_id], name: "reg_id_store_id")
   @@map("follow")
+}
+
+model order {
+  order_id        Int      @id @default(autoincrement())
+  reg_id          Int? // nullable for guests
+  guest_name      String? // guest only
+  guest_mobile    String? // guest only
+  guest_address   String? // guest only
+  total_price     Float
+  courier_service String
+  status          String
+  order_date      DateTime @default(now())
+  deliver_date    DateTime
+
+  user        user?        @relation(fields: [reg_id], references: [reg_id])
+  order_items order_item[]
+
+  @@map("order")
+}
+
+model order_item {
+  id         Int   @id @default(autoincrement())
+  order_id   Int
+  product_id Int
+  quantity   Int   @default(1)
+  price      Float
+
+  order   order   @relation(fields: [order_id], references: [order_id])
+  product product @relation(fields: [product_id], references: [product_id])
+
+  @@map("order_item")
 }
