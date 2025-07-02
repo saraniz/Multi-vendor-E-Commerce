@@ -14,9 +14,9 @@ function TabComponent() {
         {/* Tab Headers */}
         <div className="flex p-5 mt-4 space-x-72">
           <button
-            className={`px-4 py-2 rounded transition-all duration-300 ease-in-out ${
+            className={` px-4 py-2 rounded transition-all duration-300 ease-in-out ${
               activeTab === 'All'
-                ? 'bg-blue-500 text-white scale-105 shadow-lg'
+                ? 'bg-[#0B1D51] text-white scale-105 shadow-lg'
                 : 'bg-gray-200 text-gray-700 hover:bg-blue-200 hover:text-blue-800'
             }`}
             onClick={() => setActiveTab('All')}
@@ -26,7 +26,7 @@ function TabComponent() {
           <button
             className={`px-4 py-2 rounded transition-all duration-300 ease-in-out ${
               activeTab === 'Following'
-                ? 'bg-blue-500 text-white scale-105 shadow-lg'
+                ? 'bg-[#0B1D51] text-white scale-105 shadow-lg'
                 : 'bg-gray-200 text-gray-700 hover:bg-blue-200 hover:text-blue-800'
             }`}
             onClick={() => setActiveTab('Following')}
@@ -36,7 +36,7 @@ function TabComponent() {
           <button
             className={`px-4 py-2 rounded transition-all duration-300 ease-in-out ${
               activeTab === 'Premium'
-                ? 'bg-blue-500 text-white scale-105 shadow-lg'
+                ? 'bg-[#0B1D51] text-white scale-105 shadow-lg'
                 : 'bg-gray-200 text-gray-700 hover:bg-blue-200 hover:text-blue-800'
             }`}
             onClick={() => setActiveTab('Premium')}

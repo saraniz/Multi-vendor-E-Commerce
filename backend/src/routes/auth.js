@@ -3,7 +3,7 @@ const express = require('express');
 
 //const { registerUser, loginUser, admin_login, getUser } = require('../controller/authController'); // Correct import path
 
-const { registerUser, loginUser, admin_login, getUser, updateProfile , profile_image_upload, registerSeller} = require('../controller/authController'); // Correct import path
+const { registerUser, loginUser, admin_login, getUser, updateProfile , profile_image_upload, registerSeller,forgotPassword} = require('../controller/authController'); // Correct import path
 
 const roleMiddleware = require('../middleware/roleMiddleware');
 const authenticate = require('../middleware/authMiddleware');
@@ -23,6 +23,8 @@ router.post('/admin-login', admin_login); // Handle admin login(🟢)
 
 // profile image upload  🔴
 router.post('/profile-image-upload',authenticate, profile_image_upload);
+
+router.post('/forgot-password', forgotPassword); // Handle forgot password
 
 
 // Export the router

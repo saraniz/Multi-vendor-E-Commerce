@@ -1,74 +1,177 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchCartItems } from '../../../Storage/Cart/cartAction';
-import CartItem from './CartItem';
-import CartSummary from './CartSummary';
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchCartItems, deleteFromCart } from "../../../Storage/Cart/cartAction";
+import CartItem from "./CartItem";
+import CartSummary from "./CartSummary";
 import { Link } from "react-router-dom";
+import { FiShoppingBag } from "react-icons/fi";
 
 const Cart = () => {
   const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.auth);
+  const {
+    cartItems: backendCartItems = [],
+    guestCartItems = [],
+    loading,
+    error,
+    flag,
+  } = useSelector((state) => state.cart);
 
-  // Get cart items, loading state, and error from the Redux store
-  const { cart, loading, error } = useSelector(state => state);
-  console.log("cart ",cart)
+  const [items, setItems] = useState([]);
 
-  // Fetch cart items when the component mounts
+  // Fetch cart items if logged in
   useEffect(() => {
-    dispatch(fetchCartItems());
-  }, [cart.flag]);
+    if (user) {
+      dispatch(fetchCartItems());
+    }
+  }, [user, dispatch, flag]);
 
-  // Calculate subtotal, service charge, taxes, and total
-  const subtotal = cart.cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
-  const serviceCharge = 500;
-  const taxes = 1000;
-  const total = subtotal + serviceCharge + taxes;
+  // Setup items from backend or guest sessionStorage
+  useEffect(() => {
+    if (user) {
+      setItems(backendCartItems);
+      console.log("🧾 Logged-in user cart loaded:", backendCartItems);
+    } else {
+      // Filter and map guest cart items from sessionStorage
+      const cleanedGuestItems = guestCartItems
+        .filter((item) => item && (item.id || item.productId))
+        .map((item) => ({
+          id: item.id || item.productId,
+          productId: item.productId || item.id,
+          store_id: item.store_id || null,
+          name: item.name,
+          price: item.price,
+          quantity: item.quantity,
+          image: item.image || item.product_image || "/placeholder.png", // <-- fix here
+          description: item.description,
+          size: item.size,
+          color: item.color || "",
+        }));
+      setItems(cleanedGuestItems);
+      console.log("🧾 Guest Cart Loaded:", cleanedGuestItems);
+    }
+  }, [user, backendCartItems, guestCartItems]);
 
-  // Handle cancel action for a cart item
+  const subtotal = items.reduce((acc, item) => acc + (item.price * item.quantity || 0), 0);
+  const total = subtotal;
 
-  // Handle quantity change for a cart item
   const handleQuantityChange = (id, newQuantity) => {
-    console.log('Update quantity:', id, newQuantity);
-    // Dispatch an action to update the item quantity in the cart
+    if (user) {
+      // TODO: implement backend update call here
+      console.log(`Update backend cart item ${id} quantity to ${newQuantity}`);
+    } else {
+      const updatedItems = items.map((item) =>
+        item.id === id ? { ...item, quantity: newQuantity } : item
+      );
+      sessionStorage.setItem("guestCartItems", JSON.stringify(updatedItems));
+      dispatch({ type: "UPDATE_GUEST_CART_ITEM", payload: updatedItems });
+      setItems(updatedItems);
+      console.log("Guest cart quantity updated:", updatedItems);
+    }
   };
 
-  // Display loading state
-  if (loading) return <p>Loading...</p>;
+  const handleRemove = (cart_id) => {
+    if (user) {
+      dispatch(deleteFromCart(cart_id));
+    } else {
+      const updatedItems = items.filter((item) => item.id !== cart_id);
+      sessionStorage.setItem("guestCartItems", JSON.stringify(updatedItems));
+      dispatch({ type: "UPDATE_GUEST_CART_ITEM", payload: updatedItems });
+      setItems(updatedItems);
+      console.log("Guest cart item removed:", cart_id);
+    }
 
-  // Display error message
-  if (error) return <p>Error: {error}</p>;
+    setTimeout(() => {
+      window.location.reload();
+    }, 500);
+  };
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-64">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gray-900"></div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="p-6 bg-red-50 rounded-lg max-w-2xl mx-auto mt-8">
+        <p className="text-red-600 font-medium">Error loading cart: {error}</p>
+        <button
+          onClick={() => dispatch(fetchCartItems())}
+          className="mt-4 px-4 py-2 bg-gray-800 text-white rounded hover:bg-gray-700"
+        >
+          Retry
+        </button>
+      </div>
+    );
+  }
 
   return (
-    <div className="flex justify-between p-8">
-      <div className="w-3/4">
-        <h1 className="mb-6 text-2xl font-bold">My Shopping Cart</h1>
-        {cart.cartItems?.map(item => (
-          <CartItem 
-            key={item.id}
-            cart_id={item.id}
-            id={item.productId} // Pass item ID
-            name={item.name}
-            price={item.price}
-            quantity={item.quantity}
-            image={item.image} // Pass product image
-            description={item.description} // Pass product description
-           
-            onQuantityChange={(newQuantity) => handleQuantityChange(item.id, newQuantity)}
-          />
-        ))}
-      </div>
-      <div className="flex flex-col ">
-        <CartSummary
-          subtotal={subtotal}
-          serviceCharge={serviceCharge}
-          taxes={taxes}
-          total={total}
-        />
-        <Link to="/PaymentMethods" className="w-full">
-  <button className="w-full px-6 py-3 mt-4 font-bold text-white transition duration-300 bg-blue-500 rounded-lg hover:bg-blue-600">
-    Buy Now
-  </button>
-</Link>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="flex flex-col lg:flex-row gap-8">
+        {/* Cart Items Section */}
+        <div className="lg:w-2/3">
+          <div className="bg-white rounded-xl shadow-sm p-6">
+            <div className="flex items-center justify-between mb-6">
+              <h1 className="text-2xl font-bold text-gray-900">My Shopping Cart ({items.length})</h1>
+              <Link
+                to="/shop"
+                className="text-sm font-medium text-indigo-600 hover:text-indigo-500"
+              >
+                Continue Shopping
+              </Link>
+            </div>
 
+            {items.length === 0 ? (
+              <div className="text-center py-12">
+                <FiShoppingBag className="mx-auto h-12 w-12 text-gray-400" />
+                <h3 className="mt-2 text-lg font-medium text-gray-900">Your cart is empty</h3>
+                <p className="mt-1 text-gray-500">Start adding some items to your cart</p>
+                <div className="mt-6">
+                  <Link
+                    to="/shop"
+                    className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700"
+                  >
+                    Shop Now
+                  </Link>
+                </div>
+              </div>
+            ) : (
+              <div className="divide-y divide-gray-200">
+                {items
+                  .filter((item) => item && typeof item === "object")
+                  .map((item) => (
+                    <CartItem
+                      key={item.id}
+                      item={{
+                        ...item,
+                        image: item.image || "/placeholder.png",
+                      }}
+                      onQuantityChange={(newQty) => handleQuantityChange(item.id, newQty)}
+                      onRemove={() => handleRemove(item.id)}
+                    />
+                  ))}
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Order Summary Section */}
+        <div className="lg:w-1/3">
+          <CartSummary subtotal={subtotal} total={total} />
+
+          {items.length > 0 && (
+            <Link
+              to="/checkout"
+              state={{ cartItems: items }}
+              className="block w-full mt-4 bg-black text-white text-center py-3 px-4 rounded-lg font-medium hover:bg-gray-800 transition-colors"
+            >
+              Proceed to Checkout
+            </Link>
+          )}
+        </div>
       </div>
     </div>
   );

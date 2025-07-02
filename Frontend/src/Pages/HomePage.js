@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Navbar from "../Components/Header/Navbar";
 import AdvertisementSlider from "../Components/Body/AddSlider";
 import TabComponent from "../Components/Body/TabComponent";
@@ -7,22 +7,34 @@ import Footer from "../Components/Footer/Footer";
 import Categories from "../Components/Body/Category/Categories";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllProducts } from "../Storage/Product/productAction";
+import Loader from "./Loader";
 
 function HomePage() {
   const tabRef = useRef(null);
-  const { auth, fav } = useSelector((store) => store);
+  const { loading, auth, fav } = useSelector((store) => store);
   const dispatch = useDispatch();
+
+  const [pageloading, setPageloading] = useState(true)
 
 
   useEffect(()=>{
    
       dispatch(fetchAllProducts())
+       const timer = setTimeout(() => {
+    setPageloading(false);
+  }, 1000); 
+
+  return () => clearTimeout(timer); 
     
   },[fav.flag])
 
   const scrollToTabComponent = () => {
     tabRef.current?.scrollIntoView({ behavior: "smooth" });
   };
+
+  if(pageloading){
+    return <Loader />
+  }
 
   return (
     <div>

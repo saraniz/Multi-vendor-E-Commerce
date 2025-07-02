@@ -5,9 +5,9 @@ const roleMiddleware = require('../middleware/roleMiddleware'); // Ensure this m
 
 const router = express.Router();
 
-router.post('/add', authenticate, roleMiddleware(['Customer']),addItemToCart);
+router.post('/add', authenticate,addItemToCart);
 router.put('/update/:id', authenticate, updateCartItem);
 router.delete('/delete', authenticate, removeFromCart)
-router.get('/viewCart', authenticate,roleMiddleware(['Customer']), viewCart);
+router.get('/viewCart', authenticate, viewCart);
 
 module.exports = router;

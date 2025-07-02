@@ -1,7 +1,9 @@
 //handle favorite products
 
-const { PrismaClient } = require('@prisma/client')
-const prisma = new PrismaClient()
+// const { PrismaClient } = require('@prisma/client')
+// const prisma = new PrismaClient()
+const prisma = require("../../config/database.js");
+
 
 //add a product to favorites
 const addFavorite = async(req,res) =>{

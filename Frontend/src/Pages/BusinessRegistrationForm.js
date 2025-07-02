@@ -1,25 +1,31 @@
 import React, { useState } from "react";
 import Footer from "../Components/Footer/Footer";
-import { useDispatch, useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux";
 import { sellerRegister } from "../Storage/Auth/UserAction";
 
-
 function BusinessRegistrationForm() {
-  const dispatch = useDispatch()
-  const { sellerError } = useSelector((state) => state.auth)
+  const dispatch = useDispatch();
+  const { sellerError } = useSelector((state) => state.auth);
 
-  const [profileImage, setProfileImage] = useState(null);
+  const [profileImage, setProfileImage] = useState(""); // base64 string
   const [formData, setFormData] = useState({
     store_name: "",
     business_email: "",
     business_regNo: "",
     mobile_no1: "",
     mobile_no2: "",
-    business_address: ""
+    business_address: "",
   });
 
   const handleImageChange = (e) => {
-    setProfileImage(URL.createObjectURL(e.target.files[0]));
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setProfileImage(reader.result); // base64 string
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   const handleInputChange = (e) => {
@@ -29,8 +35,13 @@ function BusinessRegistrationForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Form submitted", formData);
-    dispatch(sellerRegister(formData))
+
+    const fullFormData = {
+      ...formData,
+      store_image: profileImage,
+    };
+
+    dispatch(sellerRegister(fullFormData));
   };
 
   return (
@@ -38,9 +49,9 @@ function BusinessRegistrationForm() {
       <div className="flex flex-col items-center justify-center min-h-screen my-10 text-gray-800 bg-white">
         <h2 className="mb-4 text-3xl font-semibold text-blue-950">Create Your KLOSET Shop</h2>
         <p className="mb-8 text-lg font-light text-gray-600">Join the world's largest online fashion space</p>
-        
+
         <div className="flex flex-col items-center mb-6">
-          <label htmlFor="profileImage" className="cursor-pointer">
+          <label htmlFor="businessprofileImage" className="cursor-pointer">
             <img
               src={profileImage || "https://t4.ftcdn.net/jpg/05/69/90/73/360_F_569907313_fl7W3gX7YIVw2r05B4Ij1c21ix4xRUqD.jpg"}
               alt="Profile"
@@ -66,7 +77,7 @@ function BusinessRegistrationForm() {
             { label: "Business Email", name: "business_email", type: "email" },
             { label: "Business Reg No", name: "business_regNo", type: "text" },
             { label: "Contact Number 1", name: "mobile_no1", type: "tel" },
-            { label: "Contact Number 2", name: "mobile_no2", type: "tel" }
+            { label: "Contact Number 2", name: "mobile_no2", type: "tel" },
           ].map((field) => (
             <div key={field.name} className="mb-4">
               <label className="block mb-2 text-sm font-semibold text-gray-600">{field.label}</label>
@@ -83,8 +94,8 @@ function BusinessRegistrationForm() {
           <div className="mb-4">
             <label className="block mb-2 text-sm font-semibold text-gray-600">Address</label>
             <textarea
-              name="address"
-              value={formData.address}
+              name="business_address"
+              value={formData.business_address}
               onChange={handleInputChange}
               className="w-full px-4 py-2 text-gray-800 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-600"
             />

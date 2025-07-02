@@ -1,6 +1,7 @@
 import { api, API_BASE_URL } from "../APIConfig";
 import axios from "axios";
 import Swal from "sweetalert2";
+
 import {
   ADD_PRODUCT_FAILURE,
   ADD_PRODUCT_REQUEST,
@@ -11,77 +12,72 @@ import {
   FETCH_PRODUCT_FAILURE,
   FETCH_PRODUCT_REQUEST,
   FETCH_PRODUCT_SUCCESS,
+  UPDATE_PRODUCT_FAILURE,
+  UPDATE_PRODUCT_REQUEST,
+  UPDATE_PRODUCT_SUCCESS,
 } from "./productActionType";
+
 import { ADD_FAVORITE_SUCCESS } from "../Favorite/favActionType";
 
-// Action to fetch product details
-
+// ✅ Fetch single product details
 export const fetchProductDetails = (product_id) => async (dispatch) => {
-  dispatch({ type: "FETCH_PRODUCT_REQUEST" }); // Dispatching request action
+  dispatch({ type: FETCH_PRODUCT_REQUEST });
 
   try {
-    // Sending GET request to fetch product details
-    const { data } = await axios.get(
-      `${API_BASE_URL}/api/items/product/${product_id}`
-    );
-
-    // Dispatch success action with fetched data
-    dispatch({ type: "FETCH_PRODUCT_SUCCESS", payload: data });
-
+    const { data } = await axios.get(`${API_BASE_URL}/api/items/product/${product_id}`);
+    dispatch({ type: FETCH_PRODUCT_SUCCESS, payload: data });
     console.log("Product details fetched successfully:", data);
   } catch (error) {
-    // Improved error handling
     const errorMessage =
       error.response?.data?.message || error.message || "Something went wrong!";
-
-    // Dispatch failure action with error message
     dispatch({ type: FETCH_PRODUCT_FAILURE, payload: errorMessage });
-
     console.error("Error fetching product details:", error);
   }
 };
 
-//fetch all the products in database
+// ✅ Fetch all products
 export const fetchAllProducts = () => async (dispatch) => {
-  dispatch({ type: FETCH_ALLPRODUCT_REQUEST }); // Dispatching request action
+  dispatch({ type: FETCH_ALLPRODUCT_REQUEST });
 
   try {
-    // Sending GET request to fetch all products
     const { data } = await axios.get(`${API_BASE_URL}/api/items/allproducts`);
 
-    // Dispatch success action with fetched data
-    dispatch({ type: FETCH_ALLPRODUCT_SUCCESS, payload: data });
+    const productsWithImageUrl = data.map((product) => {
+      let imageUrl = null;
+
+      if (product.product_image) {
+        if (
+          product.product_image.startsWith("http://") ||
+          product.product_image.startsWith("https://")
+        ) {
+          imageUrl = product.product_image; // it's an external image URL
+        } else if (product.product_image.startsWith("data:image")) {
+          imageUrl = product.product_image; // already base64
+        } else {
+          imageUrl = `data:image/png;base64,${product.product_image}`; // raw base64 string from backend
+        }
+      }
+
+      return { ...product, imageUrl };
+    });
+
+    dispatch({ type: FETCH_ALLPRODUCT_SUCCESS, payload: productsWithImageUrl });
   } catch (error) {
-    // Improved error handling
     const errorMessage =
       error.response?.data?.message || error.message || "Something went wrong!";
-
-    // Dispatch failure action with error message
     dispatch({ type: FETCH_ALLPRODUCT_FAILURE, payload: errorMessage });
-
     console.error("Error fetching products:", error);
   }
 };
 
+// ✅ Add a product
 export const addProducts = (productData) => async (dispatch) => {
+  console.log('[addProducts Action] Called with:', productData);
   dispatch({ type: ADD_PRODUCT_REQUEST });
 
   try {
-    //get token from localstorage
-
-
-    console.log('add items 2: ',productData)
     const token = localStorage.getItem("jwt");
 
- 
-
-    // Debug: Check FormData contents
-    // console.log("Form Data contents:");
-    // for (let pair of productData.entries()) {
-    //   console.log(pair[0] + ": ", pair[1]);
-    // }
-
-    //sending POST request to add the product with jwt token headers
     const { data } = await axios.post(
       `${API_BASE_URL}/api/items/addProducts`,
       productData,
@@ -93,9 +89,10 @@ export const addProducts = (productData) => async (dispatch) => {
       }
     );
 
+    console.log('[addProducts Action] Success Response:', data);
+    dispatch({ type: ADD_PRODUCT_SUCCESS, payload: data });
     dispatch({ type: ADD_FAVORITE_SUCCESS, payload: data });
 
-    // Success notification
     Swal.fire({
       position: "top-end",
       icon: "success",
@@ -103,22 +100,71 @@ export const addProducts = (productData) => async (dispatch) => {
       showConfirmButton: false,
       timer: 1500,
     });
-
-    console.log("Product added successfully:", data);
   } catch (error) {
     const errorMessage =
       error.response?.data?.message || error.message || "Something went wrong!";
-
-    // Dispatch failure action with error message
+    console.error('[addProducts Action] Error:', errorMessage, error);
     dispatch({ type: ADD_PRODUCT_FAILURE, payload: errorMessage });
 
-    // Show failure notification
     Swal.fire({
       title: "Error adding product",
       text: errorMessage,
       icon: "error",
     });
+  }
+};
 
-    console.log("Error adding product:", error);
+export const updateProduct = (prisma_id, formData) => async (dispatch) => {
+  dispatch({ type: UPDATE_PRODUCT_REQUEST });
+  console.log("[updateProduct Action] Started for prisma_id:", prisma_id);
+
+  try {
+    const token = localStorage.getItem("jwt");
+
+    // Debugging the FormData
+    console.log("[updateProduct Action] FormData Preview:");
+    for (let [key, value] of formData.entries()) {
+      if (key === "product_image") {
+        console.log(`📸 ${key}:`, value?.name);
+      } else {
+        console.log(`📦 ${key}:`, value);
+      }
+    }
+
+    const { data } = await axios.put(
+      `${API_BASE_URL}/api/items/product/update/${prisma_id}`,
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+
+    dispatch({ type: UPDATE_PRODUCT_SUCCESS, payload: data });
+
+    Swal.fire({
+      icon: "success",
+      title: "Product Updated!",
+      text: "Your product has been updated successfully.",
+      timer: 1500,
+      showConfirmButton: false,
+    });
+
+    console.log("[updateProduct Action] Success Response:", data);
+  } catch (error) {
+    const errorMessage =
+      error.response?.data?.message || error.message || "Something went wrong!";
+
+    dispatch({ type: UPDATE_PRODUCT_FAILURE, payload: errorMessage });
+
+    Swal.fire({
+      icon: "error",
+      title: "Update Failed",
+      text: errorMessage,
+    });
+
+    console.error("[updateProduct Action] Error occurred:", error);
   }
 };

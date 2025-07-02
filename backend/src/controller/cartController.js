@@ -1,53 +1,76 @@
-const { PrismaClient } = require('@prisma/client'); // Import Prisma client
-const prisma = new PrismaClient(); // Instantiate Prisma client
+// const { PrismaClient } = require('@prisma/client'); // Import Prisma client
+// const prisma = new PrismaClient(); // Instantiate Prisma client
+const prisma = require("../../config/database.js");
+const ProductMongo = require('../models/product.js');
+const CartMongo = require('../models/Cart.js');
+const UserMongo = require('../models/user.js'); // MongoDB User model
 
 // Add product to cart
 const addItemToCart = async (req, res) => {
-    try {
-        const { productId, quantity } = req.body;
-        const userId = req.user.reg_id; // Extracted from JWT token
+  try {
+    const { productId, quantity } = req.body;
+    const userId = req.user.reg_id; // From JWT
 
-        // Validate input
-        if (!productId || !quantity) {
-            return res.status(400).json({ error: "Missing required fields: productId, quantity." });
-        }
-
-        // Ensure productId is an integer
-        const productIdInt = parseInt(productId, 10);
-        if (isNaN(productIdInt)) {
-            return res.status(400).json({ error: "Invalid productId. Expected a number." });
-        }
-
-        // Fetch product details from the product table
-        const product = await prisma.product.findUnique({
-            where: {
-                product_id: productIdInt, // Use productIdInt
-            },
-        });
-
-        if (!product) {
-            return res.status(404).json({ error: "Product not found" });
-        }
-
-        // Create a cart item and store product details
-        const cartItem = await prisma.cart.create({
-            data: {
-                reg_id: userId, // Use userId (reg_id from JWT token)
-                product_id: productIdInt, // Use productIdInt
-                quantity: quantity,
-                price: product.price.toString(),
-                description: product.description,
-                product_image: product.product_image,
-            },
-        });
-
-        res.status(201).json({ message: 'Item added to cart', cartItem });
-    } catch (error) {
-        console.error("Error in addItemToCart:", error); // Debugging: Log the error
-        res.status(500).json({ error: error.message });
+    // ✅ Validate input
+    if (!productId || !quantity) {
+      return res.status(400).json({ error: "Missing required fields: productId, quantity." });
     }
-};
 
+    const productIdInt = parseInt(productId, 10);
+    if (isNaN(productIdInt)) {
+      return res.status(400).json({ error: "Invalid productId. Expected a number." });
+    }
+
+    // ✅ Fetch product from Prisma
+    const product = await prisma.product.findUnique({
+      where: { product_id: productIdInt },
+    });
+
+    if (!product) {
+      return res.status(404).json({ error: "Product not found" });
+    }
+
+    // ✅ Add to PostgreSQL via Prisma
+    const cartItem = await prisma.cart.create({
+      data: {
+        reg_id: userId,
+        product_id: productIdInt,
+        quantity: quantity,
+        price: product.price.toString(),
+        description: product.description,
+        product_image: product.product_image,
+      },
+    });
+
+    // ✅ Now add to MongoDB
+    const userMongo = await UserMongo.findOne({ reg_id: userId });
+    const productMongo = await ProductMongo.findOne({ prisma_id: productIdInt });
+
+    if (!userMongo || !productMongo) {
+      console.warn("MongoDB user or product not found. Skipping MongoDB cart sync.");
+    } else {
+      const cartMongo = new CartMongo({
+        prisma_cart_id: cartItem.cart_id, // link to Prisma
+        user_id: userMongo._id,
+        product_id: productMongo._id,
+        quantity: quantity,
+        price: product.price.toString(),
+        description: product.description,
+        product_image: product.product_image,
+        created_at: new Date(),
+      });
+
+      await cartMongo.save();
+      console.log("Cart item also saved in MongoDB");
+    }
+
+    res.status(201).json({ message: 'Item added to cart', cartItem });
+
+  } catch (error) {
+    console.error("Error in addItemToCart:", error);
+    res.status(500).json({ error: error.message });
+  }
+};
 // Update cart item
 const updateCartItem = async (req, res) => {
     try {

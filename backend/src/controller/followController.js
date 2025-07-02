@@ -1,11 +1,17 @@
-const { PrismaClient } = require('@prisma/client');
-const prisma = new PrismaClient();
+// const { PrismaClient } = require('@prisma/client');
+// const prisma = new PrismaClient();
+const prisma = require("../../config/database.js");
+
 
 // Follow a store
 const followStore = async (req, res) => {
   try {
     const reg_id = req.user.reg_id;
     const { store_id } = req.body;
+
+    console.log("🔵 Received follow request:");
+    console.log("➡️ reg_id:", reg_id);
+    console.log("➡️ store_id:", store_id);
 
     if (!store_id) {
       return res.status(400).json({ message: "Store id missing" });
@@ -16,6 +22,7 @@ const followStore = async (req, res) => {
     });
 
     if (!store) {
+      console.log("❌ Store not found");
       return res.status(404).json({ message: "Store not found." });
     }
 
@@ -29,6 +36,7 @@ const followStore = async (req, res) => {
     });
 
     if (existingFollow) {
+      console.log("⚠️ Already followed store");
       return res.status(400).json({ message: "You already follow this store" });
     }
 
@@ -39,12 +47,14 @@ const followStore = async (req, res) => {
       },
     });
 
+    console.log("✅ Successfully followed store:", follow);
+
     return res.status(201).json({
       message: "You have successfully followed the store.",
       follow,
     });
   } catch (err) {
-    console.error("Error following store:", err);
+    console.error("❌ Error following store:", err);
     return res.status(500).json({ message: "Internal server error" });
   }
 };
@@ -55,13 +65,11 @@ const fetchFollowedShops = async (req, res) => {
     const reg_id = req.user.reg_id;
 
     const followedShops = await prisma.follow.findMany({
-      where: {
-        reg_id: reg_id,
-      },
-      include: {
-        store: true, // Include store details
-      },
+      where: { reg_id },
+      include: { store: true }, // include store details including image url
     });
+
+    console.log("📡 [SERVER] Fetched followed shops from DB:", followedShops);
 
     if (followedShops.length === 0) {
       return res.status(404).json({ message: "No followed stores found." });
@@ -71,9 +79,8 @@ const fetchFollowedShops = async (req, res) => {
       message: "Followed shops fetched successfully.",
       followedShops,
     });
-
   } catch (err) {
-    console.error("Error fetching followed shops:", err);
+    console.error("❌ [SERVER] Error fetching followed shops:", err);
     return res.status(500).json({ message: "Internal server error" });
   }
 };

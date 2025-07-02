@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import ImageGallery from "../Components/ProductPage/ImageGallery";
 import ProductDetails from "../Components/ProductPage/ProductDetails";
 import Navbar from '../Components/Header/Navbar';
@@ -7,15 +7,27 @@ import { useParams } from "react-router-dom";
 import { fetchProductDetails } from "../Storage/Product/productAction";
 import ReviewComponent from "../Components/Body/ReviewComponent";
 import { useDispatch } from "react-redux";
+import Loader from "./Loader";
 
 const Productpage = () => {
   const dispatch = useDispatch();
   const { product_id } = useParams();
 
+  const [pageLoading,setpageLoading] = useState(true)
+
+
   useEffect(() => {
     window.scrollTo(0, 0); // Scroll to the top when the page loads
     dispatch(fetchProductDetails(product_id));
+
+    const timer = setTimeout(() => {
+      setpageLoading(false)
+    },2000)
   }, [product_id, dispatch]);
+
+  if(pageLoading){
+    return <Loader />
+  }
 
   return (
     <div>

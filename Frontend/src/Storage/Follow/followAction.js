@@ -44,11 +44,15 @@ export const followStore = (storeId) => async (dispatch) => {
       store_id: storeId,
     };
 
+    console.log("📤 Sending follow request to backend:", body);
+
     const response = await axios.post(
       `${API_BASE_URL}/api/follow/followStore`,
       body,
       config
     );
+
+    console.log("✅ Follow store success response:", response.data);
 
     dispatch({
       type: FOLLOW_STORE_SUCCESS,
@@ -62,7 +66,7 @@ export const followStore = (storeId) => async (dispatch) => {
       showConfirmButton: false,
     });
   } catch (error) {
-    console.error("Error following store:", error);
+    console.error("❌ Error following store:", error);
     dispatch({
       type: FOLLOW_STORE_FAIL,
       payload: error.response?.data?.message || error.message,
@@ -93,16 +97,18 @@ export const fetchFollowedShops = () => async (dispatch) => {
     };
 
     const response = await axios.get(
-      `${API_BASE_URL}/api/follow/fetchFollowedShops`,
+      `${API_BASE_URL}/api/follow/fetchFollowedstores`,
       config
     );
+
+    console.log("✅ [ACTION] Followed shops fetched from server:", response.data.followedShops);
 
     dispatch({
       type: FETCH_FOLLOWED_SHOPS_SUCCESS,
       payload: response.data.followedShops,
     });
   } catch (error) {
-    console.error("Error fetching followed shops:", error);
+    console.error("❌ [ACTION] Error fetching followed shops:", error);
     dispatch({
       type: FETCH_FOLLOWED_SHOPS_FAIL,
       payload: error.response?.data?.message || error.message,

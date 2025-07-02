@@ -1,22 +1,35 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar from '../Components/Header/Navbar';
 import Footer from '../Components/Footer/Footer';
 import { FaCreditCard, FaPaypal, FaMoneyBillWave } from 'react-icons/fa';
-//🔴
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { placeOrder } from '../Storage/Order/orderAction';
 import { payForSingleProduct, checkoutCart } from '../Storage/Payment/paymentAction';
-//🔴
 
 function PaymentMethods() {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const { selectedItems, userData, selectedShipping, totalAmount } = location.state || {};
+
   const [selectedMethod, setSelectedMethod] = useState('');
   const [paymentDetails, setPaymentDetails] = useState({
     cardNumber: '',
     expiry: '',
     cvv: '',
     paypalEmail: '',
-    phoneNumber: '',
-    address: '',
+    phoneNumber: userData?.mobileNo || '',
+    address: userData?.address || '',
   });
   const [isDetailsValid, setIsDetailsValid] = useState(false);
+
+  useEffect(() => {
+    if (!selectedItems || !userData || !selectedShipping || selectedItems.length === 0) {
+      navigate('/checkout');
+    }
+  }, [selectedItems, userData, selectedShipping, navigate]);
 
   const paymentOptions = [
     { id: 'credit-card', name: 'Credit Card', icon: <FaCreditCard size={24} /> },
@@ -33,36 +46,86 @@ function PaymentMethods() {
     });
   };
 
-  // 🔴
-const handlePayment = () => {
-  const product_id = 1;
-  const reg_id = 34; 
-  if (selectedMethod === 'credit-card') {
-    payForSingleProduct(product_id); // Trigger payment for a single product
-    // if (window.location.pathname.includes('cart')) {
-    //   checkoutCart(reg_id); // Handle cart checkout 🛒
-    // } else {
-    //   payForSingleProduct(product_id); // Handle single product payment 🛍️
-    // }
-    
-  } 
-};
-// 🔴
-
   const validateDetails = (details) => {
     if (selectedMethod === 'credit-card') {
       setIsDetailsValid(
         details.cardNumber.length === 16 &&
-        details.expiry &&
-        details.cvv.length === 3
+          details.expiry &&
+          details.cvv.length === 3
       );
     } else if (selectedMethod === 'paypal') {
       setIsDetailsValid(details.paypalEmail.includes('@'));
     } else if (selectedMethod === 'cod') {
       setIsDetailsValid(
-        details.phoneNumber.length >= 10 &&
-        details.address.trim() !== ''
+        (details.phoneNumber || userData?.mobileNo || '').length >= 10 &&
+          (details.address || userData?.address || '').trim() !== ''
       );
+    }
+  };
+
+  const handlePayment = async () => {
+    const token = localStorage.getItem('jwt');
+
+    const cartItems = selectedItems.map((item) => ({
+      product_id: item.product_id || item.id,
+      quantity: item.quantity,
+      price: item.price,
+    }));
+
+    const validCartItems = cartItems.filter((item) => item.product_id);
+
+    if (validCartItems.length !== cartItems.length) {
+      alert('Some cart items are missing product_id and will be skipped.');
+      console.warn('Invalid cart items:', cartItems.filter((i) => !i.product_id));
+    }
+
+    const deliver_date = new Date();
+
+    const orderData = token
+      ? {
+          reg_id: userData?.reg_id || userData?.id,
+          total_price: totalAmount,
+          courier_service: selectedShipping,
+          deliver_date,
+          cartItems: validCartItems,
+        }
+      : {
+          reg_id: null,
+          guest_name: userData?.fullName || 'Guest User',
+          guest_mobile:
+            userData?.mobileNo || paymentDetails.phoneNumber || '0000000000',
+          guest_address:
+            userData?.address || paymentDetails.address || 'Not Provided',
+          total_price: totalAmount,
+          courier_service: selectedShipping,
+          deliver_date,
+          cartItems: validCartItems,
+        };
+
+    try {
+      // Store order details in DB
+      await dispatch(placeOrder(orderData));
+
+      alert('Order placed successfully!');
+
+      // Redirect to sandbox payment
+      const product_id = validCartItems.length > 0 ? validCartItems[0].product_id : 1;
+      const reg_id = userData?.reg_id || userData?.id || 34;
+
+      if (selectedMethod === 'credit-card') {
+        await payForSingleProduct(product_id);
+      } else if (selectedMethod === 'paypal') {
+        // Implement PayPal sandbox flow here if you have one
+        alert('Redirecting to PayPal sandbox payment...');
+      } else if (selectedMethod === 'cod') {
+        // No redirect needed for COD
+        navigate('/order-success');
+      } else {
+        navigate('/order-success');
+      }
+    } catch (error) {
+      console.error('Payment failed:', error);
+      alert('Payment failed. Please try again.');
     }
   };
 
@@ -70,11 +133,8 @@ const handlePayment = () => {
     <div>
       <Navbar />
       <div className="flex max-w-6xl gap-10 p-8 mx-auto mt-10 mb-20 bg-white shadow-lg rounded-2xl">
-        {/* Left Side: Payment Methods */}
         <div className="w-1/3 space-y-6">
-          <h2 className="mb-4 text-2xl font-semibold text-gray-800">
-            Select Payment Method
-          </h2>
+          <h2 className="mb-4 text-2xl font-semibold text-gray-800">Select Payment Method</h2>
           {paymentOptions.map((option) => (
             <div
               key={option.id}
@@ -90,17 +150,13 @@ const handlePayment = () => {
                   expiry: '',
                   cvv: '',
                   paypalEmail: '',
-                  phoneNumber: '',
-                  address: '',
+                  phoneNumber: userData?.mobileNo || '',
+                  address: userData?.address || '',
                 });
                 setIsDetailsValid(false);
               }}
             >
-              <span
-                className={`${
-                  selectedMethod === option.id ? 'text-blue-600' : 'text-gray-600'
-                }`}
-              >
+              <span className={selectedMethod === option.id ? 'text-blue-600' : 'text-gray-600'}>
                 {option.icon}
               </span>
               <span
@@ -114,13 +170,10 @@ const handlePayment = () => {
           ))}
         </div>
 
-        {/* Right Side: Payment Details */}
         <div className="w-2/3 p-6 border rounded-xl bg-gray-50">
           {selectedMethod && (
             <div>
-              <h2 className="mb-6 text-2xl font-semibold text-gray-800">
-                Enter Payment Details
-              </h2>
+              <h2 className="mb-6 text-2xl font-semibold text-gray-800">Enter Payment Details</h2>
               {selectedMethod === 'credit-card' && (
                 <div className="space-y-4">
                   <input
@@ -187,9 +240,7 @@ const handlePayment = () => {
                     : 'bg-gray-400 cursor-not-allowed'
                 }`}
                 disabled={!isDetailsValid}
-                //🥲
-                onClick={handlePayment} // This is the fix
-                //🥲
+                onClick={handlePayment}
               >
                 Pay Now
               </button>

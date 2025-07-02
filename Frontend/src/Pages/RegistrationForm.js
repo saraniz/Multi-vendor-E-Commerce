@@ -24,7 +24,15 @@ function RegistrationForm() {
   });
 
   const handleImageChange = (e) => {
-    setProfileImage(URL.createObjectURL(e.target.files[0]));
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setProfileImage(reader.result); // base64 string
+        console.log("Selected profileImage (base64):", reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   const handleInputChange = (e) => {
@@ -34,9 +42,13 @@ function RegistrationForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form data",formData)
-    dispatch(userRegister(formData))
-    console.log("jwt",auth?.jwt)
+    const submitData = { ...formData };
+    if (profileImage) {
+      submitData.profileImage = profileImage; // base64 string
+    }
+    console.log("Submitting registration data:", submitData);
+    dispatch(userRegister(submitData));
+    console.log("jwt", auth?.jwt);
   };
 
   // Redirect when authentication is successful

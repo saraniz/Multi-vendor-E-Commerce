@@ -1,29 +1,17 @@
-// const {DataTypes} = require('sequelize')
-// const sequelize = require('../config/database'); // Import sequelize instance from server.js
+const mongoose = require('mongoose');
 
+const ProductSchema = new mongoose.Schema({
+  prisma_id: { type: Number, unique: true },  // <-- Add this to link Prisma product IDs
+  name: String,
+  description: String,
+  price: Number,
+  stock: Number,
+  store_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Store' },
+  category: String,
+  isPremium: Boolean,
+  product_image: String,
+  store_name: String,
+  store_image: String
+}, { timestamps: true });
 
-//     const Product = sequelize.define("Product",{
-//         id:{
-//             type: DataTypes.INTEGER,
-//             autoIncrement: true,
-//             primaryKey: true,
-//         },
-//         name:{
-//             type: DataTypes.STRING,
-//             allowNull: false,
-//         },
-//         description:{
-//             type: DataTypes.STRING,
-//             allowNull: false,
-//         },
-//         price:{
-//             type: DataTypes.DECIMAL(10,2),
-//             allowNull: false,
-//         },
-//         stock:{
-//             type: DataTypes.INTEGER,
-//             allowNull: false,
-//         },
-//     })
-
-// module.exports = Product;
+module.exports = mongoose.model('Product', ProductSchema);
