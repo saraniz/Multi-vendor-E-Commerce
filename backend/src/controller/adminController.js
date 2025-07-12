@@ -108,48 +108,7 @@ const getProdctData = async (req, res) => {
     }
   };
 
-// Send Warnings to sellers😒😒😒😒😒
-// const sellerWarnings = {};
 
-// const warningList = {
-//   1: "Warning 1 😡",
-//   2: "Warning 2 😡😡",
-//   3: "Warning 3 😡😡😡"
-// };
-
-// const sendWarning = async (req, res) => {
-//   const { seller_id, type } = req.body;
-
-//   if (!seller_id || !type || !warningList[type]) {
-//     return res.status(400).json({ message: "Valid seller_id and warning type (1 or 2 or 3) are required" });
-//   }
-
-//   // Check if the seller exists in the database
-//   const seller = await prisma.seller.findUnique({
-//     where: { seller_id: parseInt(seller_id) },
-//   });
-
-//   if (!seller) {
-//     return res.status(404).json({ message: "Seller not found" });
-//   }
-
-//   // Replace previous warning
-//   sellerWarnings[seller_id] = warningList[type];
-
-//   return res.status(200).json({ message: `Warning sent: ${warningList[type]}` });
-// };
-
-// Get current warning for a seller
-// const getWarnings = async (req, res) => {
-//   const { seller_id } = req.params;
-
-//   if (!seller_id) {
-//     return res.status(400).json({ message: "seller_id is required" });
-//   }
-
-//   const warning = sellerWarnings[seller_id] || null;
-//   return res.status(200).json({ warning });
-// };
 //😒😒😒😒😒
 
 // Define warnings
@@ -362,6 +321,7 @@ const getStoreWithSellerStatus = async (req, res) => {
         store_id: store.store_id,
         store_name: store.store_name,
         seller_status: status,
+        store_image: store.store_image
       };
     });
 
@@ -479,6 +439,33 @@ const getDashboardData = async (req, res) => {
   }
 };
 
-module.exports = {getDashboardData , admin_login , admin_logout , getProdctData , getSellerData , getUserCounts , blockSeller , unblockSeller , sendWarning1, sendWarning2 , sendWarning3 , getAllCustomers , getStoreWithSellerStatus , getStoreCount, countBlockedSellers, countWarning1, countWarning2, countWarning3};
+const getSellersForActions = async (req, res) => {
+  try {
+    const sellers = await prisma.seller.findMany({
+      include: {
+        store: {
+          select: {
+            store_name: true,
+            store_image: true,
+          },
+        },
+      },
+    });
+
+    const result = sellers.map((seller) => ({
+      id: seller.seller_id, // For warnings/blocking
+      name: seller.store.store_name,
+      profilePic: seller.store.store_image || "/images/user6.jpg", // fallback
+      status: "" // empty by default
+    }));
+
+    res.status(200).json(result);
+  } catch (error) {
+    console.error("❌ Error getting sellers:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+module.exports = {getSellersForActions , getDashboardData , admin_login , admin_logout , getProdctData , getSellerData , getUserCounts , blockSeller , unblockSeller , sendWarning1, sendWarning2 , sendWarning3 , getAllCustomers , getStoreWithSellerStatus , getStoreCount, countBlockedSellers, countWarning1, countWarning2, countWarning3};
 
 //module.exports = {admin_login , admin_logout , getProdctData , getSellerData , getUserCounts , blockSeller , unblockSeller , sendWarning1, sendWarning2 , sendWarning3 };
