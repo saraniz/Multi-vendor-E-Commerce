@@ -107,3 +107,41 @@ export const getWarning3Count = async () => {
   const response = await API.get('/warning3-count');
   return response.data.count;
 };
+
+
+export const uploadAdvertisementImage = async (imageFile) => {
+  const formData = new FormData(); // ✨ Create form data
+  formData.append("image", imageFile); // ✨ Match backend field name
+
+  try {
+    const res = await axios.post(`http://localhost:2000/api/advertisements/ad`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data", 
+      },
+    });
+    return res.data; 
+  } catch (error) {
+    console.error("❌ Failed to upload advertisement:", error);
+    throw error;
+  }
+};
+
+export const fetchAdvertisements = async () => {
+  try {
+    const res = await axios.get('http://localhost:2000/api/advertisements/ad'); 
+    return res.data.ads;
+  } catch (error) {
+    console.error("❌ Failed to fetch advertisements:", error);
+    return [];
+  }
+};
+
+export const fetchSellersForActions = async () => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/api/admin/basic`);
+    return response.data;
+  } catch (error) {
+    console.error("❌ Failed to fetch sellers for actions:", error);
+    return [];
+  }
+};

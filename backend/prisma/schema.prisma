@@ -1,6 +1,6 @@
 generator client {
   provider = "prisma-client-js"
-  output   = "app/generated/prisma/client"
+  
 }
 
 datasource db {
@@ -166,4 +166,11 @@ model order_item {
   product product @relation(fields: [product_id], references: [product_id])
 
   @@map("order_item")
+}
+
+
+model Advertisement {
+  id        Int      @id @default(autoincrement()) 
+  created_at DateTime @default(now())  
+  imageUrl  String   @map("image_url")                                              
 }
