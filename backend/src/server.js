@@ -43,6 +43,7 @@ const storeRoutes = require('./routes/storeRoutes');
 const followRoutes = require('./routes/followRoutes');
 const orderRoutes = require('./routes/orderRoutes');
 const advertisementRoutes = require('./routes/advertisementRoutes');
+const categoryRoutes = require('./routes/categoryRoutes');
 
 app.use('/api', authRoutes);
 app.use('/api/items', itemRoutes);
@@ -55,6 +56,7 @@ app.use('/api/store', storeRoutes);
 app.use('/api/follow', followRoutes);
 app.use('/api/order', orderRoutes);
 app.use('/api/advertisements', advertisementRoutes);
+app.use('/api/category', categoryRoutes);
 
 // Protected route
 app.use('/api/protected', authenticate, (req, res) => {
