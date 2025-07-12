@@ -9,17 +9,16 @@ datasource db {
 }
 
 model user {
-  reg_id       Int     @id @default(autoincrement())
-  fullName     String
-  username     String  @unique
-  email        String  @unique
-  password     String
-  mobileNo     String
-  gender       String
-  address      String
-  role         String  @default("customer")
-  isSeller     Boolean @default(false)
-  profileImage String?
+  reg_id   Int     @id @default(autoincrement())
+  fullName String
+  username String  @unique
+  email    String  @unique
+  password String
+  mobileNo String
+  gender   String
+  address  String
+  role     String  @default("customer")
+  isSeller Boolean @default(false)
 
   follows   follow[]
   carts     cart[]
@@ -166,4 +165,10 @@ model order_item {
   product product @relation(fields: [product_id], references: [product_id])
 
   @@map("order_item")
+}
+
+model Advertisement {
+  id         Int      @id @default(autoincrement())
+  created_at DateTime @default(now())
+  imageUrl   String   @map("image_url")
 }
