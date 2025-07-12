@@ -57,11 +57,11 @@ function Customerlist() {
                 {customers.map((customer) => (
                   <tr key={customer.id} className="text-center border">
                     <td className="flex items-center gap-2 px-4 py-2 border">
-                      <img
+                      {/*<img
                         src="https://via.placeholder.com/40"
                         alt="Profile"
                         className="w-10 h-10 rounded-full"
-                      />
+                      />*/}
                       {customer.username}
                     </td>
                     <td className="px-4 py-2 border">{customer.mobileNo}</td>

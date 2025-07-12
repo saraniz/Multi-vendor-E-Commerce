@@ -1,25 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar from '../../Components/Header/Navbar';
 import Footer from '../../Components/Footer/Footer';
 import AdminNavbar from '../../Components/Body/AdminNavbar';
 import Swal from 'sweetalert2';
-import { sendWarning, blockSeller } from '../../Storage/admin/adminaction';
+import { sendWarning, blockSeller, fetchSellersForActions } from '../../Storage/admin/adminaction';
 
 function Actions() {
-  const [users, setUsers] = useState([
-    { id: 9, name: 'Dflock', status: '', profilePic: '/images/user1.jpg' },
-    { id: 10, name: 'Dflockbb', status: '', profilePic: '/images/user2.jpg' },
-    { id: 8, name: 'Riya', status: '', profilePic: '/images/user3.jpg' },
-    { id: 3, name: 'Mandy', status: '', profilePic: '/images/user4.jpg' },
-    { id: 7, name: 'Jump Clothing', status: '', profilePic: '/images/user5.jpg' },
-    { id: 4, name: 'Voila', status: '', profilePic: '/images/user6.jpg' },
-    { id: 6, name: 'YFashion', status: '', profilePic: '/images/user6.jpg' },
-    { id: 5, name: 'KM', status: '', profilePic: '/images/user6.jpg' },
-  ]);
+  const [users, setUsers] = useState([]);
 
 
   const [selectedTab, setSelectedTab] = useState('All');
 
+  useEffect(() => {
+  const fetchUsers = async () => {
+    const data = await fetchSellersForActions(); 
+    setUsers(data);
+  };
+  fetchUsers();
+}, []);
 
 
   const handleStatusChange = async (id, newStatus) => {

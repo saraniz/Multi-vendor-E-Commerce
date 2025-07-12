@@ -24,8 +24,9 @@ function Shoplist() {
       const mappedData = data.map((shop, index) => ({
         id: shop.store_id,
         name: shop.store_name,
-        status: convertStatus(shop.seller_status), // 🧠 Convert status to match frontend styling
-        revenue: 0, // 💸 Placeholder until backend supports revenue
+        image: shop.store_image || "https://via.placeholder.com/40",
+        status: convertStatus(shop.seller_status), //  Convert status to match frontend styling
+        revenue: 0, //  Placeholder until backend supports revenue
       }));
       setShops(mappedData);
     };
@@ -81,8 +82,8 @@ function Shoplist() {
                 <tr key={shop.id} className="border">
                   <td className="flex items-center p-2 border">
                     <img
-                      src="https://via.placeholder.com/40" // Replace with actual shop image
-                      alt="Shop"
+                      src={shop.image} // Replace with actual shop image
+                      alt={shop.name}
                       className="w-10 h-10 mr-3 rounded-full"
                     />
                     {shop.name}
