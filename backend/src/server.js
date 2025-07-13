@@ -22,6 +22,8 @@ if (process.env.NODE_ENV === 'production') {
 
 const app = express();
 
+app.use('/api/payments/webhook', express.raw({ type: 'application/json' }));
+
 // Middleware
 app.use(cors({
   origin: process.env.CLIENT_ORIGIN || '*',
