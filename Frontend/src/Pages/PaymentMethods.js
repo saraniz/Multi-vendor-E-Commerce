@@ -81,26 +81,55 @@ function PaymentMethods() {
 
     const deliver_date = new Date();
 
-    const orderData = token
-      ? {
-          reg_id: userData?.reg_id || userData?.id,
-          total_price: totalAmount,
-          courier_service: selectedShipping,
-          deliver_date,
-          cartItems: validCartItems,
-        }
-      : {
-          reg_id: null,
-          guest_name: userData?.fullName || 'Guest User',
-          guest_mobile:
-            userData?.mobileNo || paymentDetails.phoneNumber || '0000000000',
-          guest_address:
-            userData?.address || paymentDetails.address || 'Not Provided',
-          total_price: totalAmount,
-          courier_service: selectedShipping,
-          deliver_date,
-          cartItems: validCartItems,
-        };
+    // const orderData = token
+    //   ? {
+    //       reg_id: userData?.reg_id || userData?.id,
+    //       total_price: totalAmount,
+    //       courier_service: selectedShipping,
+    //       deliver_date,
+    //       cartItems: validCartItems,
+    //     }
+    //   : {
+    //       reg_id: null,
+    //       guest_name: userData?.fullName || 'Guest User',
+    //       guest_mobile:
+    //         userData?.mobileNo || paymentDetails.phoneNumber || '0000000000',
+    //       guest_address:
+    //         userData?.address || paymentDetails.address || 'Not Provided',
+    //       total_price: totalAmount,
+    //       courier_service: selectedShipping,
+    //       deliver_date,
+    //       cartItems: validCartItems,
+    //     };
+
+    // 📌 dunith
+    const isMongoUser = !!userData?.reg_id;
+
+    let orderData;
+
+if (isMongoUser) {
+  // ✅ Mongo user: use reg_id
+  orderData = {
+    reg_id: userData?.reg_id || userData?.id,
+    total_price: totalAmount,
+    courier_service: selectedShipping,
+    deliver_date,
+    cartItems: validCartItems,
+  };
+} else {
+  // ✅ Prisma user or guest: treat as guest
+  orderData = {
+    guest_name: userData?.fullName || 'Guest User',
+    guest_mobile:
+      userData?.mobileNo || paymentDetails.phoneNumber || '0000000000',
+    guest_address:
+      userData?.address || paymentDetails.address || 'Not Provided',
+    total_price: totalAmount,
+    courier_service: selectedShipping,
+    deliver_date,
+    cartItems: validCartItems,
+  };
+}   // 📌 dunith
 
     try {
       // Store order details in DB
@@ -109,8 +138,9 @@ function PaymentMethods() {
       alert('Order placed successfully!');
 
       // Redirect to sandbox payment
-      const product_id = validCartItems.length > 0 ? validCartItems[0].product_id : 1;
+      //const product_id = validCartItems.length > 0 ? validCartItems[0].product_id : 1;
       const reg_id = userData?.reg_id || userData?.id || 34;
+      const product_id = 1;
 
       if (selectedMethod === 'credit-card') {
         await payForSingleProduct(product_id);
