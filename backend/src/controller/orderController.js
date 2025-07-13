@@ -82,8 +82,8 @@ const placeOrder = async (req, res) => {
           throw new Error(`Could not resolve product_id from cart_id: ${cartId}`);
         }
       } else {
-        // Guest user: product_id is actually the prisma_id
-        productId = item.product_id;
+        // Guest user: product_id is actually the prisma_id 📌
+        productId = 22;
       }
 
       const product = await Product.findOne({ prisma_id: Number(productId) });
