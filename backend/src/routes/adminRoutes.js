@@ -1,6 +1,6 @@
 const express = require('express');
 
-const {admin_login, admin_logout, getProdctData, getSellerData, getUserCounts, blockSeller, unblockSeller, sendWarning1, sendWarning2, sendWarning3 } = require('../controller/adminController');
+const {getSellersForActions ,getDashboardData ,admin_login, admin_logout, getProdctData, getSellerData, getUserCounts, blockSeller, unblockSeller, sendWarning1, sendWarning2, sendWarning3, getAllCustomers, getStoreWithSellerStatus, getStoreCount, countBlockedSellers, countWarning1, countWarning2, countWarning3 } = require('../controller/adminController');
 const roleMiddleware = require('../middleware/roleMiddleware');
 const authenticate = require('../middleware/authMiddleware');
 
@@ -20,11 +20,22 @@ router.put('/block/:seller_id',  blockSeller);
 router.put('/unblock/:seller_id',  unblockSeller);
 // count sellers and customers
 router.get('/user-counts', getUserCounts);
+router.get('/all', getAllCustomers);
+router.get('/status', getStoreWithSellerStatus);
 //warnings send 
 //router.post("/warnings/send", sendWarning);
 router.put('/send-warning-1', sendWarning1);
 router.put('/send-warning-2', sendWarning2);
 router.put('/send-warning-3', sendWarning3);
+
+// adminn dasshbord routes  👇👇👇
+router.get('/shop-count', getStoreCount);
+router.get('/blocked-count', countBlockedSellers);
+router.get('/warning1-count', countWarning1);
+router.get('/warning2-count', countWarning2);
+router.get('/warning3-count', countWarning3);
+router.get('/dashboard-data', getDashboardData);
+router.get('/basic', getSellersForActions);
  
 // Export the router
 module.exports = router; 

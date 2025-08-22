@@ -63,6 +63,11 @@ export type order = $Result.DefaultSelection<Prisma.$orderPayload>
  * 
  */
 export type order_item = $Result.DefaultSelection<Prisma.$order_itemPayload>
+/**
+ * Model Advertisement
+ * 
+ */
+export type Advertisement = $Result.DefaultSelection<Prisma.$AdvertisementPayload>
 
 /**
  * ##  Prisma Client ʲˢ
@@ -288,6 +293,16 @@ export class PrismaClient<
     * ```
     */
   get order_item(): Prisma.order_itemDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.advertisement`: Exposes CRUD operations for the **Advertisement** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Advertisements
+    * const advertisements = await prisma.advertisement.findMany()
+    * ```
+    */
+  get advertisement(): Prisma.AdvertisementDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -737,7 +752,8 @@ export namespace Prisma {
     review: 'review',
     follow: 'follow',
     order: 'order',
-    order_item: 'order_item'
+    order_item: 'order_item',
+    Advertisement: 'Advertisement'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -756,7 +772,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "seller" | "product" | "store" | "cart" | "favorite" | "review" | "follow" | "order" | "order_item"
+      modelProps: "user" | "seller" | "product" | "store" | "cart" | "favorite" | "review" | "follow" | "order" | "order_item" | "advertisement"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1500,6 +1516,80 @@ export namespace Prisma {
           }
         }
       }
+      Advertisement: {
+        payload: Prisma.$AdvertisementPayload<ExtArgs>
+        fields: Prisma.AdvertisementFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AdvertisementFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AdvertisementPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AdvertisementFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AdvertisementPayload>
+          }
+          findFirst: {
+            args: Prisma.AdvertisementFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AdvertisementPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AdvertisementFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AdvertisementPayload>
+          }
+          findMany: {
+            args: Prisma.AdvertisementFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AdvertisementPayload>[]
+          }
+          create: {
+            args: Prisma.AdvertisementCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AdvertisementPayload>
+          }
+          createMany: {
+            args: Prisma.AdvertisementCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.AdvertisementCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AdvertisementPayload>[]
+          }
+          delete: {
+            args: Prisma.AdvertisementDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AdvertisementPayload>
+          }
+          update: {
+            args: Prisma.AdvertisementUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AdvertisementPayload>
+          }
+          deleteMany: {
+            args: Prisma.AdvertisementDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AdvertisementUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.AdvertisementUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AdvertisementPayload>[]
+          }
+          upsert: {
+            args: Prisma.AdvertisementUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AdvertisementPayload>
+          }
+          aggregate: {
+            args: Prisma.AdvertisementAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAdvertisement>
+          }
+          groupBy: {
+            args: Prisma.AdvertisementGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AdvertisementGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AdvertisementCountArgs<ExtArgs>
+            result: $Utils.Optional<AdvertisementCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1594,6 +1684,7 @@ export namespace Prisma {
     follow?: followOmit
     order?: orderOmit
     order_item?: order_itemOmit
+    advertisement?: AdvertisementOmit
   }
 
   /* Types for Logging */
@@ -1905,7 +1996,6 @@ export namespace Prisma {
     address: string | null
     role: string | null
     isSeller: boolean | null
-    profileImage: string | null
   }
 
   export type UserMaxAggregateOutputType = {
@@ -1919,7 +2009,6 @@ export namespace Prisma {
     address: string | null
     role: string | null
     isSeller: boolean | null
-    profileImage: string | null
   }
 
   export type UserCountAggregateOutputType = {
@@ -1933,7 +2022,6 @@ export namespace Prisma {
     address: number
     role: number
     isSeller: number
-    profileImage: number
     _all: number
   }
 
@@ -1957,7 +2045,6 @@ export namespace Prisma {
     address?: true
     role?: true
     isSeller?: true
-    profileImage?: true
   }
 
   export type UserMaxAggregateInputType = {
@@ -1971,7 +2058,6 @@ export namespace Prisma {
     address?: true
     role?: true
     isSeller?: true
-    profileImage?: true
   }
 
   export type UserCountAggregateInputType = {
@@ -1985,7 +2071,6 @@ export namespace Prisma {
     address?: true
     role?: true
     isSeller?: true
-    profileImage?: true
     _all?: true
   }
 
@@ -2086,7 +2171,6 @@ export namespace Prisma {
     address: string
     role: string
     isSeller: boolean
-    profileImage: string | null
     _count: UserCountAggregateOutputType | null
     _avg: UserAvgAggregateOutputType | null
     _sum: UserSumAggregateOutputType | null
@@ -2119,7 +2203,6 @@ export namespace Prisma {
     address?: boolean
     role?: boolean
     isSeller?: boolean
-    profileImage?: boolean
     follows?: boolean | user$followsArgs<ExtArgs>
     carts?: boolean | user$cartsArgs<ExtArgs>
     favorites?: boolean | user$favoritesArgs<ExtArgs>
@@ -2139,7 +2222,6 @@ export namespace Prisma {
     address?: boolean
     role?: boolean
     isSeller?: boolean
-    profileImage?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type userSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -2153,7 +2235,6 @@ export namespace Prisma {
     address?: boolean
     role?: boolean
     isSeller?: boolean
-    profileImage?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type userSelectScalar = {
@@ -2167,10 +2248,9 @@ export namespace Prisma {
     address?: boolean
     role?: boolean
     isSeller?: boolean
-    profileImage?: boolean
   }
 
-  export type userOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"reg_id" | "fullName" | "username" | "email" | "password" | "mobileNo" | "gender" | "address" | "role" | "isSeller" | "profileImage", ExtArgs["result"]["user"]>
+  export type userOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"reg_id" | "fullName" | "username" | "email" | "password" | "mobileNo" | "gender" | "address" | "role" | "isSeller", ExtArgs["result"]["user"]>
   export type userInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     follows?: boolean | user$followsArgs<ExtArgs>
     carts?: boolean | user$cartsArgs<ExtArgs>
@@ -2202,7 +2282,6 @@ export namespace Prisma {
       address: string
       role: string
       isSeller: boolean
-      profileImage: string | null
     }, ExtArgs["result"]["user"]>
     composites: {}
   }
@@ -2641,7 +2720,6 @@ export namespace Prisma {
     readonly address: FieldRef<"user", 'String'>
     readonly role: FieldRef<"user", 'String'>
     readonly isSeller: FieldRef<"user", 'Boolean'>
-    readonly profileImage: FieldRef<"user", 'String'>
   }
     
 
@@ -13529,6 +13607,1009 @@ export namespace Prisma {
 
 
   /**
+   * Model Advertisement
+   */
+
+  export type AggregateAdvertisement = {
+    _count: AdvertisementCountAggregateOutputType | null
+    _avg: AdvertisementAvgAggregateOutputType | null
+    _sum: AdvertisementSumAggregateOutputType | null
+    _min: AdvertisementMinAggregateOutputType | null
+    _max: AdvertisementMaxAggregateOutputType | null
+  }
+
+  export type AdvertisementAvgAggregateOutputType = {
+    id: number | null
+  }
+
+  export type AdvertisementSumAggregateOutputType = {
+    id: number | null
+  }
+
+  export type AdvertisementMinAggregateOutputType = {
+    id: number | null
+    created_at: Date | null
+    imageUrl: string | null
+  }
+
+  export type AdvertisementMaxAggregateOutputType = {
+    id: number | null
+    created_at: Date | null
+    imageUrl: string | null
+  }
+
+  export type AdvertisementCountAggregateOutputType = {
+    id: number
+    created_at: number
+    imageUrl: number
+    _all: number
+  }
+
+
+  export type AdvertisementAvgAggregateInputType = {
+    id?: true
+  }
+
+  export type AdvertisementSumAggregateInputType = {
+    id?: true
+  }
+
+  export type AdvertisementMinAggregateInputType = {
+    id?: true
+    created_at?: true
+    imageUrl?: true
+  }
+
+  export type AdvertisementMaxAggregateInputType = {
+    id?: true
+    created_at?: true
+    imageUrl?: true
+  }
+
+  export type AdvertisementCountAggregateInputType = {
+    id?: true
+    created_at?: true
+    imageUrl?: true
+    _all?: true
+  }
+
+  export type AdvertisementAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Advertisement to aggregate.
+     */
+    where?: AdvertisementWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Advertisements to fetch.
+     */
+    orderBy?: AdvertisementOrderByWithRelationInput | AdvertisementOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: AdvertisementWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Advertisements from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Advertisements.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Advertisements
+    **/
+    _count?: true | AdvertisementCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: AdvertisementAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: AdvertisementSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AdvertisementMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AdvertisementMaxAggregateInputType
+  }
+
+  export type GetAdvertisementAggregateType<T extends AdvertisementAggregateArgs> = {
+        [P in keyof T & keyof AggregateAdvertisement]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAdvertisement[P]>
+      : GetScalarType<T[P], AggregateAdvertisement[P]>
+  }
+
+
+
+
+  export type AdvertisementGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AdvertisementWhereInput
+    orderBy?: AdvertisementOrderByWithAggregationInput | AdvertisementOrderByWithAggregationInput[]
+    by: AdvertisementScalarFieldEnum[] | AdvertisementScalarFieldEnum
+    having?: AdvertisementScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AdvertisementCountAggregateInputType | true
+    _avg?: AdvertisementAvgAggregateInputType
+    _sum?: AdvertisementSumAggregateInputType
+    _min?: AdvertisementMinAggregateInputType
+    _max?: AdvertisementMaxAggregateInputType
+  }
+
+  export type AdvertisementGroupByOutputType = {
+    id: number
+    created_at: Date
+    imageUrl: string
+    _count: AdvertisementCountAggregateOutputType | null
+    _avg: AdvertisementAvgAggregateOutputType | null
+    _sum: AdvertisementSumAggregateOutputType | null
+    _min: AdvertisementMinAggregateOutputType | null
+    _max: AdvertisementMaxAggregateOutputType | null
+  }
+
+  type GetAdvertisementGroupByPayload<T extends AdvertisementGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AdvertisementGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AdvertisementGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AdvertisementGroupByOutputType[P]>
+            : GetScalarType<T[P], AdvertisementGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AdvertisementSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    created_at?: boolean
+    imageUrl?: boolean
+  }, ExtArgs["result"]["advertisement"]>
+
+  export type AdvertisementSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    created_at?: boolean
+    imageUrl?: boolean
+  }, ExtArgs["result"]["advertisement"]>
+
+  export type AdvertisementSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    created_at?: boolean
+    imageUrl?: boolean
+  }, ExtArgs["result"]["advertisement"]>
+
+  export type AdvertisementSelectScalar = {
+    id?: boolean
+    created_at?: boolean
+    imageUrl?: boolean
+  }
+
+  export type AdvertisementOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "created_at" | "imageUrl", ExtArgs["result"]["advertisement"]>
+
+  export type $AdvertisementPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Advertisement"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      created_at: Date
+      imageUrl: string
+    }, ExtArgs["result"]["advertisement"]>
+    composites: {}
+  }
+
+  type AdvertisementGetPayload<S extends boolean | null | undefined | AdvertisementDefaultArgs> = $Result.GetResult<Prisma.$AdvertisementPayload, S>
+
+  type AdvertisementCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<AdvertisementFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: AdvertisementCountAggregateInputType | true
+    }
+
+  export interface AdvertisementDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Advertisement'], meta: { name: 'Advertisement' } }
+    /**
+     * Find zero or one Advertisement that matches the filter.
+     * @param {AdvertisementFindUniqueArgs} args - Arguments to find a Advertisement
+     * @example
+     * // Get one Advertisement
+     * const advertisement = await prisma.advertisement.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AdvertisementFindUniqueArgs>(args: SelectSubset<T, AdvertisementFindUniqueArgs<ExtArgs>>): Prisma__AdvertisementClient<$Result.GetResult<Prisma.$AdvertisementPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Advertisement that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {AdvertisementFindUniqueOrThrowArgs} args - Arguments to find a Advertisement
+     * @example
+     * // Get one Advertisement
+     * const advertisement = await prisma.advertisement.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AdvertisementFindUniqueOrThrowArgs>(args: SelectSubset<T, AdvertisementFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AdvertisementClient<$Result.GetResult<Prisma.$AdvertisementPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Advertisement that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AdvertisementFindFirstArgs} args - Arguments to find a Advertisement
+     * @example
+     * // Get one Advertisement
+     * const advertisement = await prisma.advertisement.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AdvertisementFindFirstArgs>(args?: SelectSubset<T, AdvertisementFindFirstArgs<ExtArgs>>): Prisma__AdvertisementClient<$Result.GetResult<Prisma.$AdvertisementPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Advertisement that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AdvertisementFindFirstOrThrowArgs} args - Arguments to find a Advertisement
+     * @example
+     * // Get one Advertisement
+     * const advertisement = await prisma.advertisement.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AdvertisementFindFirstOrThrowArgs>(args?: SelectSubset<T, AdvertisementFindFirstOrThrowArgs<ExtArgs>>): Prisma__AdvertisementClient<$Result.GetResult<Prisma.$AdvertisementPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Advertisements that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AdvertisementFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Advertisements
+     * const advertisements = await prisma.advertisement.findMany()
+     * 
+     * // Get first 10 Advertisements
+     * const advertisements = await prisma.advertisement.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const advertisementWithIdOnly = await prisma.advertisement.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends AdvertisementFindManyArgs>(args?: SelectSubset<T, AdvertisementFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AdvertisementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Advertisement.
+     * @param {AdvertisementCreateArgs} args - Arguments to create a Advertisement.
+     * @example
+     * // Create one Advertisement
+     * const Advertisement = await prisma.advertisement.create({
+     *   data: {
+     *     // ... data to create a Advertisement
+     *   }
+     * })
+     * 
+     */
+    create<T extends AdvertisementCreateArgs>(args: SelectSubset<T, AdvertisementCreateArgs<ExtArgs>>): Prisma__AdvertisementClient<$Result.GetResult<Prisma.$AdvertisementPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Advertisements.
+     * @param {AdvertisementCreateManyArgs} args - Arguments to create many Advertisements.
+     * @example
+     * // Create many Advertisements
+     * const advertisement = await prisma.advertisement.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends AdvertisementCreateManyArgs>(args?: SelectSubset<T, AdvertisementCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Advertisements and returns the data saved in the database.
+     * @param {AdvertisementCreateManyAndReturnArgs} args - Arguments to create many Advertisements.
+     * @example
+     * // Create many Advertisements
+     * const advertisement = await prisma.advertisement.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Advertisements and only return the `id`
+     * const advertisementWithIdOnly = await prisma.advertisement.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends AdvertisementCreateManyAndReturnArgs>(args?: SelectSubset<T, AdvertisementCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AdvertisementPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Advertisement.
+     * @param {AdvertisementDeleteArgs} args - Arguments to delete one Advertisement.
+     * @example
+     * // Delete one Advertisement
+     * const Advertisement = await prisma.advertisement.delete({
+     *   where: {
+     *     // ... filter to delete one Advertisement
+     *   }
+     * })
+     * 
+     */
+    delete<T extends AdvertisementDeleteArgs>(args: SelectSubset<T, AdvertisementDeleteArgs<ExtArgs>>): Prisma__AdvertisementClient<$Result.GetResult<Prisma.$AdvertisementPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Advertisement.
+     * @param {AdvertisementUpdateArgs} args - Arguments to update one Advertisement.
+     * @example
+     * // Update one Advertisement
+     * const advertisement = await prisma.advertisement.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends AdvertisementUpdateArgs>(args: SelectSubset<T, AdvertisementUpdateArgs<ExtArgs>>): Prisma__AdvertisementClient<$Result.GetResult<Prisma.$AdvertisementPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Advertisements.
+     * @param {AdvertisementDeleteManyArgs} args - Arguments to filter Advertisements to delete.
+     * @example
+     * // Delete a few Advertisements
+     * const { count } = await prisma.advertisement.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends AdvertisementDeleteManyArgs>(args?: SelectSubset<T, AdvertisementDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Advertisements.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AdvertisementUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Advertisements
+     * const advertisement = await prisma.advertisement.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends AdvertisementUpdateManyArgs>(args: SelectSubset<T, AdvertisementUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Advertisements and returns the data updated in the database.
+     * @param {AdvertisementUpdateManyAndReturnArgs} args - Arguments to update many Advertisements.
+     * @example
+     * // Update many Advertisements
+     * const advertisement = await prisma.advertisement.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Advertisements and only return the `id`
+     * const advertisementWithIdOnly = await prisma.advertisement.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends AdvertisementUpdateManyAndReturnArgs>(args: SelectSubset<T, AdvertisementUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AdvertisementPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Advertisement.
+     * @param {AdvertisementUpsertArgs} args - Arguments to update or create a Advertisement.
+     * @example
+     * // Update or create a Advertisement
+     * const advertisement = await prisma.advertisement.upsert({
+     *   create: {
+     *     // ... data to create a Advertisement
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Advertisement we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AdvertisementUpsertArgs>(args: SelectSubset<T, AdvertisementUpsertArgs<ExtArgs>>): Prisma__AdvertisementClient<$Result.GetResult<Prisma.$AdvertisementPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Advertisements.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AdvertisementCountArgs} args - Arguments to filter Advertisements to count.
+     * @example
+     * // Count the number of Advertisements
+     * const count = await prisma.advertisement.count({
+     *   where: {
+     *     // ... the filter for the Advertisements we want to count
+     *   }
+     * })
+    **/
+    count<T extends AdvertisementCountArgs>(
+      args?: Subset<T, AdvertisementCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AdvertisementCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Advertisement.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AdvertisementAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AdvertisementAggregateArgs>(args: Subset<T, AdvertisementAggregateArgs>): Prisma.PrismaPromise<GetAdvertisementAggregateType<T>>
+
+    /**
+     * Group by Advertisement.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AdvertisementGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends AdvertisementGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AdvertisementGroupByArgs['orderBy'] }
+        : { orderBy?: AdvertisementGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AdvertisementGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAdvertisementGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Advertisement model
+   */
+  readonly fields: AdvertisementFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Advertisement.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AdvertisementClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Advertisement model
+   */
+  interface AdvertisementFieldRefs {
+    readonly id: FieldRef<"Advertisement", 'Int'>
+    readonly created_at: FieldRef<"Advertisement", 'DateTime'>
+    readonly imageUrl: FieldRef<"Advertisement", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Advertisement findUnique
+   */
+  export type AdvertisementFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Advertisement
+     */
+    select?: AdvertisementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Advertisement
+     */
+    omit?: AdvertisementOmit<ExtArgs> | null
+    /**
+     * Filter, which Advertisement to fetch.
+     */
+    where: AdvertisementWhereUniqueInput
+  }
+
+  /**
+   * Advertisement findUniqueOrThrow
+   */
+  export type AdvertisementFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Advertisement
+     */
+    select?: AdvertisementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Advertisement
+     */
+    omit?: AdvertisementOmit<ExtArgs> | null
+    /**
+     * Filter, which Advertisement to fetch.
+     */
+    where: AdvertisementWhereUniqueInput
+  }
+
+  /**
+   * Advertisement findFirst
+   */
+  export type AdvertisementFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Advertisement
+     */
+    select?: AdvertisementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Advertisement
+     */
+    omit?: AdvertisementOmit<ExtArgs> | null
+    /**
+     * Filter, which Advertisement to fetch.
+     */
+    where?: AdvertisementWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Advertisements to fetch.
+     */
+    orderBy?: AdvertisementOrderByWithRelationInput | AdvertisementOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Advertisements.
+     */
+    cursor?: AdvertisementWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Advertisements from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Advertisements.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Advertisements.
+     */
+    distinct?: AdvertisementScalarFieldEnum | AdvertisementScalarFieldEnum[]
+  }
+
+  /**
+   * Advertisement findFirstOrThrow
+   */
+  export type AdvertisementFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Advertisement
+     */
+    select?: AdvertisementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Advertisement
+     */
+    omit?: AdvertisementOmit<ExtArgs> | null
+    /**
+     * Filter, which Advertisement to fetch.
+     */
+    where?: AdvertisementWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Advertisements to fetch.
+     */
+    orderBy?: AdvertisementOrderByWithRelationInput | AdvertisementOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Advertisements.
+     */
+    cursor?: AdvertisementWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Advertisements from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Advertisements.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Advertisements.
+     */
+    distinct?: AdvertisementScalarFieldEnum | AdvertisementScalarFieldEnum[]
+  }
+
+  /**
+   * Advertisement findMany
+   */
+  export type AdvertisementFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Advertisement
+     */
+    select?: AdvertisementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Advertisement
+     */
+    omit?: AdvertisementOmit<ExtArgs> | null
+    /**
+     * Filter, which Advertisements to fetch.
+     */
+    where?: AdvertisementWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Advertisements to fetch.
+     */
+    orderBy?: AdvertisementOrderByWithRelationInput | AdvertisementOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Advertisements.
+     */
+    cursor?: AdvertisementWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Advertisements from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Advertisements.
+     */
+    skip?: number
+    distinct?: AdvertisementScalarFieldEnum | AdvertisementScalarFieldEnum[]
+  }
+
+  /**
+   * Advertisement create
+   */
+  export type AdvertisementCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Advertisement
+     */
+    select?: AdvertisementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Advertisement
+     */
+    omit?: AdvertisementOmit<ExtArgs> | null
+    /**
+     * The data needed to create a Advertisement.
+     */
+    data: XOR<AdvertisementCreateInput, AdvertisementUncheckedCreateInput>
+  }
+
+  /**
+   * Advertisement createMany
+   */
+  export type AdvertisementCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Advertisements.
+     */
+    data: AdvertisementCreateManyInput | AdvertisementCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Advertisement createManyAndReturn
+   */
+  export type AdvertisementCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Advertisement
+     */
+    select?: AdvertisementSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Advertisement
+     */
+    omit?: AdvertisementOmit<ExtArgs> | null
+    /**
+     * The data used to create many Advertisements.
+     */
+    data: AdvertisementCreateManyInput | AdvertisementCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Advertisement update
+   */
+  export type AdvertisementUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Advertisement
+     */
+    select?: AdvertisementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Advertisement
+     */
+    omit?: AdvertisementOmit<ExtArgs> | null
+    /**
+     * The data needed to update a Advertisement.
+     */
+    data: XOR<AdvertisementUpdateInput, AdvertisementUncheckedUpdateInput>
+    /**
+     * Choose, which Advertisement to update.
+     */
+    where: AdvertisementWhereUniqueInput
+  }
+
+  /**
+   * Advertisement updateMany
+   */
+  export type AdvertisementUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Advertisements.
+     */
+    data: XOR<AdvertisementUpdateManyMutationInput, AdvertisementUncheckedUpdateManyInput>
+    /**
+     * Filter which Advertisements to update
+     */
+    where?: AdvertisementWhereInput
+    /**
+     * Limit how many Advertisements to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Advertisement updateManyAndReturn
+   */
+  export type AdvertisementUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Advertisement
+     */
+    select?: AdvertisementSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Advertisement
+     */
+    omit?: AdvertisementOmit<ExtArgs> | null
+    /**
+     * The data used to update Advertisements.
+     */
+    data: XOR<AdvertisementUpdateManyMutationInput, AdvertisementUncheckedUpdateManyInput>
+    /**
+     * Filter which Advertisements to update
+     */
+    where?: AdvertisementWhereInput
+    /**
+     * Limit how many Advertisements to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Advertisement upsert
+   */
+  export type AdvertisementUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Advertisement
+     */
+    select?: AdvertisementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Advertisement
+     */
+    omit?: AdvertisementOmit<ExtArgs> | null
+    /**
+     * The filter to search for the Advertisement to update in case it exists.
+     */
+    where: AdvertisementWhereUniqueInput
+    /**
+     * In case the Advertisement found by the `where` argument doesn't exist, create a new Advertisement with this data.
+     */
+    create: XOR<AdvertisementCreateInput, AdvertisementUncheckedCreateInput>
+    /**
+     * In case the Advertisement was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AdvertisementUpdateInput, AdvertisementUncheckedUpdateInput>
+  }
+
+  /**
+   * Advertisement delete
+   */
+  export type AdvertisementDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Advertisement
+     */
+    select?: AdvertisementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Advertisement
+     */
+    omit?: AdvertisementOmit<ExtArgs> | null
+    /**
+     * Filter which Advertisement to delete.
+     */
+    where: AdvertisementWhereUniqueInput
+  }
+
+  /**
+   * Advertisement deleteMany
+   */
+  export type AdvertisementDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Advertisements to delete
+     */
+    where?: AdvertisementWhereInput
+    /**
+     * Limit how many Advertisements to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Advertisement without action
+   */
+  export type AdvertisementDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Advertisement
+     */
+    select?: AdvertisementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Advertisement
+     */
+    omit?: AdvertisementOmit<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -13552,8 +14633,7 @@ export namespace Prisma {
     gender: 'gender',
     address: 'address',
     role: 'role',
-    isSeller: 'isSeller',
-    profileImage: 'profileImage'
+    isSeller: 'isSeller'
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -13673,6 +14753,15 @@ export namespace Prisma {
   export type Order_itemScalarFieldEnum = (typeof Order_itemScalarFieldEnum)[keyof typeof Order_itemScalarFieldEnum]
 
 
+  export const AdvertisementScalarFieldEnum: {
+    id: 'id',
+    created_at: 'created_at',
+    imageUrl: 'imageUrl'
+  };
+
+  export type AdvertisementScalarFieldEnum = (typeof AdvertisementScalarFieldEnum)[keyof typeof AdvertisementScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
@@ -13782,7 +14871,6 @@ export namespace Prisma {
     address?: StringFilter<"user"> | string
     role?: StringFilter<"user"> | string
     isSeller?: BoolFilter<"user"> | boolean
-    profileImage?: StringNullableFilter<"user"> | string | null
     follows?: FollowListRelationFilter
     carts?: CartListRelationFilter
     favorites?: FavoriteListRelationFilter
@@ -13801,7 +14889,6 @@ export namespace Prisma {
     address?: SortOrder
     role?: SortOrder
     isSeller?: SortOrder
-    profileImage?: SortOrderInput | SortOrder
     follows?: followOrderByRelationAggregateInput
     carts?: cartOrderByRelationAggregateInput
     favorites?: favoriteOrderByRelationAggregateInput
@@ -13823,7 +14910,6 @@ export namespace Prisma {
     address?: StringFilter<"user"> | string
     role?: StringFilter<"user"> | string
     isSeller?: BoolFilter<"user"> | boolean
-    profileImage?: StringNullableFilter<"user"> | string | null
     follows?: FollowListRelationFilter
     carts?: CartListRelationFilter
     favorites?: FavoriteListRelationFilter
@@ -13842,7 +14928,6 @@ export namespace Prisma {
     address?: SortOrder
     role?: SortOrder
     isSeller?: SortOrder
-    profileImage?: SortOrderInput | SortOrder
     _count?: userCountOrderByAggregateInput
     _avg?: userAvgOrderByAggregateInput
     _max?: userMaxOrderByAggregateInput
@@ -13864,7 +14949,6 @@ export namespace Prisma {
     address?: StringWithAggregatesFilter<"user"> | string
     role?: StringWithAggregatesFilter<"user"> | string
     isSeller?: BoolWithAggregatesFilter<"user"> | boolean
-    profileImage?: StringNullableWithAggregatesFilter<"user"> | string | null
   }
 
   export type sellerWhereInput = {
@@ -14494,6 +15578,50 @@ export namespace Prisma {
     price?: FloatWithAggregatesFilter<"order_item"> | number
   }
 
+  export type AdvertisementWhereInput = {
+    AND?: AdvertisementWhereInput | AdvertisementWhereInput[]
+    OR?: AdvertisementWhereInput[]
+    NOT?: AdvertisementWhereInput | AdvertisementWhereInput[]
+    id?: IntFilter<"Advertisement"> | number
+    created_at?: DateTimeFilter<"Advertisement"> | Date | string
+    imageUrl?: StringFilter<"Advertisement"> | string
+  }
+
+  export type AdvertisementOrderByWithRelationInput = {
+    id?: SortOrder
+    created_at?: SortOrder
+    imageUrl?: SortOrder
+  }
+
+  export type AdvertisementWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    AND?: AdvertisementWhereInput | AdvertisementWhereInput[]
+    OR?: AdvertisementWhereInput[]
+    NOT?: AdvertisementWhereInput | AdvertisementWhereInput[]
+    created_at?: DateTimeFilter<"Advertisement"> | Date | string
+    imageUrl?: StringFilter<"Advertisement"> | string
+  }, "id">
+
+  export type AdvertisementOrderByWithAggregationInput = {
+    id?: SortOrder
+    created_at?: SortOrder
+    imageUrl?: SortOrder
+    _count?: AdvertisementCountOrderByAggregateInput
+    _avg?: AdvertisementAvgOrderByAggregateInput
+    _max?: AdvertisementMaxOrderByAggregateInput
+    _min?: AdvertisementMinOrderByAggregateInput
+    _sum?: AdvertisementSumOrderByAggregateInput
+  }
+
+  export type AdvertisementScalarWhereWithAggregatesInput = {
+    AND?: AdvertisementScalarWhereWithAggregatesInput | AdvertisementScalarWhereWithAggregatesInput[]
+    OR?: AdvertisementScalarWhereWithAggregatesInput[]
+    NOT?: AdvertisementScalarWhereWithAggregatesInput | AdvertisementScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"Advertisement"> | number
+    created_at?: DateTimeWithAggregatesFilter<"Advertisement"> | Date | string
+    imageUrl?: StringWithAggregatesFilter<"Advertisement"> | string
+  }
+
   export type userCreateInput = {
     fullName: string
     username: string
@@ -14504,7 +15632,6 @@ export namespace Prisma {
     address: string
     role?: string
     isSeller?: boolean
-    profileImage?: string | null
     follows?: followCreateNestedManyWithoutUserInput
     carts?: cartCreateNestedManyWithoutUserInput
     favorites?: favoriteCreateNestedManyWithoutUserInput
@@ -14523,7 +15650,6 @@ export namespace Prisma {
     address: string
     role?: string
     isSeller?: boolean
-    profileImage?: string | null
     follows?: followUncheckedCreateNestedManyWithoutUserInput
     carts?: cartUncheckedCreateNestedManyWithoutUserInput
     favorites?: favoriteUncheckedCreateNestedManyWithoutUserInput
@@ -14541,7 +15667,6 @@ export namespace Prisma {
     address?: StringFieldUpdateOperationsInput | string
     role?: StringFieldUpdateOperationsInput | string
     isSeller?: BoolFieldUpdateOperationsInput | boolean
-    profileImage?: NullableStringFieldUpdateOperationsInput | string | null
     follows?: followUpdateManyWithoutUserNestedInput
     carts?: cartUpdateManyWithoutUserNestedInput
     favorites?: favoriteUpdateManyWithoutUserNestedInput
@@ -14560,7 +15685,6 @@ export namespace Prisma {
     address?: StringFieldUpdateOperationsInput | string
     role?: StringFieldUpdateOperationsInput | string
     isSeller?: BoolFieldUpdateOperationsInput | boolean
-    profileImage?: NullableStringFieldUpdateOperationsInput | string | null
     follows?: followUncheckedUpdateManyWithoutUserNestedInput
     carts?: cartUncheckedUpdateManyWithoutUserNestedInput
     favorites?: favoriteUncheckedUpdateManyWithoutUserNestedInput
@@ -14579,7 +15703,6 @@ export namespace Prisma {
     address: string
     role?: string
     isSeller?: boolean
-    profileImage?: string | null
   }
 
   export type userUpdateManyMutationInput = {
@@ -14592,7 +15715,6 @@ export namespace Prisma {
     address?: StringFieldUpdateOperationsInput | string
     role?: StringFieldUpdateOperationsInput | string
     isSeller?: BoolFieldUpdateOperationsInput | boolean
-    profileImage?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type userUncheckedUpdateManyInput = {
@@ -14606,7 +15728,6 @@ export namespace Prisma {
     address?: StringFieldUpdateOperationsInput | string
     role?: StringFieldUpdateOperationsInput | string
     isSeller?: BoolFieldUpdateOperationsInput | boolean
-    profileImage?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type sellerCreateInput = {
@@ -15211,6 +16332,45 @@ export namespace Prisma {
     price?: FloatFieldUpdateOperationsInput | number
   }
 
+  export type AdvertisementCreateInput = {
+    created_at?: Date | string
+    imageUrl: string
+  }
+
+  export type AdvertisementUncheckedCreateInput = {
+    id?: number
+    created_at?: Date | string
+    imageUrl: string
+  }
+
+  export type AdvertisementUpdateInput = {
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    imageUrl?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type AdvertisementUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    imageUrl?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type AdvertisementCreateManyInput = {
+    id?: number
+    created_at?: Date | string
+    imageUrl: string
+  }
+
+  export type AdvertisementUpdateManyMutationInput = {
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    imageUrl?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type AdvertisementUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    imageUrl?: StringFieldUpdateOperationsInput | string
+  }
+
   export type IntFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[] | ListIntFieldRefInput<$PrismaModel>
@@ -15242,21 +16402,6 @@ export namespace Prisma {
     not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
-  export type StringNullableFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    mode?: QueryMode
-    not?: NestedStringNullableFilter<$PrismaModel> | string | null
-  }
-
   export type FollowListRelationFilter = {
     every?: followWhereInput
     some?: followWhereInput
@@ -15286,11 +16431,6 @@ export namespace Prisma {
     none?: orderWhereInput
   }
 
-  export type SortOrderInput = {
-    sort: SortOrder
-    nulls?: NullsOrder
-  }
-
   export type followOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -15318,7 +16458,6 @@ export namespace Prisma {
     address?: SortOrder
     role?: SortOrder
     isSeller?: SortOrder
-    profileImage?: SortOrder
   }
 
   export type userAvgOrderByAggregateInput = {
@@ -15336,7 +16475,6 @@ export namespace Prisma {
     address?: SortOrder
     role?: SortOrder
     isSeller?: SortOrder
-    profileImage?: SortOrder
   }
 
   export type userMinOrderByAggregateInput = {
@@ -15350,7 +16488,6 @@ export namespace Prisma {
     address?: SortOrder
     role?: SortOrder
     isSeller?: SortOrder
-    profileImage?: SortOrder
   }
 
   export type userSumOrderByAggregateInput = {
@@ -15399,7 +16536,7 @@ export namespace Prisma {
     _max?: NestedBoolFilter<$PrismaModel>
   }
 
-  export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
+  export type StringNullableFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
     in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
     notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
@@ -15411,10 +16548,7 @@ export namespace Prisma {
     startsWith?: string | StringFieldRefInput<$PrismaModel>
     endsWith?: string | StringFieldRefInput<$PrismaModel>
     mode?: QueryMode
-    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedStringNullableFilter<$PrismaModel>
-    _max?: NestedStringNullableFilter<$PrismaModel>
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
   export type UserScalarRelationFilter = {
@@ -15425,6 +16559,11 @@ export namespace Prisma {
   export type StoreScalarRelationFilter = {
     is?: storeWhereInput
     isNot?: storeWhereInput
+  }
+
+  export type SortOrderInput = {
+    sort: SortOrder
+    nulls?: NullsOrder
   }
 
   export type sellerCountOrderByAggregateInput = {
@@ -15473,6 +16612,24 @@ export namespace Prisma {
     seller_id?: SortOrder
     reg_id?: SortOrder
     store_id?: SortOrder
+  }
+
+  export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
+    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedStringNullableFilter<$PrismaModel>
+    _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
   export type FloatFilter<$PrismaModel = never> = {
@@ -15937,6 +17094,32 @@ export namespace Prisma {
     price?: SortOrder
   }
 
+  export type AdvertisementCountOrderByAggregateInput = {
+    id?: SortOrder
+    created_at?: SortOrder
+    imageUrl?: SortOrder
+  }
+
+  export type AdvertisementAvgOrderByAggregateInput = {
+    id?: SortOrder
+  }
+
+  export type AdvertisementMaxOrderByAggregateInput = {
+    id?: SortOrder
+    created_at?: SortOrder
+    imageUrl?: SortOrder
+  }
+
+  export type AdvertisementMinOrderByAggregateInput = {
+    id?: SortOrder
+    created_at?: SortOrder
+    imageUrl?: SortOrder
+  }
+
+  export type AdvertisementSumOrderByAggregateInput = {
+    id?: SortOrder
+  }
+
   export type followCreateNestedManyWithoutUserInput = {
     create?: XOR<followCreateWithoutUserInput, followUncheckedCreateWithoutUserInput> | followCreateWithoutUserInput[] | followUncheckedCreateWithoutUserInput[]
     connectOrCreate?: followCreateOrConnectWithoutUserInput | followCreateOrConnectWithoutUserInput[]
@@ -16011,10 +17194,6 @@ export namespace Prisma {
 
   export type BoolFieldUpdateOperationsInput = {
     set?: boolean
-  }
-
-  export type NullableStringFieldUpdateOperationsInput = {
-    set?: string | null
   }
 
   export type followUpdateManyWithoutUserNestedInput = {
@@ -16167,6 +17346,10 @@ export namespace Prisma {
     create?: XOR<storeCreateWithoutSellerInput, storeUncheckedCreateWithoutSellerInput>
     connectOrCreate?: storeCreateOrConnectWithoutSellerInput
     connect?: storeWhereUniqueInput
+  }
+
+  export type NullableStringFieldUpdateOperationsInput = {
+    set?: string | null
   }
 
   export type userUpdateOneRequiredWithoutSellerNestedInput = {
@@ -16717,20 +17900,6 @@ export namespace Prisma {
     not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
-  export type NestedStringNullableFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    not?: NestedStringNullableFilter<$PrismaModel> | string | null
-  }
-
   export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[] | ListIntFieldRefInput<$PrismaModel>
@@ -16781,6 +17950,20 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedBoolFilter<$PrismaModel>
     _max?: NestedBoolFilter<$PrismaModel>
+  }
+
+  export type NestedStringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
   export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -17164,7 +18347,6 @@ export namespace Prisma {
     address: string
     role?: string
     isSeller?: boolean
-    profileImage?: string | null
     follows?: followCreateNestedManyWithoutUserInput
     carts?: cartCreateNestedManyWithoutUserInput
     favorites?: favoriteCreateNestedManyWithoutUserInput
@@ -17182,7 +18364,6 @@ export namespace Prisma {
     address: string
     role?: string
     isSeller?: boolean
-    profileImage?: string | null
     follows?: followUncheckedCreateNestedManyWithoutUserInput
     carts?: cartUncheckedCreateNestedManyWithoutUserInput
     favorites?: favoriteUncheckedCreateNestedManyWithoutUserInput
@@ -17241,7 +18422,6 @@ export namespace Prisma {
     address?: StringFieldUpdateOperationsInput | string
     role?: StringFieldUpdateOperationsInput | string
     isSeller?: BoolFieldUpdateOperationsInput | boolean
-    profileImage?: NullableStringFieldUpdateOperationsInput | string | null
     follows?: followUpdateManyWithoutUserNestedInput
     carts?: cartUpdateManyWithoutUserNestedInput
     favorites?: favoriteUpdateManyWithoutUserNestedInput
@@ -17259,7 +18439,6 @@ export namespace Prisma {
     address?: StringFieldUpdateOperationsInput | string
     role?: StringFieldUpdateOperationsInput | string
     isSeller?: BoolFieldUpdateOperationsInput | boolean
-    profileImage?: NullableStringFieldUpdateOperationsInput | string | null
     follows?: followUncheckedUpdateManyWithoutUserNestedInput
     carts?: cartUncheckedUpdateManyWithoutUserNestedInput
     favorites?: favoriteUncheckedUpdateManyWithoutUserNestedInput
@@ -17714,7 +18893,6 @@ export namespace Prisma {
     address: string
     role?: string
     isSeller?: boolean
-    profileImage?: string | null
     follows?: followCreateNestedManyWithoutUserInput
     favorites?: favoriteCreateNestedManyWithoutUserInput
     seller?: sellerCreateNestedOneWithoutUserInput
@@ -17732,7 +18910,6 @@ export namespace Prisma {
     address: string
     role?: string
     isSeller?: boolean
-    profileImage?: string | null
     follows?: followUncheckedCreateNestedManyWithoutUserInput
     favorites?: favoriteUncheckedCreateNestedManyWithoutUserInput
     seller?: sellerUncheckedCreateNestedOneWithoutUserInput
@@ -17803,7 +18980,6 @@ export namespace Prisma {
     address?: StringFieldUpdateOperationsInput | string
     role?: StringFieldUpdateOperationsInput | string
     isSeller?: BoolFieldUpdateOperationsInput | boolean
-    profileImage?: NullableStringFieldUpdateOperationsInput | string | null
     follows?: followUpdateManyWithoutUserNestedInput
     favorites?: favoriteUpdateManyWithoutUserNestedInput
     seller?: sellerUpdateOneWithoutUserNestedInput
@@ -17821,7 +18997,6 @@ export namespace Prisma {
     address?: StringFieldUpdateOperationsInput | string
     role?: StringFieldUpdateOperationsInput | string
     isSeller?: BoolFieldUpdateOperationsInput | boolean
-    profileImage?: NullableStringFieldUpdateOperationsInput | string | null
     follows?: followUncheckedUpdateManyWithoutUserNestedInput
     favorites?: favoriteUncheckedUpdateManyWithoutUserNestedInput
     seller?: sellerUncheckedUpdateOneWithoutUserNestedInput
@@ -17882,7 +19057,6 @@ export namespace Prisma {
     address: string
     role?: string
     isSeller?: boolean
-    profileImage?: string | null
     follows?: followCreateNestedManyWithoutUserInput
     carts?: cartCreateNestedManyWithoutUserInput
     seller?: sellerCreateNestedOneWithoutUserInput
@@ -17900,7 +19074,6 @@ export namespace Prisma {
     address: string
     role?: string
     isSeller?: boolean
-    profileImage?: string | null
     follows?: followUncheckedCreateNestedManyWithoutUserInput
     carts?: cartUncheckedCreateNestedManyWithoutUserInput
     seller?: sellerUncheckedCreateNestedOneWithoutUserInput
@@ -17971,7 +19144,6 @@ export namespace Prisma {
     address?: StringFieldUpdateOperationsInput | string
     role?: StringFieldUpdateOperationsInput | string
     isSeller?: BoolFieldUpdateOperationsInput | boolean
-    profileImage?: NullableStringFieldUpdateOperationsInput | string | null
     follows?: followUpdateManyWithoutUserNestedInput
     carts?: cartUpdateManyWithoutUserNestedInput
     seller?: sellerUpdateOneWithoutUserNestedInput
@@ -17989,7 +19161,6 @@ export namespace Prisma {
     address?: StringFieldUpdateOperationsInput | string
     role?: StringFieldUpdateOperationsInput | string
     isSeller?: BoolFieldUpdateOperationsInput | boolean
-    profileImage?: NullableStringFieldUpdateOperationsInput | string | null
     follows?: followUncheckedUpdateManyWithoutUserNestedInput
     carts?: cartUncheckedUpdateManyWithoutUserNestedInput
     seller?: sellerUncheckedUpdateOneWithoutUserNestedInput
@@ -18132,7 +19303,6 @@ export namespace Prisma {
     address: string
     role?: string
     isSeller?: boolean
-    profileImage?: string | null
     carts?: cartCreateNestedManyWithoutUserInput
     favorites?: favoriteCreateNestedManyWithoutUserInput
     seller?: sellerCreateNestedOneWithoutUserInput
@@ -18150,7 +19320,6 @@ export namespace Prisma {
     address: string
     role?: string
     isSeller?: boolean
-    profileImage?: string | null
     carts?: cartUncheckedCreateNestedManyWithoutUserInput
     favorites?: favoriteUncheckedCreateNestedManyWithoutUserInput
     seller?: sellerUncheckedCreateNestedOneWithoutUserInput
@@ -18209,7 +19378,6 @@ export namespace Prisma {
     address?: StringFieldUpdateOperationsInput | string
     role?: StringFieldUpdateOperationsInput | string
     isSeller?: BoolFieldUpdateOperationsInput | boolean
-    profileImage?: NullableStringFieldUpdateOperationsInput | string | null
     carts?: cartUpdateManyWithoutUserNestedInput
     favorites?: favoriteUpdateManyWithoutUserNestedInput
     seller?: sellerUpdateOneWithoutUserNestedInput
@@ -18227,7 +19395,6 @@ export namespace Prisma {
     address?: StringFieldUpdateOperationsInput | string
     role?: StringFieldUpdateOperationsInput | string
     isSeller?: BoolFieldUpdateOperationsInput | boolean
-    profileImage?: NullableStringFieldUpdateOperationsInput | string | null
     carts?: cartUncheckedUpdateManyWithoutUserNestedInput
     favorites?: favoriteUncheckedUpdateManyWithoutUserNestedInput
     seller?: sellerUncheckedUpdateOneWithoutUserNestedInput
@@ -18276,7 +19443,6 @@ export namespace Prisma {
     address: string
     role?: string
     isSeller?: boolean
-    profileImage?: string | null
     follows?: followCreateNestedManyWithoutUserInput
     carts?: cartCreateNestedManyWithoutUserInput
     favorites?: favoriteCreateNestedManyWithoutUserInput
@@ -18294,7 +19460,6 @@ export namespace Prisma {
     address: string
     role?: string
     isSeller?: boolean
-    profileImage?: string | null
     follows?: followUncheckedCreateNestedManyWithoutUserInput
     carts?: cartUncheckedCreateNestedManyWithoutUserInput
     favorites?: favoriteUncheckedCreateNestedManyWithoutUserInput
@@ -18350,7 +19515,6 @@ export namespace Prisma {
     address?: StringFieldUpdateOperationsInput | string
     role?: StringFieldUpdateOperationsInput | string
     isSeller?: BoolFieldUpdateOperationsInput | boolean
-    profileImage?: NullableStringFieldUpdateOperationsInput | string | null
     follows?: followUpdateManyWithoutUserNestedInput
     carts?: cartUpdateManyWithoutUserNestedInput
     favorites?: favoriteUpdateManyWithoutUserNestedInput
@@ -18368,7 +19532,6 @@ export namespace Prisma {
     address?: StringFieldUpdateOperationsInput | string
     role?: StringFieldUpdateOperationsInput | string
     isSeller?: BoolFieldUpdateOperationsInput | boolean
-    profileImage?: NullableStringFieldUpdateOperationsInput | string | null
     follows?: followUncheckedUpdateManyWithoutUserNestedInput
     carts?: cartUncheckedUpdateManyWithoutUserNestedInput
     favorites?: favoriteUncheckedUpdateManyWithoutUserNestedInput

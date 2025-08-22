@@ -1,6 +1,6 @@
 generator client {
   provider = "prisma-client-js"
-  output   = "app/generated/prisma/client"
+  
 }
 
 datasource db {
@@ -26,6 +26,7 @@ model user {
   favorites favorite[]
   seller    seller?
   orders    order[]
+  payments payment[]
 
   @@map("user")
 }
@@ -166,4 +167,23 @@ model order_item {
   product product @relation(fields: [product_id], references: [product_id])
 
   @@map("order_item")
+}
+
+
+model Advertisement {
+  id        Int      @id @default(autoincrement()) 
+  created_at DateTime @default(now())  
+  imageUrl  String   @map("image_url")                                              
+}
+
+model payment {
+  id              Int      @id @default(autoincrement())
+  stripeSessionId String   @unique
+  amount          Float
+  status          String
+  paymentMethod   String?
+  createdAt       DateTime @default(now())
+  reg_id          Int      //  FK to user table
+
+  user user @relation(fields: [reg_id], references: [reg_id]) // Foreign key relation
 }

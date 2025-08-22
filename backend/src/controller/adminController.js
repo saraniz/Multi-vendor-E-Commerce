@@ -108,48 +108,7 @@ const getProdctData = async (req, res) => {
     }
   };
 
-// Send Warnings to sellers😒😒😒😒😒
-// const sellerWarnings = {};
 
-// const warningList = {
-//   1: "Warning 1 😡",
-//   2: "Warning 2 😡😡",
-//   3: "Warning 3 😡😡😡"
-// };
-
-// const sendWarning = async (req, res) => {
-//   const { seller_id, type } = req.body;
-
-//   if (!seller_id || !type || !warningList[type]) {
-//     return res.status(400).json({ message: "Valid seller_id and warning type (1 or 2 or 3) are required" });
-//   }
-
-//   // Check if the seller exists in the database
-//   const seller = await prisma.seller.findUnique({
-//     where: { seller_id: parseInt(seller_id) },
-//   });
-
-//   if (!seller) {
-//     return res.status(404).json({ message: "Seller not found" });
-//   }
-
-//   // Replace previous warning
-//   sellerWarnings[seller_id] = warningList[type];
-
-//   return res.status(200).json({ message: `Warning sent: ${warningList[type]}` });
-// };
-
-// Get current warning for a seller
-// const getWarnings = async (req, res) => {
-//   const { seller_id } = req.params;
-
-//   if (!seller_id) {
-//     return res.status(400).json({ message: "seller_id is required" });
-//   }
-
-//   const warning = sellerWarnings[seller_id] || null;
-//   return res.status(200).json({ warning });
-// };
 //😒😒😒😒😒
 
 // Define warnings
@@ -312,5 +271,201 @@ const unblockSeller = async (req, res) => {
   }
 };
 
+// customer drtails
+const getAllCustomers = async (req, res) => {
+  try {
+    const customers = await prisma.user.findMany({
+      where: {
+        role: 'Customer',
+        
+      },
+      select: {
+        username: true,
+        email: true,
+        mobileNo: true,
+        address: true,
+      },
+    });
 
-module.exports = {admin_login , admin_logout , getProdctData , getSellerData , getUserCounts , blockSeller , unblockSeller , sendWarning1, sendWarning2 , sendWarning3 };
+    res.status(200).json(customers);
+  } catch (error) {
+    console.error('Error fetching customers:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
+// getStoreWithSellerStatus
+const getStoreWithSellerStatus = async (req, res) => {
+  try {
+    const stores = await prisma.store.findMany({
+      include: {
+        seller: true,
+      },
+    });
+
+    const result = stores.map((store) => {
+      const seller = store.seller;
+
+      let status = "No Warning";
+      if (seller?.isBlocked) {
+        status = "Blocked";
+      } else if (seller?.warning1 && seller?.warning2 && seller?.warning3) {
+        status = "3rd Level Warning";
+      } else if (seller?.warning1 && seller?.warning2) {
+        status = "2nd Level Warning";
+      } else if (seller?.warning1) {
+        status = "Level 01 Warning";
+      }
+
+      return {
+        store_id: store.store_id,
+        store_name: store.store_name,
+        seller_status: status,
+        store_image: store.store_image
+      };
+    });
+
+    res.json(result);
+  } catch (error) {
+    console.error("Error fetching stores:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+//👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇
+// For admmin dashboard page 👇👇
+const getStoreCount = async (req, res) => {
+  try {
+    const count = await prisma.store.count(); 
+    res.status(200).json({ count });
+  } catch (error) {
+    console.error("Error getting store count:", error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+
+const countBlockedSellers = async (req, res) => {
+  try {
+    const count = await prisma.seller.count({
+      where: { isBlocked: true }
+    });
+    res.status(200).json({ count });
+  } catch (error) {
+    console.error("Error counting blocked sellers:", error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+
+const countWarning1 = async (req, res) => {
+  try {
+    const count = await prisma.seller.count({
+      where: { warning1: { not: null } }
+    });
+    res.status(200).json({ count });
+  } catch (error) {
+    console.error("Error counting warning1 sellers:", error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+
+const countWarning2 = async (req, res) => {
+  try {
+    const count = await prisma.seller.count({
+      where: { warning2: { not: null } }
+    });
+    res.status(200).json({ count });
+  } catch (error) {
+    console.error("Error counting warning2 sellers:", error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+
+const countWarning3 = async (req, res) => {
+  try {
+    const count = await prisma.seller.count({
+      where: { warning3: { not: null } }
+    });
+    res.status(200).json({ count });
+  } catch (error) {
+    console.error("Error counting warning3 sellers:", error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+const getDashboardData = async (req, res) => {
+  try {
+    // Execute all database queries in parallel for better performance
+    const [totalShops, blockedShops, warning1Count, warning2Count, warning3Count] = await Promise.all([
+      // Total number of stores
+      prisma.store.count(),
+      
+      // Number of blocked sellers
+      prisma.seller.count({
+        where: { isBlocked: true }
+      }),
+      
+      // Warning counts for each step
+      prisma.seller.count({
+        where: { warning1: { not: null } }
+      }),
+      prisma.seller.count({
+        where: { warning2: { not: null } }
+      }),
+      prisma.seller.count({
+        where: { warning3: { not: null } }
+      })
+    ]);
+
+    // Structure the response to match frontend expectations
+    const dashboardData = {
+      totalShops,
+      blockedShops,
+      warnings: {
+        step01: warning1Count,
+        step02: warning2Count,
+        step03: warning3Count
+      }
+      // Note: Revenue data excluded as requested
+    };
+
+    res.status(200).json(dashboardData);
+  } catch (error) {
+    console.error("Error fetching dashboard data:", error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+const getSellersForActions = async (req, res) => {
+  try {
+    const sellers = await prisma.seller.findMany({
+      include: {
+        store: {
+          select: {
+            store_name: true,
+            store_image: true,
+          },
+        },
+      },
+    });
+
+    const result = sellers.map((seller) => ({
+      id: seller.seller_id, // For warnings/blocking
+      name: seller.store.store_name,
+      profilePic: seller.store.store_image || "/images/user6.jpg", // fallback
+      status: "" // empty by default
+    }));
+
+    res.status(200).json(result);
+  } catch (error) {
+    console.error("❌ Error getting sellers:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+module.exports = {getSellersForActions , getDashboardData , admin_login , admin_logout , getProdctData , getSellerData , getUserCounts , blockSeller , unblockSeller , sendWarning1, sendWarning2 , sendWarning3 , getAllCustomers , getStoreWithSellerStatus , getStoreCount, countBlockedSellers, countWarning1, countWarning2, countWarning3};
+
+//module.exports = {admin_login , admin_logout , getProdctData , getSellerData , getUserCounts , blockSeller , unblockSeller , sendWarning1, sendWarning2 , sendWarning3 };
