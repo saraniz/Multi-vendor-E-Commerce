@@ -11,6 +11,9 @@ import {
   ORDER_COUNTS_REQUEST,
   ORDER_COUNTS_SUCCESS,
   ORDER_COUNTS_FAILURE,
+  SELLER_ALL_PRODUCTS_FETCH_REQUEST,
+  SELLER_ALL_PRODUCTS_FETCH_SUCCESS,
+  SELLER_ALL_PRODUCTS_FETCH_FAILURE,
 } from './storeActionType';
 
 const initialState = {
@@ -83,6 +86,15 @@ const storeReducer = (state = initialState, action) => {
         loading: false,
         error: action.payload,
       };
+
+    case SELLER_ALL_PRODUCTS_FETCH_REQUEST:
+      return { ...state, loading: true, error: null };
+
+    case SELLER_ALL_PRODUCTS_FETCH_SUCCESS:
+      return { ...state, loading: false, sellerProducts: action.payload, error: null };
+
+    case SELLER_ALL_PRODUCTS_FETCH_FAILURE:
+      return { ...state, loading: false, error: action.payload };
 
     default:
       return state;

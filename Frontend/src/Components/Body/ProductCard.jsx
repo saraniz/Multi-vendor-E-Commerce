@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addFavorite, removeFavorite } from "../../Storage/Favorite/favAction";
 import { addToCart, deleteFromCart } from "../../Storage/Cart/cartAction";
 
-const ProductCard = ({ product }) => {
+const ProductCard = ({ product, loading }) => {
   const dispatch = useDispatch();
   const { auth, fav, cart } = useSelector((store) => store);
   const reg_id = auth.user?.reg_id;
@@ -13,10 +13,11 @@ const ProductCard = ({ product }) => {
   const cartItems = cart.cartItems || [];
 
   // Normalize favorite and cart existence
-  const isFavorite = favorites.some((fav) => fav.product_id === product.product_id);
-  const isInCart = cartItems.some((item) => item.productId === product.product_id);
+  const isFavorite = favorites.some((fav) => fav.product_id === product?.product_id);
+  const isInCart = cartItems.some((item) => item.productId === product?.product_id);
 
   const getProductImageSrc = (product) => {
+    if (!product) return "/placeholder.png";
     return (
       product.imageUrl ||
       product.product_image ||
@@ -26,6 +27,7 @@ const ProductCard = ({ product }) => {
   };
 
   const handleAddOrRemoveFavorite = () => {
+    if (!product) return;
     if (!reg_id) return alert("Please log in.");
     if (isFavorite) {
       dispatch(removeFavorite(reg_id, product.product_id));
@@ -35,6 +37,7 @@ const ProductCard = ({ product }) => {
   };
 
   const handleAddOrRemoveFromCart = () => {
+    if (!product) return;
     if (!reg_id) {
       // Guest cart logic with sessionStorage
       let guestCart = JSON.parse(sessionStorage.getItem("guestCartItems") || "[]");
@@ -69,6 +72,14 @@ const ProductCard = ({ product }) => {
       dispatch(addToCart(product.product_id, 1));
     }
   };
+
+  if (loading || !product) {
+    return (
+      <div className="w-64 p-4 rounded-lg flex justify-center items-center h-80">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+      </div>
+    );
+  }
 
   const ratingPercentage = (product.rating / 5) * 100;
 

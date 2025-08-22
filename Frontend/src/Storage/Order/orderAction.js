@@ -14,10 +14,12 @@ import {
 import { API_BASE_URL } from "../APIConfig";
 
 // Place Order Action
-export const placeOrder = (orderData) => async (dispatch) => {
+// Place Order Action
+export const placeOrder = (orderData, isGuest = false) => async (dispatch) => {
   dispatch({ type: CHECKOUT_REQUEST });
 
   const token = localStorage.getItem("jwt");
+  console.log("TOKEN: ",token)
 
   try {
     const config = {
@@ -27,17 +29,31 @@ export const placeOrder = (orderData) => async (dispatch) => {
       },
     };
 
-    console.log("[placeOrder action] Sending order data:", orderData);
+    // Prepare final payload
+    let payload = {
+      total_price: orderData.total_price,
+      courier_service: orderData.courier_service,
+      deliver_date: orderData.deliver_date,
+      cartItems: orderData.cartItems,
+    };
+
+    // Only add guest fields if user is NOT logged in
+    if (isGuest) {
+      payload.guest_name = orderData.guest_name;
+      payload.guest_mobile = orderData.guest_mobile;
+      payload.guest_address = orderData.guest_address;
+    }
+
+    console.log("[placeOrder action] Sending order data:", payload);
 
     const response = await axios.post(
       `${API_BASE_URL}/api/order/placeorder`,
-      orderData,
+      payload,
       config
     );
 
     console.log("[placeOrder action] Response from backend:", response.data);
 
-    // ✅ FIX: dispatch orders array instead of undefined .order
     dispatch({ type: CHECKOUT_SUCCESS, payload: response.data.orders });
 
     Swal.fire({

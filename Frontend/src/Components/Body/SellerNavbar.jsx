@@ -41,11 +41,11 @@ function SellerNavbar() {
             </button>
           </Link>
 
-          <Link to="/MyShop" className="w-full">
+          {/* <Link to="/MyShop" className="w-full">
           <button className="flex items-center w-full px-4 py-3 my-2 text-left transition-all duration-300 ease-in-out bg-gray-700 rounded-lg hover:bg-gray-600 hover:scale-105 hover:shadow-md">
           <FaStore className="mr-2" /> My Shop
             </button>
-            </Link>
+            </Link> */}
         </nav>
 
         

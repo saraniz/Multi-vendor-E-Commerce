@@ -12,6 +12,9 @@ import {
   ORDER_COUNTS_REQUEST,
   ORDER_COUNTS_SUCCESS,
   ORDER_COUNTS_FAILURE,
+  SELLER_ALL_PRODUCTS_FETCH_REQUEST,
+  SELLER_ALL_PRODUCTS_FETCH_SUCCESS,
+  SELLER_ALL_PRODUCTS_FETCH_FAILURE,
 } from "./storeActionType";
 import axios from "axios";
 import Swal from "sweetalert2";
@@ -281,5 +284,48 @@ export const updateStoreDetails = (formData) => async (dispatch) => {
       text: error.response?.data?.message || error.message,
     });
     throw error;
+  }
+};
+
+// Fetch all products of the logged-in seller
+export const fetchSellerAllProducts = () => async (dispatch) => {
+  dispatch({ type: SELLER_ALL_PRODUCTS_FETCH_REQUEST });
+  console.log("[fetchSellerAllProducts] Action started");
+
+  try {
+    const token = localStorage.getItem("jwt");
+    const headers = { Authorization: `Bearer ${token}` };
+
+    const { data } = await axios.get(`${API_BASE_URL}/api/items/my-products`, { headers });
+
+    if (data.success) {
+      dispatch({
+        type: SELLER_ALL_PRODUCTS_FETCH_SUCCESS,
+        payload: data.products,
+      });
+      console.log("[fetchSellerAllProducts] Products fetched:", data.products);
+    } else {
+      dispatch({
+        type: SELLER_ALL_PRODUCTS_FETCH_FAILURE,
+        payload: data.message,
+      });
+      console.warn(
+        "[fetchSellerAllProducts] Backend returned failure:",
+        data.message
+      );
+    }
+  } catch (error) {
+    const errorMessage =
+      error.response?.data?.message || error.message || "Something went wrong!";
+    dispatch({
+      type: SELLER_ALL_PRODUCTS_FETCH_FAILURE,
+      payload: errorMessage,
+    });
+    console.error("[fetchSellerAllProducts] Error:", error);
+    Swal.fire({
+      icon: "error",
+      title: "Failed to fetch products",
+      text: errorMessage,
+    });
   }
 };

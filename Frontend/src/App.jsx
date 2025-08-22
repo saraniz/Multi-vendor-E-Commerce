@@ -35,6 +35,11 @@ import ForgotPassword from './Pages/ForgotPassword';
 
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import AboutUs from './Pages/AboutUs.js';
+import ContactUs from './Pages/ContactUs.js';
+import PrivacyPolicy from './Pages/PrivacyPolicy.js';
+import TermsOfService from './Pages/TermsOfService.js';
+import ReturnPolicy from './Pages/ReturnPolicy.js';
 
 function App() {
   const jwt = localStorage.getItem("jwt");
@@ -80,6 +85,15 @@ function App() {
         <Route path="/checkout" element={<CheckoutPage />} />
         <Route path='/editproduct/:prisma_id' element={<EditProduct />} />
         <Route path="/ForgotPassword" element={<ForgotPassword />} />
+        <Route path="/AboutUs" element={<AboutUs />} />
+        <Route path="/ContactUs" element={<ContactUs />} />
+        <Route path="/PrivacyPolicy" element={<PrivacyPolicy />} />
+        <Route path="/TermsOfService" element={<TermsOfService />} />
+        <Route path="/ReturnPolicy" element={<ReturnPolicy />} />
+
+
+
+
       </Routes>
 
       {/* Toast messages will appear here */}

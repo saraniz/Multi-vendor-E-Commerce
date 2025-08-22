@@ -4,9 +4,10 @@ const orderController = require('../controller/orderController');
 const orderAnalyticsController = require('../controller/orderAnalyticsController');
 const orderRevenueController = require('../controller/orderRevenueController');
 const authenticate = require('../middleware/authMiddleware');
+const optionalAuthenticate = require('../middleware/optionalAuthenticate')
 
 // For both guests and registered users
-router.post('/placeorder', orderController.placeOrder); // Remove authenticate middleware for guest checkout
+router.post('/placeorder',optionalAuthenticate, orderController.placeOrder); // Remove authenticate middleware for guest checkout
 router.get('/getorders',authenticate, orderController.getOrdersByUser);
 // Seller: Get all order items for a store (for seller order view)
 router.get('/store/:storeId/orders', orderRevenueController.getOrdersByStore);

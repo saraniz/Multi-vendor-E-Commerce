@@ -63,71 +63,68 @@ function PaymentMethods() {
     }
   };
 
-  const handlePayment = async () => {
-    const token = localStorage.getItem('jwt');
+const handlePayment = async () => {
+  const token = localStorage.getItem('jwt');
 
-    const cartItems = selectedItems.map((item) => ({
-      product_id: item.product_id || item.id,
-      quantity: item.quantity,
-      price: item.price,
-    }));
+  const cartItems = selectedItems.map((item) => ({
+    product_id: item.product_id || item.id,
+    quantity: item.quantity,
+    price: item.price,
+  }));
 
-    const validCartItems = cartItems.filter((item) => item.product_id);
+  const validCartItems = cartItems.filter((item) => item.product_id);
 
-    if (validCartItems.length !== cartItems.length) {
-      alert('Some cart items are missing product_id and will be skipped.');
-      console.warn('Invalid cart items:', cartItems.filter((i) => !i.product_id));
-    }
+  if (validCartItems.length !== cartItems.length) {
+    alert('Some cart items are missing product_id and will be skipped.');
+    console.warn('Invalid cart items:', cartItems.filter((i) => !i.product_id));
+  }
 
-    const deliver_date = new Date();
+  const deliver_date = new Date().toISOString();
 
-    const orderData = token
+  const isGuest = !token;
+
+  const orderData = {
+    total_price: totalAmount,
+    courier_service: selectedShipping,
+    deliver_date,
+    cartItems: validCartItems,
+    ...(isGuest
       ? {
-          reg_id: userData?.reg_id || userData?.id,
-          total_price: totalAmount,
-          courier_service: selectedShipping,
-          deliver_date,
-          cartItems: validCartItems,
-        }
-      : {
-          reg_id: null,
           guest_name: userData?.fullName || 'Guest User',
           guest_mobile:
             userData?.mobileNo || paymentDetails.phoneNumber || '0000000000',
           guest_address:
             userData?.address || paymentDetails.address || 'Not Provided',
-          total_price: totalAmount,
-          courier_service: selectedShipping,
-          deliver_date,
-          cartItems: validCartItems,
-        };
-
-    try {
-      // Store order details in DB
-      await dispatch(placeOrder(orderData));
-
-      alert('Order placed successfully!');
-
-      // Redirect to sandbox payment
-      const product_id = validCartItems.length > 0 ? validCartItems[0].product_id : 1;
-      const reg_id = userData?.reg_id || userData?.id || 34;
-
-      if (selectedMethod === 'credit-card') {
-        await payForSingleProduct(product_id);
-      } else if (selectedMethod === 'paypal') {
-        // Implement PayPal sandbox flow here if you have one
-        alert('Redirecting to PayPal sandbox payment...');
-      } else if (selectedMethod === 'cod') {
-        // No redirect needed for COD
-        navigate('/order-success');
-      } else {
-        navigate('/order-success');
-      }
-    } catch (error) {
-      console.error('Payment failed:', error);
-      alert('Payment failed. Please try again.');
-    }
+        }
+      : {})
   };
+
+  try {
+    // ✅ Place order via Redux action
+    await dispatch(placeOrder(orderData, isGuest));
+
+    alert('Order placed successfully!');
+
+    // Optional: Determine a product ID for payment gateway
+    const product_id = validCartItems.length > 0 ? validCartItems[0].product_id : 1;
+    const reg_id = userData?.reg_id || userData?.id || 34;
+
+    if (selectedMethod === 'credit-card') {
+      await payForSingleProduct(product_id);
+    } else if (selectedMethod === 'paypal') {
+      alert('Redirecting to PayPal sandbox payment...');
+    } else if (selectedMethod === 'cod') {
+      navigate('/order-success');
+    } else {
+      navigate('/order-success');
+    }
+
+  } catch (error) {
+    console.error('Payment failed:', error);
+    alert('Payment failed. Please try again.');
+  }
+};
+
 
   return (
     <div>

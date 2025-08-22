@@ -138,19 +138,69 @@ export const fetchGuestCartItems = () => (dispatch) => {
   });
 };
 
-export const updateGuestCartItem = (id, quantity) => (dispatch, getState) => {
-  const { cart } = getState();
-  let newCartItems = cart.cartItems.map(item =>
-    item.id === id ? { ...item, quantity } : item
-  );
-  newCartItems = newCartItems.filter(item => item.quantity > 0);
-  sessionStorage.setItem('guestCartItems', JSON.stringify(newCartItems));
+// export const updateCartItem = (cart_id, quantity) => async (dispatch, getState) => {
+//   const { user, cart } = getState();
 
-  dispatch({
-    type: UPDATE_GUEST_CART_ITEM,
-    payload: newCartItems,
-  });
-};
+//   // Guest cart
+//   if (!user || !user.token) {
+//     let newCartItems = cart.cartItems.map(item =>
+//       item.id === cart_id ? { ...item, quantity } : item
+//     );
+//     newCartItems = newCartItems.filter(item => item.quantity > 0);
+//     sessionStorage.setItem("guestCartItems", JSON.stringify(newCartItems));
+
+//     dispatch({
+//       type: UPDATE_GUEST_CART_ITEM,
+//       payload: newCartItems,
+//     });
+
+//     Swal.fire({
+//       position: "top-end",
+//       icon: "success",
+//       title: "Cart updated",
+//       showConfirmButton: false,
+//       timer: 1200,
+//     });
+//   } 
+//   // Logged-in user → backend
+//   else {
+//     try {
+//       const token = localStorage.getItem("jwt");
+//       if (!token) throw new Error("User not authenticated");
+
+//       const config = {
+//         headers: {
+//           "Content-Type": "application/json",
+//           Authorization: `Bearer ${token}`,
+//         },
+//       };
+
+//       await axios.put(
+//         `${API_BASE_URL}/api/cart/update/${cart_id}`,
+//         { quantity },
+//         config
+//       );
+
+//       dispatch({ type: CART_FLAG_TOGGLE }); // trigger cart refetch
+
+//       Swal.fire({
+//         position: "top-end",
+//         icon: "success",
+//         title: "Cart updated",
+//         showConfirmButton: false,
+//         timer: 1200,
+//       });
+//     } catch (error) {
+//       console.error("Error updating cart item:", error);
+//       Swal.fire({
+//         position: "top-end",
+//         icon: "error",
+//         title: "Failed to update cart",
+//         text: error.message,
+//       });
+//     }
+//   }
+// };
 
 export const deleteFromCart = (cart_id, product_id) => async (dispatch) => {
   try {
@@ -190,4 +240,35 @@ export const deleteFromCart = (cart_id, product_id) => async (dispatch) => {
 export const clearGuestCart = () => (dispatch) => {
   sessionStorage.removeItem('guestCartItems');
   dispatch({ type: CLEAR_GUEST_CART });
+};
+
+export const updateCartItem = (cart_id, quantity) => async (dispatch) => {
+  try {
+    const token = localStorage.getItem("jwt");
+    if (!token) throw new Error("User not authenticated");
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    const body = { quantity };
+
+    await axios.put(`${API_BASE_URL}/api/cart/update/${cart_id}`, body, config);
+
+    dispatch({ type: "CART_FLAG_TOGGLE" }); // trigger re-fetch
+
+    Swal.fire({
+      position: "top-end",
+      icon: "success",
+      title: "Cart updated",
+      showConfirmButton: false,
+      timer: 1000,
+    });
+
+  } catch (error) {
+    console.error("Error updating cart item:", error);
+  }
 };

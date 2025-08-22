@@ -55,20 +55,32 @@ const Cart = () => {
   const subtotal = items.reduce((acc, item) => acc + (item.price * item.quantity || 0), 0);
   const total = subtotal;
 
+  // const handleQuantityChange = (id, newQuantity) => {
+  //   if (user) {
+  //     // TODO: implement backend update call here
+  //     console.log(`Update backend cart item ${id} quantity to ${newQuantity}`);
+  //   } else {
+  //     const updatedItems = items.map((item) =>
+  //       item.id === id ? { ...item, quantity: newQuantity } : item
+  //     );
+  //     sessionStorage.setItem("guestCartItems", JSON.stringify(updatedItems));
+  //     dispatch({ type: "UPDATE_GUEST_CART_ITEM", payload: updatedItems });
+  //     setItems(updatedItems);
+  //     console.log("Guest cart quantity updated:", updatedItems);
+  //   }
+  // };
+
   const handleQuantityChange = (id, newQuantity) => {
-    if (user) {
-      // TODO: implement backend update call here
-      console.log(`Update backend cart item ${id} quantity to ${newQuantity}`);
-    } else {
-      const updatedItems = items.map((item) =>
-        item.id === id ? { ...item, quantity: newQuantity } : item
-      );
-      sessionStorage.setItem("guestCartItems", JSON.stringify(updatedItems));
-      dispatch({ type: "UPDATE_GUEST_CART_ITEM", payload: updatedItems });
-      setItems(updatedItems);
-      console.log("Guest cart quantity updated:", updatedItems);
-    }
-  };
+  const updatedItems = items.map(item =>
+    item.id === id ? { ...item, quantity: newQuantity } : item
+  );
+
+  setItems(updatedItems); // update local state
+  sessionStorage.setItem("guestCartItems", JSON.stringify(updatedItems)); // save for guest
+  console.log("Cart updated locally:", updatedItems);
+};
+
+
 
   const handleRemove = (cart_id) => {
     if (user) {
@@ -144,14 +156,12 @@ const Cart = () => {
                   .filter((item) => item && typeof item === "object")
                   .map((item) => (
                     <CartItem
-                      key={item.id}
-                      item={{
-                        ...item,
-                        image: item.image || "/placeholder.png",
-                      }}
-                      onQuantityChange={(newQty) => handleQuantityChange(item.id, newQty)}
-                      onRemove={() => handleRemove(item.id)}
-                    />
+  key={item.id}
+  item={{ ...item, image: item.image || "/placeholder.png" }}
+  onQuantityChange={handleQuantityChange} // pass handler
+  onRemove={() => handleRemove(item.id)}
+/>
+
                   ))}
               </div>
             )}

@@ -178,9 +178,6 @@ const { cart_id,product_id } = req.body;
     }
 } 
 
-
-
-
 //view cart items
 const viewCart = async (req,res) =>{
     try{
@@ -217,6 +214,7 @@ const viewCart = async (req,res) =>{
         res.status(500).json({error:"Failed to fetch cart items"})
     }
 } 
+
 
 
 module.exports = { addItemToCart, updateCartItem,removeFromCart, viewCart };

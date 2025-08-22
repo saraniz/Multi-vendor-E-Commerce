@@ -41,15 +41,15 @@ const Footer = () => {
           {/* Right Section */}
           <div className="flex flex-col text-center md:flex-row md:space-x-12 md:text-left">
             <ul className="mb-8 md:mb-0">
-              <li className="mb-3"><a href="/" className="transition-all duration-300 hover:text-gray-200">About Us</a></li>
-              <li className="mb-3"><a href="/" className="transition-all duration-300 hover:text-gray-200">Shop</a></li>
-              <li className="mb-3"><a href="/" className="transition-all duration-300 hover:text-gray-200">Contact</a></li>
+              <li className="mb-3"><a href="/AboutUs" className="transition-all duration-300 hover:text-gray-200">About Us</a></li>
+              {/* <li className="mb-3"><a href="/" className="transition-all duration-300 hover:text-gray-200">Shop</a></li> */}
+              <li className="mb-3"><a href="/ContactUs" className="transition-all duration-300 hover:text-gray-200">Contact Us</a></li>
             </ul>
 
             <ul className="mb-8 md:mb-0">
-              <li className="mb-3"><a href="/" className="transition-all duration-300 hover:text-gray-200">Privacy Policy</a></li>
-              <li className="mb-3"><a href="/" className="transition-all duration-300 hover:text-gray-200">Terms of Service</a></li>
-              <li className="mb-3"><a href="/" className="transition-all duration-300 hover:text-gray-200">Return Policy</a></li>
+              <li className="mb-3"><a href="/PrivacyPolicy" className="transition-all duration-300 hover:text-gray-200">Privacy Policy</a></li>
+              <li className="mb-3"><a href="/TermsOfService" className="transition-all duration-300 hover:text-gray-200">Terms of Service</a></li>
+              <li className="mb-3"><a href="/ReturnPolicy" className="transition-all duration-300 hover:text-gray-200">Return Policy</a></li>
             </ul>
           </div>
         </div>
