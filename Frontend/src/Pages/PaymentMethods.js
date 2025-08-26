@@ -5,7 +5,7 @@ import { FaCreditCard, FaPaypal, FaMoneyBillWave } from 'react-icons/fa';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { placeOrder } from '../Storage/Order/orderAction';
-import { payForSingleProduct } from '../Storage/Payment/paymentAction';
+import {  checkoutCart  } from '../Storage/Payment/paymentAction';   //for single - payForSingleProduct
 
 function PaymentMethods() {
   const location = useLocation();
@@ -123,9 +123,10 @@ function PaymentMethods() {
       alert('Order placed successfully!');
 
       const product_id = validCartItems.length > 0 ? validCartItems[0].product_id : 1;
+      const reg_id = userData?.reg_id || userData?.id || 22;
 
       if (selectedMethod === 'credit-card') {
-        await payForSingleProduct(product_id);
+        await checkoutCart(reg_id);
       } else if (selectedMethod === 'paypal') {
         alert('Redirecting to PayPal sandbox payment...');
       } else if (selectedMethod === 'cod') {
