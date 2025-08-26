@@ -471,6 +471,23 @@ const getSellersForActions = async (req, res) => {
   }
 };
 
-module.exports = {getSellersForActions , getDashboardData , admin_login , admin_logout , getProdctData , getSellerData , getUserCounts , blockSeller , unblockSeller , sendWarning1, sendWarning2 , sendWarning3 , getAllCustomers , getStoreWithSellerStatus , getStoreCount, countBlockedSellers, countWarning1, countWarning2, countWarning3};
+const getAllShops = async (req, res) => {
+  try {
+    const shops = await prisma.store.findMany({
+      select: {
+        store_id: true,
+        store_name: true,
+        store_image: true,
+      },
+    });
+
+    res.json(shops); // ✅ Return shop data
+  } catch (error) {
+    console.error("Error fetching shops:", error);
+    res.status(500).json({ error: "Failed to fetch shops" });
+  }
+};
+
+module.exports = {getAllShops , getSellersForActions , getDashboardData , admin_login , admin_logout , getProdctData , getSellerData , getUserCounts , blockSeller , unblockSeller , sendWarning1, sendWarning2 , sendWarning3 , getAllCustomers , getStoreWithSellerStatus , getStoreCount, countBlockedSellers, countWarning1, countWarning2, countWarning3};
 
 //module.exports = {admin_login , admin_logout , getProdctData , getSellerData , getUserCounts , blockSeller , unblockSeller , sendWarning1, sendWarning2 , sendWarning3 };

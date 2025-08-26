@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Navbar from '../Components/Header/Navbar';
 import Footer from '../Components/Footer/Footer';
 import AdminNavbar from '../Components/Body/AdminNavbar';
-import { getStoreCount , getBlockedShopCount, getWarning1Count, getWarning2Count, getWarning3Count } from '../Storage/admin/adminaction'; // ✅ Axios import
+import {getAllShops , getStoreCount , getBlockedShopCount, getWarning1Count, getWarning2Count, getWarning3Count } from '../Storage/admin/adminaction'; // ✅ Axios import
 
 function AdminDashboard() {
   const [totalShops, setTotalShops] = useState(0);
@@ -10,8 +10,9 @@ function AdminDashboard() {
   const [warning1, setWarning1] = useState(0);
 const [warning2, setWarning2] = useState(0);
 const [warning3, setWarning3] = useState(0);
+const [shops, setShops] = useState([]);
 
-  // ✅ Fetch dynamic shop count on component load
+  //  Fetch dynamic shop count on component load
   useEffect(() => {
     const fetchStoreCount = async () => {
       try {
@@ -24,7 +25,7 @@ const [warning3, setWarning3] = useState(0);
     fetchStoreCount();
   }, []);
 
-  // ✅ Fetch blocked shops
+  //  Fetch blocked shops
   useEffect(() => {
     const fetchBlockedShops = async () => {
       try {
@@ -72,17 +73,34 @@ const [warning3, setWarning3] = useState(0);
     };
     fetchWarning3();
   }, []);
+
+  useEffect(() => {
+  const fetchShops = async () => {
+    try {
+      const data = await getAllShops();
+      setShops(data);
+    } catch (error) {
+      console.error("Failed to fetch shops:", error);
+    }
+  };
+  fetchShops();
+}, []);
   
 
   // Static dummy data (you can make these dynamic later)
-  const revenueData = [
-    { shopName: "Shop 01", amount: 40 },
-    { shopName: "Shop 01", amount: 40 },
-    { shopName: "Shop 01", amount: 40 },
-    { shopName: "Shop 01", amount: 40 },
-    { shopName: "Shop 01", amount: 40 },
-    { shopName: "Shop 01", amount: 40 },
-  ];
+  // const revenueData = [
+  //   { shopName: "Shop 01", amount: 40 },
+  //   { shopName: "Shop 01", amount: 40 },
+  //   { shopName: "Shop 01", amount: 40 },
+  //   { shopName: "Shop 01", amount: 40 },
+  //   { shopName: "Shop 01", amount: 40 },
+  //   { shopName: "Shop 01", amount: 40 },
+  // ];
+  const revenueData = shops.map(shop => ({
+  shopName: shop.store_name,
+  shopImage: shop.store_image,
+  amount: 100 // placeholder for now, replace later with real revenue
+}));
   const totalRevenue = revenueData.reduce((acc, curr) => acc + curr.amount, 0);
   //const blockedShops = 3;
   //const warnings = { step01: 5, step02: 2, step03: 0 };
@@ -105,7 +123,7 @@ const [warning3, setWarning3] = useState(0);
                   <div key={index} className="flex items-center justify-between py-2 border-b">
                     <div className="flex items-center gap-2">
                       <img
-                        src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
+                        src={item.shopImage ||"https://cdn-icons-png.flaticon.com/512/3135/3135715.png"}
                         alt="shop"
                         className="w-8 h-8 rounded-full"
                       />

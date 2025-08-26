@@ -145,3 +145,13 @@ export const fetchSellersForActions = async () => {
     return [];
   }
 };
+
+export const getAllShops = async () => {
+  try {
+    const res = await axios.get("http://localhost:2000/api/admin/shops"); // backend route
+    return res.data; // [{store_id, store_name, store_image}]
+  } catch (error) {
+    console.error("❌ Failed to fetch shops:", error);
+    return [];
+  }
+};
