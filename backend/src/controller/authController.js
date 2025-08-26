@@ -122,6 +122,16 @@ const loginUser = async (req, res) => {
             return res.status(404).json({ message: 'User not found' });
         }
 
+        if (user.role === "Seller") {
+            const seller = await prisma.seller.findUnique({
+                where: { reg_id: user.reg_id }, // 🔑 FK 
+            });
+
+            if (seller && seller.isBlocked) {
+                return res.status(403).json({ message: 'Seller account is blocked by admin' });
+            }
+        }
+
         const isMatch = await bcrypt.compare(password, user.password);
         if (isMatch) {
             // Generate JWT token for login
