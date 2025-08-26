@@ -14,6 +14,11 @@ const admin_login = async (req, res) => {
         if (admin) {
             const match = await bcrypt.compare(password, admin.password);
             if (match) {
+
+              if (admin.role !== 'admin') {
+                    return res.status(403).json({ message: 'Access denied, not an admin' });
+                }
+                
                 const token = jwt.sign(
                     { admin_id: admin.admin_id, email: admin.email, role: admin.role }, 
                     'your-secret-key', // Replace with your secret key
