@@ -3,7 +3,7 @@ import Navbar from '../../Components/Header/Navbar';
 import Footer from '../../Components/Footer/Footer';
 import AdminNavbar from '../../Components/Body/AdminNavbar';
 import Swal from 'sweetalert2';
-import { sendWarning, blockSeller, fetchSellersForActions } from '../../Storage/admin/adminaction';
+import { sendWarning, blockSeller, fetchSellersForActions, unblockSeller } from '../../Storage/admin/adminaction';
 
 function Actions() {
   const [users, setUsers] = useState([]);
@@ -38,7 +38,10 @@ function Actions() {
         Swal.fire('✅ Success', 'Warning 3 sent', 'success');
       } else if (newStatus === 'Blocked') {
         await blockSeller(id);
-        Swal.fire('⛔ Blocked', 'Seller has been blocked', 'warning');
+        Swal.fire('⛔ Blocked', 'Seller has been blocked', 'sucess');
+      }else if (newStatus === 'UnBlocked') {
+        await unblockSeller(id);
+        Swal.fire('🆗 UnBlocked', 'Seller has been blocked', 'sucess');
       }
     } catch (error) {
       Swal.fire('❌ Error', error.response?.data?.message || 'Something went wrong', 'error');
@@ -46,7 +49,7 @@ function Actions() {
     //🟢🟢🟢
   };
 
-  const tabs = ['All', 'Warned 1 time', 'Warned 2 times', 'Warned 3 times', 'Blocked'];
+  const tabs = ['All', 'Level 1 warning', 'Level 2 warning', 'Level 3 warning', 'Blocked', 'UnBlocked'];
 
   const filteredUsers = users.filter(user => {
     if (selectedTab === 'All') return true;
@@ -54,6 +57,7 @@ function Actions() {
     if (selectedTab === 'Warned 2 times') return user.status === '02 Warn';
     if (selectedTab === 'Warned 3 times') return user.status === '03 Warn';
     if (selectedTab === 'Blocked') return user.status === 'Blocked';
+    if (selectedTab === 'UnBlocked') return user.status === 'UnBlocked';
     return true;
   });
 
@@ -98,7 +102,7 @@ function Actions() {
                       <button className="px-4 py-1 text-white bg-blue-500 rounded" onClick={() => alert(`Contacting ${user.name}`)}>
                         Contact
                       </button>
-                      {['01 Warn', '02 Warn', '03 Warn', 'Blocked'].map(status => (
+                      {['01 Warn', '02 Warn', '03 Warn', 'Blocked', 'UnBlocked'].map(status => (
                         <button
                           key={status}
                           className={`px-8 py-1 rounded ${user.status === status ? 'bg-red-500 text-white' : 'bg-gray-300'}`}

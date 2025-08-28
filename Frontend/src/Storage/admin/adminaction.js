@@ -19,6 +19,10 @@ export const blockSeller = async (seller_id) => {
   return axios.put(`${API_BASE_URL}/api/admin/block/${seller_id}`);
 };
 
+// Unblock Seller
+export const unblockSeller = async (seller_id) => {
+  return axios.put(`${API_BASE_URL}/api/admin/unblock/${seller_id}`);
+};
 
 const adminAxios = axios.create({
   baseURL: 'http://localhost:2000/api/admin', 
