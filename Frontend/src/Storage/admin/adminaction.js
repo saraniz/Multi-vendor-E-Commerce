@@ -199,3 +199,18 @@ export const getCustomerPayments = async () => {
     throw error;
   }
 };
+
+export const adminLogin = async (email, password) => {
+  try {
+    const res = await axios.post(`${API_BASE_URL}/api/admin/admin-login`, { email, password });
+    return res.data; // { message, jwt }
+  } catch (error) {
+    // Handle backend errors nicely
+    if (error.response) {
+      // Backend returned an error response
+      return { error: error.response.data.message || "Login failed" };
+    } else {
+      return { error: "Network or server error" };
+    }
+  }
+};
