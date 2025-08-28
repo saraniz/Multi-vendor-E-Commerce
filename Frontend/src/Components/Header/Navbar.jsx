@@ -16,7 +16,6 @@ import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import ProductList from "../Body/Productlist";
 
-
 const API_BASE_URL = "http://localhost:2000";
 
 function Navbar() {

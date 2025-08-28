@@ -12,6 +12,7 @@ import {
   FETCH_SELLER_ORDERS_FAILURE
 } from "./orderActionType";
 import { API_BASE_URL } from "../APIConfig";
+import { toast } from "react-toastify";
 
 // Place Order Action
 // Place Order Action
@@ -56,13 +57,18 @@ export const placeOrder = (orderData, isGuest = false) => async (dispatch) => {
 
     dispatch({ type: CHECKOUT_SUCCESS, payload: response.data.orders });
 
-    Swal.fire({
-      icon: "success",
-      title: "Order Placed",
-      text: "Your order has been successfully placed!",
-      timer: 2000,
-      showConfirmButton: false,
-    });
+    toast.success("Your order has been successfully placed!", {
+  position: "top-right",
+  autoClose: 1500,
+  hideProgressBar: false,
+  closeOnClick: true,
+  pauseOnHover: true,
+  draggable: true,
+  theme: "light",
+});
+
+
+   
 
     // Clear cart from sessionStorage
     sessionStorage.removeItem("cartItems");
@@ -81,11 +87,17 @@ export const placeOrder = (orderData, isGuest = false) => async (dispatch) => {
       payload: error.response?.data?.message || error.message,
     });
 
-    Swal.fire({
-      icon: "error",
-      title: "Order Failed",
-      text: error.response?.data?.message || "Something went wrong!",
-    });
+     toast.error("Order failed!", {
+  position: "top-right",
+  autoClose: 1500,
+  hideProgressBar: false,
+  closeOnClick: true,
+  pauseOnHover: true,
+  draggable: true,
+  theme: "light",
+});
+
+  
 
     throw error;
   }
@@ -130,11 +142,17 @@ export const fetchOrdersByUser = () => async (dispatch) => {
       payload: error.response?.data?.message || error.message,
     });
 
-    Swal.fire({
-      icon: "error",
-      title: "Failed to Load Orders",
-      text: error.response?.data?.message || "Something went wrong!",
-    });
+     toast.error("Failed to Load Orders", {
+  position: "top-right",
+  autoClose: 1500,
+  hideProgressBar: false,
+  closeOnClick: true,
+  pauseOnHover: true,
+  draggable: true,
+  theme: "light",
+});
+
+   
   }
 };
 
@@ -165,11 +183,17 @@ export const fetchOrdersForSellerStore = () => async (dispatch) => {
       payload: error.response?.data?.message || error.message,
     });
 
-    Swal.fire({
-      icon: "error",
-      title: "Order Fetch Failed",
-      text: error.response?.data?.message || "Unable to fetch store orders.",
-    });
+    toast.error("Order Fetch Failed", {
+  position: "top-right",
+  autoClose: 1500,
+  hideProgressBar: false,
+  closeOnClick: true,
+  pauseOnHover: true,
+  draggable: true,
+  theme: "light",
+});
+
+   
   }
 };
 

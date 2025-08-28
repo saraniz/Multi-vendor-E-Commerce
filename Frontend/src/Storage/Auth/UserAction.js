@@ -19,6 +19,8 @@ import {
 } from "./AuthActionType";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { toast } from 'react-toastify';
+
 
 //user register
 export const userRegister = (registerData) => async (dispatch) => {
@@ -34,27 +36,34 @@ export const userRegister = (registerData) => async (dispatch) => {
       console.log("response:", data);
       localStorage.setItem("jwt", data.jwt);
     }
-    // Swal.fire({
-    //   position: "top-end",
-    //   icon: "success",
-    //   title: "Signed up successfully",
-    //   showConfirmButton: false,
-    //   timer: 1500,
-    // });
+ 
     dispatch({ type: REGISTER_USER_SUCCESS, payload: data });
-  //   setTimeout(() => {
-  //     window.location.reload();
-  // }, 3000);
+
+    toast.success("User registered successfully!", {
+      position: "top-right",
+      autoClose: 1500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      theme: "light",
+    });
+    
+
   } catch (error) {
     console.log("[userRegister] Error from backend:", error);
     dispatch({
       type: REGISTER_USER_FAILURE,
       payload: error.response?.data?.message || error.message,
     });
-    Swal.fire({
-      title: "SignUp failed",
-      text: error.response?.data?.message || error.message,
-      icon: "error",
+    toast.error("Error! Cannot Register User", {
+      position: "top-right",
+      autoClose: 1500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      theme: "light",
     });
   }
 };
@@ -109,20 +118,10 @@ export const userLogin = (loginData,next) => async (dispatch) => {
       console.log("Login response:", data);
       localStorage.setItem("jwt", data.jwt); //store jwt token in localstorage
     }
-    // Display success notification
-    // Swal.fire({
-    //   position: "top-end",
-    //   icon: "success",
-    //   title: "Logged in successfully",
-    //   showConfirmButton: false,
-    //   timer: 1500,
-    // });
-
+    
     //dispatch success action
     dispatch({ type: LOGIN_USER_SUCCESS, payload: data });
-  //   setTimeout(() => {
-  //     window.location.reload();
-  // }, 3000);
+ 
     
   } catch (error) {
     console.error("Login error:", error);
@@ -138,10 +137,14 @@ export const userLogin = (loginData,next) => async (dispatch) => {
     dispatch({ type: LOGIN_USER_FAILURE, payload: errorMessage });
 
     //show error notification
-    Swal.fire({
-      title: "Login failed",
-      text: errorMessage,
-      icon: "error",
+    toast.error("Login Failed!", {
+      position: "top-right",
+      autoClose: 1500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      theme: "light",
     });
   }
 };
@@ -159,12 +162,14 @@ export const updateProfile = (formData) => async (dispatch) => {
     dispatch({ type: UPDATE_PROFILE_SUCCESS, payload: data.user }); // Assuming user data is in data.user
 
     // Show success notification
-    Swal.fire({
-      position: "top-end",
-      icon: "success",
-      title: "Profile updated successfully",
-      showConfirmButton: false,
-      timer: 1500,
+    toast.success("Profile Updated successfully!", {
+      position: "top-right",
+      autoClose: 1500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      theme: "light",
     });
   } catch (error) {
     console.error("Profile update error:", error);
@@ -180,10 +185,14 @@ export const updateProfile = (formData) => async (dispatch) => {
     dispatch({ type: UPDATE_PROFILE_FAILURE, payload: errorMessage });
 
     // Show error notification
-    Swal.fire({
-      title: "Profile update failed",
-      text: errorMessage,
-      icon: "error",
+   toast.error("Error!", {
+      position: "top-right",
+      autoClose: 1500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      theme: "light",
     });
   }
 };
@@ -209,12 +218,14 @@ export const sellerRegister = (sellerData) => async (dispatch) => {
       }
     );
 
-    Swal.fire({
-      position: "top-end",
-      icon: "success",
-      title: "Seller registered successfully",
-      showConfirmButton: false,
-      timer: 1500,
+    toast.success("Seller Registered successfully!", {
+      position: "top-right",
+      autoClose: 1500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      theme: "light",
     });
 
     dispatch({ type: SELLER_REGISTER_SUCCESS, payload: data });
@@ -224,10 +235,14 @@ export const sellerRegister = (sellerData) => async (dispatch) => {
       payload: error.response?.data?.message || "Error occurred",
     });
 
-    Swal.fire({
-      title: "Seller registration failed",
-      text: error.response?.data?.message || "Unknown error",
-      icon: "error",
+    toast.error("Error! Try Again", {
+      position: "top-right",
+      autoClose: 1500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      theme: "light",
     });
   }
 };

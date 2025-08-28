@@ -9,6 +9,7 @@ import {
 } from './reviewActionType';
 import Swal from 'sweetalert2';
 import { API_BASE_URL } from '../APIConfig';
+import { toast } from 'react-toastify';
 
 // Submit review
 export const submitReview = (reviewData) => async (dispatch) => {
@@ -32,24 +33,33 @@ export const submitReview = (reviewData) => async (dispatch) => {
 
     dispatch({ type: SUBMIT_REVIEW_SUCCESS, payload: data });
 
-    Swal.fire({
-      position: "top-end",
-      icon: "success",
-      title: "Review submitted successfully",
-      showConfirmButton: false,
-      timer: 1500,
-    });
+    toast.success("Review submitted successfully", {
+  position: "top-right",
+  autoClose: 1500,
+  hideProgressBar: false,
+  closeOnClick: true,
+  pauseOnHover: true,
+  draggable: true,
+  theme: "light",
+});
+
+
   } catch (error) {
     const errorMessage =
       error.response?.data?.message || error.message || "Something went wrong!";
 
     dispatch({ type: SUBMIT_REVIEW_FAILURE, payload: errorMessage });
 
-    Swal.fire({
-      title: "Error submitting review",
-      text: errorMessage,
-      icon: "error",
-    });
+    toast.error("Error submitting review", {
+  position: "top-right",
+  autoClose: 1500,
+  hideProgressBar: false,
+  closeOnClick: true,
+  pauseOnHover: true,
+  draggable: true,
+  theme: "light",
+});
+
 
     console.error("Error submitting review:", error);
   }

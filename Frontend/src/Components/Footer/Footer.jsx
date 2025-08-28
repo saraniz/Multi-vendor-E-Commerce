@@ -56,7 +56,7 @@ const Footer = () => {
 
         <div className="pt-8 mt-8 text-center border-t-2 border-gray-200">
           <p className="text-sm">&copy; 2024 KLOSET Group. All rights reserved.</p>
-          <p className="mt-2 text-sm">Designed by <a href="https://www.linkedin.com/feed/?trk=guest_homepage-basic_nav-header-signin" className="text-gray-200 hover:text-white">Moda Ravindu Vidurusinghe</a></p>
+          <p className="mt-2 text-sm">Designed by <a href="https://www.linkedin.com/feed/?trk=guest_homepage-basic_nav-header-signin" className="text-gray-200 hover:text-white">KLOSET</a></p>
         </div>
       </div>
     </footer>
