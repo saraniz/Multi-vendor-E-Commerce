@@ -35,7 +35,7 @@ function Navbar() {
     bgcolor: 'background.paper',
 
     boxShadow: 24,
-    borderRadius:2,
+    borderRadius: 2,
     p: 10,
   };
 
@@ -43,7 +43,7 @@ function Navbar() {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  
+
 
   // Prevent page reload on form submission
   const handleSearch = async (e) => {
@@ -61,20 +61,20 @@ function Navbar() {
 
     try {
       // Dispatch the Redux action and get the results
-      const response =  await dispatch(searchItems(searchQuery));
+      const response = await dispatch(searchItems(searchQuery));
 
       if (response && response.length > 0) {
         setSearchResults(response); // Update the results state
 
       } else {
         setSearchResults([]); // No results found, clear any previous results
-      
+
       }
     } catch (error) {
       alert("Something went wrong with the search. Please try again.")
       console.error("Search error:", error);
     }
-    
+
     setOpen(true)
   };
 
@@ -99,7 +99,7 @@ function Navbar() {
           <input
             type="text"
             placeholder="What are you looking for"
-            className="font-sans w-full py-2 pl-10 pr-4 border-gray-300 rounded-full bg-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full py-2 pl-10 pr-4 font-sans border-gray-300 rounded-full bg-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             value={sQuery}
             onChange={(e) => setSearchQuery(e.target.value)} // Update the search query
             onKeyDown={handleKeyPress} // Trigger search on Enter key press
@@ -180,22 +180,22 @@ function Navbar() {
       >
         <Box sx={style}>
 
-           {/* ✅ Bold and Large "Search Result for {sQuery}" */}
-           <Typography 
-            variant="h5" 
-            fontWeight="bold" 
+          {/* ✅ Bold and Large "Search Result for {sQuery}" */}
+          <Typography
+            variant="h5"
+            fontWeight="bold"
             gutterBottom
           >
             Search Result for "{sQuery}"
           </Typography>
-         
-        
-            {searchResults?(
-                <ProductList products={searchResults}/>
-              
-            ):(<p>No items found</p>)}
-          
-         
+
+
+          {searchResults ? (
+            <ProductList products={searchResults} />
+
+          ) : (<p>No items found</p>)}
+
+
         </Box>
       </Modal>
 

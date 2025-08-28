@@ -28,15 +28,15 @@ const Footer = () => {
           </div>
 
           {/* Middle Section for Logo */}
-         <div className="pr-20 mb-8 md:mb-0">
-         <Link to={'/'}>
-            <img
-              src={whitelogo} // Sample logo placeholder URL
-              alt="Logo"
-              className="w-48 h-48 mx-auto md:mx-0"
-            /></Link>
+          <div className="pr-20 mb-8 md:mb-0">
+            <Link to={'/'}>
+              <img
+                src={whitelogo} // Sample logo placeholder URL
+                alt="Logo"
+                className="w-48 h-48 mx-auto md:mx-0"
+              /></Link>
           </div>
-          
+
 
           {/* Right Section */}
           <div className="flex flex-col text-center md:flex-row md:space-x-12 md:text-left">
@@ -55,8 +55,7 @@ const Footer = () => {
         </div>
 
         <div className="pt-8 mt-8 text-center border-t-2 border-gray-200">
-          <p className="text-sm">&copy; 2024 KLOSET Group. All rights reserved.</p>
-          <p className="mt-2 text-sm">Designed by <a href="https://www.linkedin.com/feed/?trk=guest_homepage-basic_nav-header-signin" className="text-gray-200 hover:text-white">Moda Ravindu Vidurusinghe</a></p>
+          <p className="text-sm">&copy; 2025 KLOSET Group. All rights reserved.</p>
         </div>
       </div>
     </footer>

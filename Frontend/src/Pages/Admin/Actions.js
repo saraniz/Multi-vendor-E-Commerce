@@ -12,12 +12,12 @@ function Actions() {
   const [selectedTab, setSelectedTab] = useState('All');
 
   useEffect(() => {
-  const fetchUsers = async () => {
-    const data = await fetchSellersForActions(); 
-    setUsers(data);
-  };
-  fetchUsers();
-}, []);
+    const fetchUsers = async () => {
+      const data = await fetchSellersForActions();
+      setUsers(data);
+    };
+    fetchUsers();
+  }, []);
 
 
   const handleStatusChange = async (id, newStatus) => {
@@ -62,7 +62,7 @@ function Actions() {
       <Navbar />
       <div className="flex min-h-screen">
         <AdminNavbar />
-        
+
         {/* Main Content */}
         <div className="w-full p-4">
           <h1 className="mb-4 text-2xl font-semibold">User Actions</h1>
@@ -79,39 +79,40 @@ function Actions() {
               </button>
             ))}
           </div>
-
-          {/* Table Wrapper to avoid overflow */}
-          <div className="flex justify-center w-full mt-4">  
-            <table className="w-3/4 border-collapse"> {/* Centered table */}
-              <tbody>
-                {filteredUsers.map(user => (
-                  <tr key={user.id} className="border-b">
-                    <td className="flex items-center p-2">
-                      <img
-                        src={user.profilePic}
-                        alt="profile"
-                        className="w-10 h-10 mr-2 rounded-full"
-                      />
-                      {user.name}
-                    </td>
-                    <td className="flex p-2 space-x-4">
-                      <button className="px-4 py-1 text-white bg-blue-500 rounded" onClick={() => alert(`Contacting ${user.name}`)}>
-                        Contact
-                      </button>
-                      {['01 Warn', '02 Warn', '03 Warn', 'Blocked'].map(status => (
-                        <button
-                          key={status}
-                          className={`px-8 py-1 rounded ${user.status === status ? 'bg-red-500 text-white' : 'bg-gray-300'}`}
-                          onClick={() => handleStatusChange(user.id, status)}
-                        >
-                          {status}
+          <div className='h-screen overflow-y-auto'>
+            {/* Table Wrapper to avoid overflow */}
+            <div className="flex justify-center w-full mt-4">
+              <table className="w-3/4 border-collapse"> {/* Centered table */}
+                <tbody>
+                  {filteredUsers.map(user => (
+                    <tr key={user.id} className="border-b">
+                      <td className="flex items-center p-2">
+                        <img
+                          src={user.profilePic}
+                          alt="profile"
+                          className="w-10 h-10 mr-2 rounded-full"
+                        />
+                        {user.name}
+                      </td>
+                      <td className="flex p-2 space-x-4">
+                        <button className="px-4 py-1 text-white bg-blue-500 rounded" onClick={() => alert(`Contacting ${user.name}`)}>
+                          Contact
                         </button>
-                      ))}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+                        {['01 Warn', '02 Warn', '03 Warn', 'Blocked'].map(status => (
+                          <button
+                            key={status}
+                            className={`px-8 py-1 rounded ${user.status === status ? 'bg-red-500 text-white' : 'bg-gray-300'}`}
+                            onClick={() => handleStatusChange(user.id, status)}
+                          >
+                            {status}
+                          </button>
+                        ))}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>

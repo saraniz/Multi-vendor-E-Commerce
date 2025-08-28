@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
+import CusNavbar from '../Components/Header/CusNavbar';
 import PropTypes from 'prop-types';
 import Swal from 'sweetalert2';
-import { 
+import {
   FiBarChart2, FiShoppingBag, FiDollarSign, FiActivity,
-  FiChevronDown, FiEdit, FiSettings, FiLogOut 
+  FiChevronDown, FiEdit, FiSettings, FiLogOut
 } from 'react-icons/fi';
-import { 
+import {
   Chart as ChartJS, ArcElement, Tooltip, Legend,
   CategoryScale, LinearScale, BarElement, PointElement,
-  LineElement, Title 
+  LineElement, Title
 } from 'chart.js';
 import { Doughnut, Bar, Line } from 'react-chartjs-2';
 
@@ -38,7 +39,7 @@ class ChartErrorBoundary extends React.Component {
 
   render() {
     if (this.state.hasError) {
-      return <div className="text-red-500 p-4">Error rendering chart</div>;
+      return <div className="p-4 text-red-500">Error rendering chart</div>;
     }
     return this.props.children;
   }
@@ -303,16 +304,16 @@ function CustomerProfile() {
 
   if (isLoading) {
     return (
-      <div className="flex justify-center items-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="w-12 h-12 border-t-2 border-b-2 border-blue-500 rounded-full animate-spin"></div>
       </div>
     );
   }
 
   if (authError || orderError) {
     return (
-      <div className="flex justify-center items-center min-h-screen">
-        <div className="text-red-500 p-4">
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="p-4 text-red-500">
           Error: {authError || orderError}
         </div>
       </div>
@@ -320,81 +321,8 @@ function CustomerProfile() {
   }
 
   return (
-    <div className="bg-gray-50 min-h-screen">
-      <header className="sticky top-0 z-10 bg-white shadow-sm">
-        <div className="container mx-auto px-6 py-2 flex items-center justify-between h-20">
-          <Link to="/" className="flex items-center">
-            <div className="w-20 h-20 ml-[-70px]">
-              <img src={logo} alt="Logo" className="h-full w-full object-contain" />
-            </div>
-          </Link>
-
-          <div className="relative">
-            <button
-              className="flex items-center space-x-2 group focus:outline-none"
-              onClick={() => setShowProfileDropdown(!showProfileDropdown)}
-            >
-              <div className="w-9 h-9 rounded-full bg-gradient-to-br from-blue-100 to-purple-100 flex items-center justify-center overflow-hidden border-2 border-white shadow">
-                <img 
-                  src={user?.profileImage || 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZD0iTTEyIDJDNi40NzkgMiAyIDYuNDc5IDIgMTJzNC40NzkgMTAgMTAgMTAgMTAtNC40NzkgMTAtMTBTMTcuNTIxIDIgMTIgMnptMCAzYzEuODc3IDAgMy40MzcgMS4xMzkgNC4xMjUgMi43MDdoLS4wMzhjLS40NDctMS4wNzItMS41MjUtMS44MDctMi43ODctMS44MDctMS4zMDIgMC0yLjQxLjgxLTIuODcgMS45NTlDNy40MzUgNi4xMzkgOS4wNzMgNSAxMSA1em0wIDE0Yy0yLjY5NyAwLTYuMTU1LTEuMjQ2LTYuMTU1LTQuMTU0IDAtMS44NjUgMy4zNjkgNi4xNTUtMy4zNjkgMi43MjMgMCA2LjE1NCAxLjUwNCA2LjE1NCAzLjM2OSAwIDIuOTA4LTMuNDU3IDQuMTU0LTYuMTU0IDQuMTU0eiIgZmlsbD0iIzQ2NjVhZCIvPjwvc3ZnPg=='} 
-                  alt="Profile" 
-                  className="w-full h-full object-cover"
-                />
-              </div>
-
-              <div className="text-right hidden sm:block">
-                <p className="text-sm font-medium text-gray-700 truncate max-w-[120px]">{user?.fullName || user?.f_name || user?.name || "User"}</p>
-              </div>
-
-              <FiChevronDown className={`text-gray-400 transition-transform ${showProfileDropdown ? 'rotate-180' : ''}`} />
-            </button>
-
-            {showProfileDropdown && (
-              <div className="absolute right-0 mt-2 w-56 bg-white rounded-md shadow-lg py-1 z-20 border border-gray-100 divide-y divide-gray-100">
-                <div className="px-4 py-3">
-                  <p className="text-sm font-medium text-gray-900 truncate">{user?.fullName || user?.f_name || "User"}</p>
-                  <p className="text-xs text-gray-500 truncate">{user?.email || ""}</p>
-                </div>
-
-                <div className="py-1">
-                  <Link
-                    to="/EditProfile"
-                    className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
-                    onClick={() => setShowProfileDropdown(false)}
-                  >
-                    <FiEdit className="mr-3 text-gray-400" />
-                    Edit Profile
-                  </Link>
-                </div>
-
-                <div className="py-1">
-                  <Link
-                    to="/BusinessRegistrationForm"
-                    className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
-                    onClick={() => setShowProfileDropdown(false)}
-                  >
-                    <FiSettings className="mr-3 text-gray-400" />
-                    Become a Seller
-                  </Link>
-                </div>
-
-                <div className="py-1">
-                  <button
-                    onClick={() => {
-                      setShowProfileDropdown(false);
-                      handleLogout();
-                    }}
-                    className="flex items-center w-full px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors"
-                  >
-                    <FiLogOut className="mr-3 text-red-400" />
-                    Sign out
-                  </button>
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-      </header>
+    <div className="min-h-screen bg-gray-50">
+      <CusNavbar />
 
       <div className="flex">
         <CustomerNavbar />
@@ -402,11 +330,11 @@ function CustomerProfile() {
         <div className="flex-grow p-6">
           <div className="flex items-center mb-6">
             <div className="relative">
-              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-100 to-purple-100 flex items-center justify-center shadow-sm">
-                <img 
-                  src={user?.profileImage || 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZD0iTTEyIDJDNi40NzkgMiAyIDYuNDc5IDIgMTJzNC40NzkgMTAgMTAgMTAgMTAtNC40NzkgMTAtMTBTMTcuNTIxIDIgMTIgMnptMCAzYzEuODc3IDAgMy40MzcgMS4xMzkgNC4xMjUgMi43MDdoLS4wMzhjLS40NDctMS4wNzItMS41MjUtMS44MDctMi43ODctMS44MDctMS4zMDIgMC0yLjQxLjgxLTIuODcgMS45NTlDNy40MzUgNi4xMzkgOS4wNzMgNSAxMSA1em0wIDE0Yy0yLjY5NyAwLTYuMTU1LTEuMjQ2LTYuMTU1LTQuMTU0IDAtMS44NjUgMy4zNjkgNi4xNTUtMy4zNjkgMi43MjMgMCA2LjE1NCAxLjUwNCA2LjE1NCAzLjM2OSAwIDIuOTA4LTMuNDU3IDQuMTU0LTYuMTU0IDQuMTU0eiIgZmlsbD0iIzQ2NjVhZCIvPjwvc3ZnPg=='} 
-                  alt="Profile" 
-                  className="w-full h-full rounded-full object-cover"
+              <div className="flex items-center justify-center w-10 h-10 rounded-full shadow-sm bg-gradient-to-br from-blue-100 to-purple-100">
+                <img
+                  src={user?.profileImage || 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZD0iTTEyIDJDNi40NzkgMiAyIDYuNDc5IDIgMTJzNC40NzkgMTAgMTAgMTAgMTAtNC40NzkgMTAtMTBTMTcuNTIxIDIgMTIgMnptMCAzYzEuODc3IDAgMy40MzcgMS4xMzkgNC4xMjUgMi43MDdoLS4wMzhjLS40NDctMS4wNzItMS41MjUtMS44MDctMi43ODctMS44MDctMS4zMDIgMC0yLjQxLjgxLTIuODcgMS45NTlDNy40MzUgNi4xMzkgOS4wNzMgNSAxMSA1em0wIDE0Yy0yLjY5NyAwLTYuMTU1LTEuMjQ2LTYuMTU1LTQuMTU0IDAtMS44NjUgMy4zNjkgNi4xNTUtMy4zNjkgMi43MjMgMCA2LjE1NCAxLjUwNCA2LjE1NCAzLjM2OSAwIDIuOTA4LTMuNDU3IDQuMTU0LTYuMTU0IDQuMTU0eiIgZmlsbD0iIzQ2NjVhZCIvPjwvc3ZnPg=='}
+                  alt="Profile"
+                  className="object-cover w-full h-full rounded-full"
                 />
               </div>
               <div className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-400 rounded-full border-2 border-white"></div>
@@ -418,7 +346,7 @@ function CustomerProfile() {
 
           <div className="mb-8">
             <div className="relative">
-              <div className="flex space-x-5 pb-2 overflow-x-auto scrollbar-hide px-1">
+              <div className="flex px-1 pb-2 space-x-5 overflow-x-auto scrollbar-hide">
                 {followedShops.length > 0 ? (
                   followedShops.map((shop) => {
                     const store = shop.store || {};
@@ -428,7 +356,7 @@ function CustomerProfile() {
                       <Link
                         to={storeId ? `/store/${storeId}` : '#'}
                         key={storeId || crypto.randomUUID()}
-                        className="flex flex-col items-center flex-shrink-0 group hover:scale-105 transition-transform"
+                        className="flex flex-col items-center flex-shrink-0 transition-transform group hover:scale-105"
                         style={{ textDecoration: 'none' }}
                       >
                         <div className="relative group">
@@ -437,7 +365,7 @@ function CustomerProfile() {
                               <img
                                 src={imageUrl}
                                 alt={store.store_name || "Store"}
-                                className="w-full h-full rounded-full object-cover"
+                                className="object-cover w-full h-full rounded-full"
                                 onError={(e) => {
                                   e.target.src = '/default-store.png';
                                 }}
@@ -458,7 +386,7 @@ function CustomerProfile() {
             </div>
           </div>
 
-          <div className="flex border-b border-gray-200 mb-6">
+          <div className="flex mb-6 border-b border-gray-200">
             <button
               className={`py-2 px-4 text-sm ${activeTab === 'charts' ? 'text-blue-600 border-b-2 border-blue-600 font-medium' : 'text-gray-500 hover:text-gray-700'}`}
               onClick={() => setActiveTab('charts')}
@@ -476,11 +404,11 @@ function CustomerProfile() {
           </div>
 
           {activeTab === 'charts' ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
               <ChartErrorBoundary>
-                <div className="bg-white rounded-lg shadow-sm p-6">
+                <div className="p-6 bg-white rounded-lg shadow-sm">
                   <div className="flex items-center mb-4">
-                    <FiActivity className="text-blue-500 mr-2" />
+                    <FiActivity className="mr-2 text-blue-500" />
                     <h3 className="text-lg font-medium text-gray-800">Order Status</h3>
                   </div>
                   <div className="h-64">
@@ -489,9 +417,9 @@ function CustomerProfile() {
                 </div>
               </ChartErrorBoundary>
               <ChartErrorBoundary>
-                <div className="bg-white rounded-lg shadow-sm p-6">
+                <div className="p-6 bg-white rounded-lg shadow-sm">
                   <div className="flex items-center mb-4">
-                    <FiDollarSign className="text-green-500 mr-2" />
+                    <FiDollarSign className="mr-2 text-green-500" />
                     <h3 className="text-lg font-medium text-gray-800">Monthly Spending</h3>
                   </div>
                   <div className="h-64">
@@ -500,9 +428,9 @@ function CustomerProfile() {
                 </div>
               </ChartErrorBoundary>
               <ChartErrorBoundary>
-                <div className="bg-white rounded-lg shadow-sm p-6">
+                <div className="p-6 bg-white rounded-lg shadow-sm">
                   <div className="flex items-center mb-4">
-                    <FiShoppingBag className="text-purple-500 mr-2" />
+                    <FiShoppingBag className="mr-2 text-purple-500" />
                     <h3 className="text-lg font-medium text-gray-800">Shop Spending</h3>
                   </div>
                   <div className="h-64">
@@ -512,16 +440,16 @@ function CustomerProfile() {
               </ChartErrorBoundary>
             </div>
           ) : (
-            <div className="bg-white rounded-lg shadow-sm overflow-hidden">
+            <div className="overflow-hidden bg-white rounded-lg shadow-sm">
               <table className="min-w-full divide-y divide-gray-200">
                 <thead className="bg-gray-50">
                   <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Shop</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Courier</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Deliver Date</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total Amount</th>
+                    <th className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">Shop</th>
+                    <th className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">Product</th>
+                    <th className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">Courier</th>
+                    <th className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">Status</th>
+                    <th className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">Deliver Date</th>
+                    <th className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">Total Amount</th>
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
@@ -529,12 +457,12 @@ function CustomerProfile() {
                     mappedOrders.map(order => (
                       <tr key={order.id}>
                         <td className="px-6 py-4 whitespace-nowrap">{order.shop}</td>
-                        <td className="px-6 py-4 whitespace-nowrap flex items-center space-x-2">
+                        <td className="flex items-center px-6 py-4 space-x-2 whitespace-nowrap">
                           {order.product_image && (
                             <img
                               src={getStoreImageUrl(order.product_image)}
                               alt={order.product}
-                              className="w-10 h-10 object-cover rounded"
+                              className="object-cover w-10 h-10 rounded"
                               onError={(e) => {
                                 e.target.src = '/default-product.png';
                               }}
@@ -549,12 +477,12 @@ function CustomerProfile() {
                           </span>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">{order.date}</td>
-                        <td className="px-6 py-4 whitespace-nowrap">Rs. {order.amount !== undefined && order.amount !== null ? Number(order.amount).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) : ''}</td>
+                        <td className="px-6 py-4 whitespace-nowrap">Rs. {order.amount !== undefined && order.amount !== null ? Number(order.amount).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : ''}</td>
                       </tr>
                     ))
                   ) : (
                     <tr>
-                      <td colSpan="6" className="text-center py-4 text-gray-500">No orders found.</td>
+                      <td colSpan="6" className="py-4 text-center text-gray-500">No orders found.</td>
                     </tr>
                   )}
                 </tbody>

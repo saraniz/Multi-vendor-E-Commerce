@@ -2,12 +2,11 @@ import React, { useEffect, useRef, useState } from "react";
 import Navbar from "../Components/Header/Navbar";
 import AdvertisementSlider from "../Components/Body/AddSlider";
 import TabComponent from "../Components/Body/TabComponent";
-import NextButton from "../Components/Buttons/NextButton";
 import Footer from "../Components/Footer/Footer";
 import Categories from "../Components/Body/Category/Categories";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllProducts } from "../Storage/Product/productAction";
-import { fetchCategoryProducts } from "../Storage/category/categoryaction"; 
+import { fetchCategoryProducts } from "../Storage/category/categoryaction";
 import Loader from "./Loader";
 
 function HomePage() {
@@ -20,18 +19,18 @@ function HomePage() {
   const [pageloading, setPageloading] = useState(true)
 
 
-  useEffect(()=>{
-   
-      dispatch(fetchAllProducts())
-       const timer = setTimeout(() => {
-    setPageloading(false);
-  }, 1000); 
+  useEffect(() => {
 
-  return () => clearTimeout(timer); 
-    
-  },[fav.flag])
+    dispatch(fetchAllProducts())
+    const timer = setTimeout(() => {
+      setPageloading(false);
+    }, 1000);
 
-   const handleCategoryClick = async (category) => {
+    return () => clearTimeout(timer);
+
+  }, [fav.flag])
+
+  const handleCategoryClick = async (category) => {
     try {
       const data = await fetchCategoryProducts(category);
       setCategoryProducts(data.products);
@@ -46,7 +45,7 @@ function HomePage() {
     tabRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
-  if(pageloading){
+  if (pageloading) {
     return <Loader />
   }
 
@@ -66,18 +65,18 @@ function HomePage() {
       <div className="flex justify-center">
         <div className="w-[90%] h-1 bg-slate-300"></div>
       </div>
-      <Categories onCategoryClick={handleCategoryClick}/>
+      <Categories onCategoryClick={handleCategoryClick} />
       <div ref={tabRef}>
-        <h2 className="text-center text-2xl font-bold my-5">
+        <h2 className="my-5 text-2xl font-bold text-center">
           {selectedCategory ? `Products in ${selectedCategory}` : 'All Products'}
         </h2>
 
         {/* Show Category Products here if selected */}
         {categoryProducts.length > 0 && (
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-5 p-5">
+          <div className="grid grid-cols-2 gap-5 p-5 md:grid-cols-3">
             {categoryProducts.map(product => (
               <div key={product.product_id} className="p-4 border rounded shadow">
-                <img src={product.product_image} alt={product.name} className="w-full h-48 object-cover rounded" />
+                <img src={product.product_image} alt={product.name} className="object-cover w-full h-48 rounded" />
                 <div className="mt-2 font-bold">{product.name}</div>
                 <div>{product.price} LKR</div>
               </div>
@@ -88,7 +87,6 @@ function HomePage() {
         {/* If not selected, show all products from Redux (TabComponent) */}
         {categoryProducts.length === 0 && <TabComponent />}
       </div>
-      <NextButton />
       <Footer />
     </div>
   );
