@@ -1,6 +1,6 @@
 const express = require('express');
 
-const {getAllShops ,getSellersForActions ,getDashboardData ,admin_login, admin_logout, getProdctData, getSellerData, getUserCounts, blockSeller, unblockSeller, sendWarning1, sendWarning2, sendWarning3, getAllCustomers, getStoreWithSellerStatus, getStoreCount, countBlockedSellers, countWarning1, countWarning2, countWarning3 } = require('../controller/adminController');
+const {getWarning1Sellers, getAllShops ,getSellersForActions ,getDashboardData ,admin_login, admin_logout, getProdctData, getSellerData, getUserCounts, blockSeller, unblockSeller, sendWarning1, sendWarning2, sendWarning3, getAllCustomers, getStoreWithSellerStatus, getStoreCount, countBlockedSellers, countWarning1, countWarning2, countWarning3 } = require('../controller/adminController');
 const roleMiddleware = require('../middleware/roleMiddleware');
 const authenticate = require('../middleware/authMiddleware');
 
@@ -36,6 +36,8 @@ router.get('/warning2-count', countWarning2);
 router.get('/warning3-count', countWarning3);
 router.get('/dashboard-data', getDashboardData);
 router.get('/basic', getSellersForActions);
-router.get("/shops", getAllShops); 
+router.get("/shops", getAllShops);
+
+router.get('/warning1', getWarning1Sellers);
 // Export the router
 module.exports = router; 

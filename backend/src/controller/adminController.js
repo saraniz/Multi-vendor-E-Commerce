@@ -481,13 +481,29 @@ const getAllShops = async (req, res) => {
       },
     });
 
-    res.json(shops); // ✅ Return shop data
+    res.json(shops); //  Return shop data
   } catch (error) {
     console.error("Error fetching shops:", error);
     res.status(500).json({ error: "Failed to fetch shops" });
   }
 };
 
-module.exports = {getAllShops , getSellersForActions , getDashboardData , admin_login , admin_logout , getProdctData , getSellerData , getUserCounts , blockSeller , unblockSeller , sendWarning1, sendWarning2 , sendWarning3 , getAllCustomers , getStoreWithSellerStatus , getStoreCount, countBlockedSellers, countWarning1, countWarning2, countWarning3};
+// ✅ Get Level 1 warning sellers
+const getWarning1Sellers = async (req, res) => {
+  try {
+    const sellers = await prisma.seller.findMany({
+      where: {
+        warning1: { not: null }
+      },
+      include: { user: true, store: true }
+    });
+    res.status(200).json(sellers);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching Level 1 warning sellers", error: error.message });
+  }
+};
+
+
+module.exports = {getWarning1Sellers,getAllShops , getSellersForActions , getDashboardData , admin_login , admin_logout , getProdctData , getSellerData , getUserCounts , blockSeller , unblockSeller , sendWarning1, sendWarning2 , sendWarning3 , getAllCustomers , getStoreWithSellerStatus , getStoreCount, countBlockedSellers, countWarning1, countWarning2, countWarning3};
 
 //module.exports = {admin_login , admin_logout , getProdctData , getSellerData , getUserCounts , blockSeller , unblockSeller , sendWarning1, sendWarning2 , sendWarning3 };
