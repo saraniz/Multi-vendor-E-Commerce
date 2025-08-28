@@ -90,13 +90,23 @@ export const addToCart = (product, quantity) => async (dispatch, getState) => {
       }
     );
 
-    Swal.fire({
-      position: "top-end",
-      icon: "success",
-      title: "Item added to cart successfully",
-      showConfirmButton: false,
-      timer: 1500,
+    toast.success("Success!", {
+      position: "top-right",
+      autoClose: 1500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      theme: "light",
     });
+
+    // Swal.fire({
+    //   position: "top-end",
+    //   icon: "success",
+    //   title: "Item added to cart successfully",
+    //   showConfirmButton: false,
+    //   timer: 1500,
+    // });
 
     dispatch({ type: ADD_TO_CART_SUCCESS, payload: response.data.cartItem });
     dispatch({ type: CART_FLAG_TOGGLE });

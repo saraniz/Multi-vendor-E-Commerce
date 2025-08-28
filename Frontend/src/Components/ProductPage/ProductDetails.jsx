@@ -62,6 +62,7 @@ const ProductDetails = () => {
       return;
     }
     dispatch(addToCart(product, quantity));
+    navigate("/Cartpage");
     console.log("🛒 Product added to cart:", product, "Qty:", quantity);
   };
 
