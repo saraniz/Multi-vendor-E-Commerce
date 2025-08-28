@@ -17,14 +17,17 @@ export const addFavorite = (reg_id,product_id) => async (dispatch) =>{
 
         dispatch({type:ADD_FAVORITE_SUCCESS,payload:data})
 
-            toast.success("Product added to favorites!");
+toast.success("Item added to Favorite successfully!", {
+      position: "top-right",
+      autoClose: 1500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      theme: "light",
+    });
 
-
-        // Swal.fire({
-        //     icon:"success",
-        //     title:"Added to Favorites!",
-        //     text:"The product has been added to your favorites",
-        // })
+    
         console.log("Product added to favorites successfully:", data)
     } catch(error){
         const errorMessage =
@@ -34,11 +37,15 @@ export const addFavorite = (reg_id,product_id) => async (dispatch) =>{
       dispatch({ type: ADD_FAVORITE_FAILURE, payload: errorMessage });
   
       // Show error message using SweetAlert
-      Swal.fire({
-        icon: "error",
-        title: "Failed to Add Favorite",
-        text: errorMessage,
-      });
+      toast.error("Failed to Add Favorites!", {
+      position: "top-right",
+      autoClose: 1500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      theme: "light",
+    });
   
       console.error("Error adding product to favorites:", error);
     
@@ -75,7 +82,15 @@ export const removeFavorite = (reg_id, product_id) => async (dispatch, getState)
           payload: product_id, // Optionally send reg_id too if needed
       });
 
-      toast.success("Product removed from favorites!");
+      toast.success("Item removed from favorites!", {
+      position: "top-right",
+      autoClose: 1500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      theme: "light",
+    });
 
       window.location.reload();
   } catch (error) {
@@ -87,11 +102,15 @@ export const removeFavorite = (reg_id, product_id) => async (dispatch, getState)
           payload: errorMessage,
       });
 
-      Swal.fire({
-          icon: "error",
-          title: "Failed to Remove Favorite",
-          text: errorMessage,
-      });
+      toast.error("Failed to remove!", {
+      position: "top-right",
+      autoClose: 1500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      theme: "light",
+    });
 
       console.error("Error removing product from favorites:", error);
   }
@@ -119,10 +138,14 @@ export const fetchFavorites = (reg_id) => async(dispatch) =>{
     dispatch({ type: FETCH_FAVORITES_FAILURE, payload: errorMessage });
 
     // Show error message using SweetAlert
-    Swal.fire({
-      icon: "error",
-      title: "Failed to Fetch Favorites",
-      text: errorMessage,
+    toast.error("Error!", {
+      position: "top-right",
+      autoClose: 1500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      theme: "light",
     });
 
     console.error("Error fetching favorites:", error);
