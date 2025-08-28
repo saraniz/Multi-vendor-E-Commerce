@@ -2,7 +2,7 @@ import React, { useState,  useEffect } from 'react';
 import Navbar from '../../Components/Header/Navbar';
 import Footer from '../../Components/Footer/Footer';
 import AdminNavbar from '../../Components/Body/AdminNavbar';
-import { getAllCustomers } from '../../Storage/admin/adminaction';
+import { getAllCustomers , getCustomerPayments } from '../../Storage/admin/adminaction';
 import Swal from 'sweetalert2';
 
 function Customerlist() {
@@ -22,8 +22,19 @@ function Customerlist() {
   useEffect(() => {
     const fetchCustomers = async () => {
       try {
-        const data = await getAllCustomers();
-        setCustomers(data);
+        const customerData = await getAllCustomers();
+        const paymentData = await getCustomerPayments(); 
+
+        const mergedData = customerData.map(customer => {
+          const payment = paymentData.find(p => p.reg_id === customer.reg_id);
+          return {
+            ...customer,
+            totalAmount: payment?._sum?.amount || 0 // if no payments, set 0
+          };
+        });
+
+        setCustomers(mergedData);
+        //setCustomers(data);
       } catch (error) {
         Swal.fire('❌ Error', error.response?.data?.message || 'Failed to load customers', 'error');
       }
@@ -50,7 +61,7 @@ function Customerlist() {
                   <th className="px-4 py-2 border">Contact No</th>
                   <th className="px-4 py-2 border">E-mail</th>
                   <th className="px-4 py-2 border">Address</th>
-                  <th className="px-4 py-2 border">Monthly Cost</th>
+                  <th className="px-4 py-2 border">Spendings</th>
                 </tr>
               </thead>
               <tbody>
@@ -67,7 +78,7 @@ function Customerlist() {
                     <td className="px-4 py-2 border">{customer.mobileNo}</td>
                     <td className="px-4 py-2 border">{customer.email}</td>
                     <td className="px-4 py-2 border">{customer.address}</td>
-                    <td className="px-4 py-2 border">Rs. xxx</td>
+                    <td className="px-4 py-2 border">Rs. {customer.totalAmount*300}</td>
                   </tr>
                 ))}
               </tbody>

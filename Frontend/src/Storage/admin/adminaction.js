@@ -190,3 +190,12 @@ export const fetchWarning3Sellers = async () => {
     return [];
   }
 };
+
+export const getCustomerPayments = async () => {
+  try {
+    const res = await adminAxios.get("/totals"); 
+    return res.data;
+  } catch (error) {
+    throw error;
+  }
+};
