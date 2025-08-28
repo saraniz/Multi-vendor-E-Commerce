@@ -18,6 +18,7 @@ import {
 } from "./storeActionType";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { toast } from "react-toastify";
 
 // Fetch store by store_id
 export const fetchStoreById = (store_id) => async (dispatch) => {
@@ -36,11 +37,17 @@ export const fetchStoreById = (store_id) => async (dispatch) => {
   } catch (error) {
     console.error("Fetch store error:", error);
 
-    Swal.fire({
-      icon: "error",
-      title: "Failed to load store",
-      text: error.response?.data?.error || error.message,
-    });
+     toast.error("Failed to load store", {
+  position: "top-right",
+  autoClose: 1500,
+  hideProgressBar: false,
+  closeOnClick: true,
+  pauseOnHover: true,
+  draggable: true,
+  theme: "light",
+});
+
+
 
     dispatch({
       type: STORE_FETCH_FAILURE,

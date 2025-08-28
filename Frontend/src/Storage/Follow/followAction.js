@@ -10,6 +10,8 @@ import {
 } from "./actionType";
 
 import { API_BASE_URL } from "../APIConfig";
+import { toast } from 'react-toastify';
+
 
 // Action: Follow a Store
 export const followStore = (storeId) => async (dispatch) => {
@@ -59,12 +61,18 @@ export const followStore = (storeId) => async (dispatch) => {
       payload: response.data,
     });
 
-    Swal.fire({
-      icon: "success",
-      title: "You are now following this store",
-      timer: 1500,
-      showConfirmButton: false,
-    });
+    toast.success("You are now following this store", {
+  position: "top-right",
+  autoClose: 1500,
+  hideProgressBar: false,
+  closeOnClick: true,
+  pauseOnHover: true,
+  draggable: true,
+  theme: "light",
+});
+
+
+  
   } catch (error) {
     console.error("❌ Error following store:", error);
     dispatch({
