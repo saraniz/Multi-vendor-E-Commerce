@@ -159,3 +159,34 @@ export const getAllShops = async () => {
     return [];
   }
 };
+
+//  Fetch sellers with Level 1 warning
+export const fetchWarning1Sellers = async () => {
+  try {
+    const res = await axios.get(`${API_BASE_URL}/api/admin/warning1`);
+    return res.data; // Array of sellers
+  } catch (error) {
+    console.error("❌ Failed to fetch Level 1 warning sellers:", error);
+    return [];
+  }
+};
+
+export const fetchWarning2Sellers = async () => {
+  try {
+    const res = await axios.get(`${API_BASE_URL}/api/admin/warning2`);
+    return res.data; // Array of sellers
+  } catch (error) {
+    console.error("❌ Failed to fetch Level 2 warning sellers:", error);
+    return [];
+  }
+};
+
+export const fetchWarning3Sellers = async () => {
+  try {
+    const res = await axios.get(`${API_BASE_URL}/api/admin/warning3`);
+    return res.data; // Array of sellers
+  } catch (error) {
+    console.error("❌ Failed to fetch Level 3 warning sellers:", error);
+    return [];
+  }
+};

@@ -493,17 +493,98 @@ const getWarning1Sellers = async (req, res) => {
   try {
     const sellers = await prisma.seller.findMany({
       where: {
-        warning1: { not: null }
+        warning1: { not: null } // ✨ Only sellers with Level 1 warning
       },
-      include: { user: true, store: true }
+      include: {
+        store: {
+          select: {
+            store_name: true,
+            store_image: true,
+          },
+        },
+      },
     });
-    res.status(200).json(sellers);
+
+    // ✅ Format response
+    const result = sellers.map((seller) => ({
+      id: seller.seller_id, // For actions
+      name: seller.store.store_name,
+      profilePic: seller.store.store_image || "/images/user6.jpg", // fallback
+      status: "Level 1 Warning", // ✨ Explicitly mark them as Warning 1
+    }));
+
+    res.status(200).json(result);
   } catch (error) {
-    res.status(500).json({ message: "Error fetching Level 1 warning sellers", error: error.message });
+    console.error("❌ Error getting Level 1 warning sellers:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+// ✅ Get Level 2 warning sellers
+const getWarning2Sellers = async (req, res) => {
+  try {
+    const sellers = await prisma.seller.findMany({
+      where: {
+        warning2: { not: null } // ✨ Only sellers with Level 1 warning
+      },
+      include: {
+        store: {
+          select: {
+            store_name: true,
+            store_image: true,
+          },
+        },
+      },
+    });
+
+    // ✅ Format response
+    const result = sellers.map((seller) => ({
+      id: seller.seller_id, // For actions
+      name: seller.store.store_name,
+      profilePic: seller.store.store_image || "/images/user6.jpg", // fallback
+      status: "Level 2 Warning", // ✨ Explicitly mark them as Warning 1
+    }));
+
+    res.status(200).json(result);
+  } catch (error) {
+    console.error("❌ Error getting Level 2 warning sellers:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+// ✅ Get Level 1 warning sellers
+const getWarning3Sellers = async (req, res) => {
+  try {
+    const sellers = await prisma.seller.findMany({
+      where: {
+        warning3: { not: null } // ✨ Only sellers with Level 1 warning
+      },
+      include: {
+        store: {
+          select: {
+            store_name: true,
+            store_image: true,
+          },
+        },
+      },
+    });
+
+    // ✅ Format response
+    const result = sellers.map((seller) => ({
+      id: seller.seller_id, // For actions
+      name: seller.store.store_name,
+      profilePic: seller.store.store_image || "/images/user6.jpg", // fallback
+      status: "Level 3 Warning", // ✨ Explicitly mark them as Warning 1
+    }));
+
+    res.status(200).json(result);
+  } catch (error) {
+    console.error("❌ Error getting Level 3 warning sellers:", error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };
 
 
-module.exports = {getWarning1Sellers,getAllShops , getSellersForActions , getDashboardData , admin_login , admin_logout , getProdctData , getSellerData , getUserCounts , blockSeller , unblockSeller , sendWarning1, sendWarning2 , sendWarning3 , getAllCustomers , getStoreWithSellerStatus , getStoreCount, countBlockedSellers, countWarning1, countWarning2, countWarning3};
+module.exports = {getWarning3Sellers, getWarning2Sellers, getWarning1Sellers, getAllShops , getSellersForActions , getDashboardData , admin_login , admin_logout , getProdctData , getSellerData , getUserCounts , blockSeller , unblockSeller , sendWarning1, sendWarning2 , sendWarning3 , getAllCustomers , getStoreWithSellerStatus , getStoreCount, countBlockedSellers, countWarning1, countWarning2, countWarning3};
 
 //module.exports = {admin_login , admin_logout , getProdctData , getSellerData , getUserCounts , blockSeller , unblockSeller , sendWarning1, sendWarning2 , sendWarning3 };
