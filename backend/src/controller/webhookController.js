@@ -19,7 +19,7 @@ module.exports = async (req, res) => {
         const session = event.data.object;
 
         try {
-            const reg_id = parseInt(session.metadata?.reg_id)||18; // 👈 get reg_id from metadata
+            const reg_id = parseInt(session.metadata?.reg_id)||72; // 👈 get reg_id from metadata
 
             if (!reg_id || isNaN(reg_id)) {
                 console.error("❌ Invalid reg_id in session metadata.");

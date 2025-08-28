@@ -1,6 +1,6 @@
 const express = require('express');
 
-const {getWarning3Sellers, getWarning2Sellers,getWarning1Sellers, getAllShops ,getSellersForActions ,getDashboardData ,admin_login, admin_logout, getProdctData, getSellerData, getUserCounts, blockSeller, unblockSeller, sendWarning1, sendWarning2, sendWarning3, getAllCustomers, getStoreWithSellerStatus, getStoreCount, countBlockedSellers, countWarning1, countWarning2, countWarning3 } = require('../controller/adminController');
+const {getTotalPaymentsByUser, getWarning3Sellers, getWarning2Sellers, getWarning1Sellers, getAllShops ,getSellersForActions ,getDashboardData ,admin_login, admin_logout, getProdctData, getSellerData, getUserCounts, blockSeller, unblockSeller, sendWarning1, sendWarning2, sendWarning3, getAllCustomers, getStoreWithSellerStatus, getStoreCount, countBlockedSellers, countWarning1, countWarning2, countWarning3 } = require('../controller/adminController');
 const roleMiddleware = require('../middleware/roleMiddleware');
 const authenticate = require('../middleware/authMiddleware');
 
@@ -41,5 +41,6 @@ router.get("/shops", getAllShops);
 router.get('/warning1', getWarning1Sellers);
 router.get('/warning2', getWarning2Sellers);
 router.get('/warning3', getWarning3Sellers);
+router.get("/totals", getTotalPaymentsByUser);
 // Export the router
 module.exports = router; 

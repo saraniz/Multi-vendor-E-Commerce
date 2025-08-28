@@ -285,6 +285,7 @@ const getAllCustomers = async (req, res) => {
         
       },
       select: {
+        reg_id: true,
         username: true,
         email: true,
         mobileNo: true,
@@ -584,7 +585,22 @@ const getWarning3Sellers = async (req, res) => {
   }
 };
 
+const getTotalPaymentsByUser = async (req, res) => {
+  try {
+    const totals = await prisma.payment.groupBy({
+      by: ["reg_id"], // 👥 Group by reg_id
+      _sum: {
+        amount: true, // 💰 Sum of amount
+      },
+    });
+    console.log("🔥 Raw totals from DB:", totals);
+    res.json(totals); // 📤 Send result
+  } catch (error) {
+    console.error("Error fetching total payments:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
 
-module.exports = {getWarning3Sellers, getWarning2Sellers, getWarning1Sellers, getAllShops , getSellersForActions , getDashboardData , admin_login , admin_logout , getProdctData , getSellerData , getUserCounts , blockSeller , unblockSeller , sendWarning1, sendWarning2 , sendWarning3 , getAllCustomers , getStoreWithSellerStatus , getStoreCount, countBlockedSellers, countWarning1, countWarning2, countWarning3};
+module.exports = {getTotalPaymentsByUser, getWarning3Sellers, getWarning2Sellers, getWarning1Sellers, getAllShops , getSellersForActions , getDashboardData , admin_login , admin_logout , getProdctData , getSellerData , getUserCounts , blockSeller , unblockSeller , sendWarning1, sendWarning2 , sendWarning3 , getAllCustomers , getStoreWithSellerStatus , getStoreCount, countBlockedSellers, countWarning1, countWarning2, countWarning3};
 
 //module.exports = {admin_login , admin_logout , getProdctData , getSellerData , getUserCounts , blockSeller , unblockSeller , sendWarning1, sendWarning2 , sendWarning3 };
