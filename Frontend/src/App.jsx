@@ -40,6 +40,7 @@ import ContactUs from './Pages/ContactUs.js';
 import PrivacyPolicy from './Pages/PrivacyPolicy.js';
 import TermsOfService from './Pages/TermsOfService.js';
 import ReturnPolicy from './Pages/ReturnPolicy.js';
+import CategoryPage from "./Pages/CategoryPage";
 
 function App() {
   const jwt = localStorage.getItem("jwt");
@@ -90,7 +91,7 @@ function App() {
         <Route path="/PrivacyPolicy" element={<PrivacyPolicy />} />
         <Route path="/TermsOfService" element={<TermsOfService />} />
         <Route path="/ReturnPolicy" element={<ReturnPolicy />} />
-
+        <Route path="/category/:categoryName" element={<CategoryPage />} />
 
 
 
