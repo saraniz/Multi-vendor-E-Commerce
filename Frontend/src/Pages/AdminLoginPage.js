@@ -16,7 +16,7 @@ function AdminLoginPage() {
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
 
   const handleSubmit = async (event) => {
-    event.preventDefault();
+    event.preventDefault(); 
 
     const response = await adminLogin(email, password);
 
