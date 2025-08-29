@@ -7,6 +7,7 @@ import emailjs from "emailjs-com";
 import { fetchStoreById, fetchProductsByStoreId } from "../Storage/Store/storeAction";
 import { followStore } from "../Storage/Follow/followAction";
 
+//new chatbot integration
 // Chat Widget Component
 const ChatWidget = () => {
   const [open, setOpen] = useState(false);
