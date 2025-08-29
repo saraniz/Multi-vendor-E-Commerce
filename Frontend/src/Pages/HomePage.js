@@ -10,6 +10,7 @@ import { fetchAllProducts } from "../Storage/Product/productAction";
 import { fetchCategoryProducts } from "../Storage/category/categoryaction"; 
 import Loader from "./Loader";
 import ProductCard from "../Components/Body/ProductCard";
+import ChatWidget from "./ChatBot";
 
 function HomePage() {
   const tabRef = useRef(null);
@@ -100,6 +101,7 @@ function HomePage() {
       </div>
       <NextButton />
       <Footer />
+      <ChatWidget />
     </div>
   );
 }

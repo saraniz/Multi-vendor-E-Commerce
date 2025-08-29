@@ -33,6 +33,9 @@ app.use(cors({
 app.use(bodyParser.json());
 app.use(jsonMiddleware);
 
+console.log("DeepSeek API Key:", process.env.DEEPSEEK_API_KEY); // Debug: check if the key is loaded
+
+
 // Routes
 const authRoutes = require('./routes/auth');
 const itemRoutes = require('./routes/itemRoutes');
@@ -46,6 +49,7 @@ const followRoutes = require('./routes/followRoutes');
 const orderRoutes = require('./routes/orderRoutes');
 const advertisementRoutes = require('./routes/advertisementRoutes');
 const categoryRoutes = require('./routes/categoryRoutes');
+const chatRoutes = require('./routes/chatRoutes');
 
 app.use('/api', authRoutes);
 app.use('/api/items', itemRoutes);
@@ -59,6 +63,8 @@ app.use('/api/follow', followRoutes);
 app.use('/api/order', orderRoutes);
 app.use('/api/advertisements', advertisementRoutes);
 app.use('/api/category', categoryRoutes);
+app.use("/api/chat", chatRoutes); // singular 'chat', matches frontend
+
 
 // Protected route
 app.use('/api/protected', authenticate, (req, res) => {

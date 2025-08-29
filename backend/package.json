@@ -14,7 +14,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@google/generative-ai": "^0.24.1",
     "@prisma/client": "^6.10.1",
+    "axios": "^1.11.0",
     "bcrypt": "^5.1.1",
     "body-parser": "^1.20.3",
     "cloudinary": "^2.7.0",
@@ -30,8 +32,10 @@
     "mysql": "^2.18.1",
     "mysql2": "^3.11.3",
     "node-cron": "^4.1.1",
+    "node-fetch": "^3.3.2",
     "nodemailer": "^7.0.4",
     "nodemon": "^3.1.7",
+    "openai": "^5.16.0",
     "stripe": "^17.7.0"
   },
   "devDependencies": {

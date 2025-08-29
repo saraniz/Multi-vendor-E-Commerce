@@ -1,88 +1,176 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import Swal from "sweetalert2";
+import emailjs from "emailjs-com";
 
 import { fetchStoreById, fetchProductsByStoreId } from "../Storage/Store/storeAction";
 import { followStore } from "../Storage/Follow/followAction";
 
+// Chat Widget Component
+const ChatWidget = () => {
+  const [open, setOpen] = useState(false);
+  const [input, setInput] = useState("");
+  const [messages, setMessages] = useState([{ from: "bot", text: "Hello! How can I assist you today?" }]);
+  const [loading, setLoading] = useState(false);
+  const messagesEndRef = useRef(null);
+
+  const handleSend = async () => {
+    if (!input.trim()) return;
+
+    const newMessages = [...messages, { from: "user", text: input }];
+    setMessages(newMessages);
+    setInput("");
+    setLoading(true);
+
+    try {
+      const response = await fetch("http://localhost:2000/api/chat/chats", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: input }),
+      });
+      const data = await response.json();
+      setMessages([...newMessages, { from: "bot", text: data.reply }]);
+    } catch (err) {
+      console.error("Chat error:", err);
+      setMessages([...newMessages, { from: "bot", text: "Oops! Something went wrong." }]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
+  return (
+    <div className="fixed bottom-5 right-5 z-50">
+      <button
+        className="bg-gray-800 text-white w-14 h-14 rounded-full text-2xl shadow-lg hover:bg-black transition"
+        onClick={() => setOpen(!open)}
+      >
+        💬
+      </button>
+
+      {open && (
+        <div className="mt-2 w-80 h-96 bg-white rounded-xl shadow-lg flex flex-col overflow-hidden">
+          <div className="flex-1 p-4 overflow-y-auto space-y-2">
+            {messages.map((msg, idx) => (
+              <div
+                key={idx}
+                className={`p-2 rounded-xl max-w-[75%] ${
+                  msg.from === "user" ? "bg-gray-800 text-white ml-auto" : "bg-gray-200 text-black"
+                }`}
+              >
+                {msg.text}
+              </div>
+            ))}
+            {loading && <div className="bg-gray-200 text-black p-2 rounded-xl">Typing...</div>}
+            <div ref={messagesEndRef}></div>
+          </div>
+
+          <div className="flex border-t border-gray-300 p-2">
+            <input
+              type="text"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyPress={(e) => e.key === "Enter" && handleSend()}
+              className="flex-1 border border-gray-300 rounded-l-xl p-2 outline-none"
+              placeholder="Ask me about our services..."
+            />
+            <button
+              onClick={handleSend}
+              className="bg-gray-800 text-white rounded-r-xl px-4 hover:bg-black"
+            >
+              Send
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+// Main Shop Page
 const ShopPage = () => {
   const { storeId } = useParams();
   const dispatch = useDispatch();
-
   const { store, loading, error } = useSelector((state) => state);
+
   const [isFollowed, setIsFollowed] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [message, setMessage] = useState("");
+  const [userEmail, setUserEmail] = useState("");
+  const form = useRef();
 
   useEffect(() => {
     const fetchData = async () => {
       Swal.fire({
         title: "Loading...",
         allowOutsideClick: false,
-        didOpen: () => {
-          Swal.showLoading();
-        },
+        didOpen: () => Swal.showLoading(),
       });
 
       try {
-        console.log("🔄 Fetching store and products for storeId:", storeId);
         await dispatch(fetchStoreById(storeId));
         await dispatch(fetchProductsByStoreId(storeId));
       } catch (err) {
-        console.error("❌ Error fetching store/products:", err);
+        console.error(err);
       } finally {
         Swal.close();
       }
     };
-
     fetchData();
+
+    const storedUser = JSON.parse(localStorage.getItem("user"));
+    if (storedUser?.email) setUserEmail(storedUser.email);
   }, [dispatch, storeId]);
 
   useEffect(() => {
-    if (error) {
-      Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: error || "Something went wrong.",
-      });
-    }
+    if (error) Swal.fire({ icon: "error", title: "Oops...", text: error });
   }, [error]);
 
   const handleFollow = () => {
     const token = localStorage.getItem("jwt");
-
     if (!token) {
-      Swal.fire({
-        title: "Login Required",
-        text: "Please log in to follow this store",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonText: "Log In",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          window.location.href = "/LoginPage";
-        }
+      Swal.fire({ title: "Login Required", text: "Please log in to follow this store", icon: "warning" }).then((res) => {
+        if (res.isConfirmed) window.location.href = "/LoginPage";
       });
       return;
     }
-
-    console.log("🟢 User clicked follow button for storeId:", storeId);
-
     dispatch(followStore(storeId))
-      .then(() => {
-        console.log("✅ Store followed successfully");
-        setIsFollowed(true);
-      })
-      .catch((err) => {
-        console.error("❌ Follow error (frontend):", err);
-        Swal.fire({
-          icon: "error",
-          title: "Could not follow store",
-        });
-      });
+      .then(() => setIsFollowed(true))
+      .catch(() => Swal.fire({ icon: "error", title: "Could not follow store" }));
+  };
+
+  const handleSendEmail = (e) => {
+    e.preventDefault();
+    if (!userEmail.trim() || !message.trim()) {
+      Swal.fire("Warning", "Please enter your email and message.", "warning");
+      return;
+    }
+
+    emailjs
+      .sendForm(
+        "service_17a9nnp",
+        "template_avwt63k",
+        form.current,
+        "5PzYC7qX_TMWGOy2B"
+      )
+      .then(
+        () => {
+          Swal.fire("Success", "Message sent successfully!", "success");
+          setMessage("");
+          setIsModalOpen(false);
+        },
+        (err) => {
+          console.error(err);
+          Swal.fire("Error", "Failed to send message", "error");
+        }
+      );
   };
 
   if (loading || !store?.store) return null;
-
   const { store_name, business_email, products: storeProducts = [] } = store.store;
 
   return (
@@ -99,16 +187,22 @@ const ShopPage = () => {
           <p className="text-gray-500 text-sm">1.3k followers</p>
           <p className="text-gray-500 text-sm">{business_email}</p>
         </div>
+
         <button
           className={`px-6 py-2 rounded-lg font-medium transition duration-200 ${
-            isFollowed
-              ? "bg-gray-400 text-white cursor-not-allowed"
-              : "bg-black text-white hover:bg-gray-800"
+            isFollowed ? "bg-gray-400 text-white cursor-not-allowed" : "bg-black text-white hover:bg-gray-800"
           }`}
           onClick={handleFollow}
           disabled={isFollowed}
         >
           {isFollowed ? "Followed" : "Follow"}
+        </button>
+
+        <button
+          className="ml-3 px-6 py-2 rounded-lg font-medium bg-black text-white hover:bg-gray-800 transition"
+          onClick={() => setIsModalOpen(true)}
+        >
+          Message
         </button>
       </div>
 
@@ -137,6 +231,52 @@ const ShopPage = () => {
           <p className="text-gray-500">No products available at the moment.</p>
         )}
       </div>
+
+      {/* Message Modal */}
+      {isModalOpen && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black/40 z-50">
+          <div className="bg-white rounded-xl shadow-lg p-6 w-full max-w-md">
+            <h3 className="text-lg font-semibold mb-4">Send Message to {store_name}</h3>
+            <form ref={form} onSubmit={handleSendEmail} className="flex flex-col gap-3">
+              <input
+                type="email"
+                name="user_email"
+                value={userEmail}
+                onChange={(e) => setUserEmail(e.target.value)}
+                placeholder="Your Email"
+                className="w-full border rounded-lg p-2"
+                required
+              />
+              <input
+                type="email"
+                value={business_email}
+                readOnly
+                className="w-full border rounded-lg p-2 bg-gray-100"
+              />
+              <textarea
+                name="message"
+                rows="4"
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                placeholder="Type your message here..."
+                className="w-full border rounded-lg p-3 mb-4 focus:outline-none focus:ring-2 focus:ring-black"
+                required
+              ></textarea>
+              <div className="flex justify-end gap-3">
+                <button type="button" onClick={() => setIsModalOpen(false)} className="px-4 py-2 rounded-lg border hover:bg-gray-100">
+                  Cancel
+                </button>
+                <button type="submit" className="px-4 py-2 rounded-lg bg-black text-white hover:bg-gray-800">
+                  Send
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Chat Widget */}
+      <ChatWidget />
     </div>
   );
 };
