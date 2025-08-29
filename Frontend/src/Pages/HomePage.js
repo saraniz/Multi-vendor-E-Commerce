@@ -9,12 +9,8 @@ import { fetchAllProducts } from "../Storage/Product/productAction";
 import { fetchCategoryProducts } from "../Storage/category/categoryaction";
 import Loader from "./Loader";
 import ProductCard from "../Components/Body/ProductCard";
-<<<<<<< HEAD
 import ChatWidget from "./ChatBot";
-=======
 import { useNavigate } from "react-router-dom";
-
->>>>>>> 7d64dfe96b0e99c76ee9270404a7aa82107b8d14
 
 function HomePage() {
   const tabRef = useRef(null);
@@ -22,23 +18,18 @@ function HomePage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [categoryProducts, setCategoryProducts] = useState([]); //  New state
+  const [categoryProducts, setCategoryProducts] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
-  const [pageloading, setPageloading] = useState(true)
-
-
-
+  const [pageloading, setPageloading] = useState(true);
 
   useEffect(() => {
-
-    dispatch(fetchAllProducts())
+    dispatch(fetchAllProducts());
     const timer = setTimeout(() => {
       setPageloading(false);
     }, 1000);
 
     return () => clearTimeout(timer);
-
-  }, [fav.flag])
+  }, [fav.flag]);
 
   const handleCategoryClick = async (category) => {
     try {
@@ -55,11 +46,9 @@ function HomePage() {
     tabRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
-
   if (pageloading) {
-    return <Loader />
+    return <Loader />;
   }
-
 
   return (
     <div>
@@ -69,7 +58,7 @@ function HomePage() {
         <button
           onClick={scrollToTabComponent}
           className="bg-gradient-to-l from-slate-900 via-blue-950 to-gray-900 text-white text-center text-[30px] py-3 px-6 font-semibold rounded-full w-80 transition-transform duration-300 ease-in-out hover:scale-105 hover:shadow-xl
-    hover:from-slate-800 hover:via-blue-900 hover:to-slate-800 shadow-lg shadow-blue-100"
+          hover:from-slate-800 hover:via-blue-900 hover:to-slate-800 shadow-lg shadow-blue-100"
         >
           SHOP NOW!
         </button>
@@ -80,36 +69,18 @@ function HomePage() {
       <Categories onCategoryClick={handleCategoryClick} />
       <div ref={tabRef}>
         <h2 className="my-5 text-2xl font-bold text-center">
-          {selectedCategory ? `Products in ${selectedCategory}` : 'All Products'}
+          {selectedCategory ? `Products in ${selectedCategory}` : "All Products"}
         </h2>
 
-
-        {/* Show Category Products here if selected */}
-        {categoryProducts.length > 0 && (
-          <div className="grid grid-cols-2 gap-5 p-5 md:grid-cols-3">
-            {categoryProducts.map(product => (
-              <div key={product.product_id} className="p-4 border rounded shadow">
-                <img src={product.product_image} alt={product.name} className="object-cover w-full h-48 rounded" />
-                <div className="mt-2 font-bold">{product.name}</div>
-                <div>{product.price} LKR</div>
-              </div>
-            ))}
-          </div>
-        )} */}
-
-
-        {categoryProducts.length > 0 && (
+        {categoryProducts.length > 0 ? (
           <div className="grid grid-cols-2 gap-5 p-5 md:grid-cols-3">
             {categoryProducts.map((product) => (
-              // Render product card
               <ProductCard key={product.product_id} product={product} />
             ))}
           </div>
+        ) : (
+          <TabComponent />
         )}
-
-
-        {/* If not selected, show all products from Redux (TabComponent) */}
-        {categoryProducts.length === 0 && <TabComponent />}
       </div>
       <Footer />
       <ChatWidget />
@@ -117,6 +88,4 @@ function HomePage() {
   );
 }
 
-
 export default HomePage;
-
