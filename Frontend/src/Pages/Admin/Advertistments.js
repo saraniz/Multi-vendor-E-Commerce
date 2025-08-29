@@ -53,39 +53,41 @@ function Advertisements() {
         <AdminNavbar />
         <div className="w-full p-4 mx-auto bg-white rounded-lg shadow-lg">
           <h2 className="mb-4 text-2xl font-semibold">Manage Advertisements</h2>
-          <div className="p-8 space-y-4">
-            {ads.map(ad => (
-              <div key={ad.id} className="p-4 text-center bg-gray-200 border rounded-md shadow">
-                <p className="font-medium">Advertisement {ad.id}</p>
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) => handleFileChange(e, ad.id)}
-                  className="block w-full p-2 mt-2 border rounded"
-                />
-                {ad.preview && (
-                  <div className="mt-2">
-                    <img
-                      src={ad.preview}
-                      alt={`Advertisement ${ad.id}`}
-                      className="w-32 h-32 mx-auto rounded-md shadow-md"
-                    />
-                  </div>
-                )}
-                <button
-                  onClick={() => handleUpload(ad.id)}
-                  className="px-4 py-2 mt-2 text-white bg-blue-500 rounded-md hover:bg-blue-600"
-                >
-                  Upload
-                </button>
-              </div>
-            ))}
-            <button
-              onClick={addAdvertisement}
-              className="w-full p-4 text-2xl text-center bg-gray-200 border rounded-md shadow hover:bg-gray-300"
-            >
-              +
-            </button>
+          <div className='h-screen overflow-y-auto'>
+            <div className="p-8 space-y-4">
+              {ads.map(ad => (
+                <div key={ad.id} className="p-4 text-center bg-gray-200 border rounded-md shadow">
+                  <p className="font-medium">Advertisement {ad.id}</p>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => handleFileChange(e, ad.id)}
+                    className="block w-full p-2 mt-2 border rounded"
+                  />
+                  {ad.preview && (
+                    <div className="mt-2">
+                      <img
+                        src={ad.preview}
+                        alt={`Advertisement ${ad.id}`}
+                        className="w-32 h-32 mx-auto rounded-md shadow-md"
+                      />
+                    </div>
+                  )}
+                  <button
+                    onClick={() => handleUpload(ad.id)}
+                    className="px-4 py-2 mt-2 text-white bg-blue-500 rounded-md hover:bg-blue-600"
+                  >
+                    Upload
+                  </button>
+                </div>
+              ))}
+              <button
+                onClick={addAdvertisement}
+                className="w-full p-4 text-2xl text-center bg-gray-200 border rounded-md shadow hover:bg-gray-300"
+              >
+                +
+              </button>
+            </div>
           </div>
         </div>
       </div>

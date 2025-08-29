@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import Navbar from "../Components/Header/Navbar";
 import { useParams } from "react-router-dom";
 import Swal from "sweetalert2";
 import emailjs from "emailjs-com";
@@ -175,6 +176,7 @@ const ShopPage = () => {
   const { store_name, business_email, products: storeProducts = [] } = store.store;
 
   return (
+<<<<<<< HEAD
     <div className="p-6 max-w-7xl mx-auto">
       {/* Store Header */}
       <div className="flex items-center gap-4 p-4 border rounded-xl shadow-sm bg-white">
@@ -227,10 +229,60 @@ const ShopPage = () => {
                 <p className="text-xl font-bold text-black mt-2">Rs. {product.price}</p>
               </div>
             ))}
+=======
+    <div>
+      <Navbar />
+      <div className="p-6 mx-auto max-w-7xl">
+        {/* Store Header */}
+        <div className="flex items-center gap-4 p-4 bg-white border shadow-sm rounded-xl">
+          <img
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRpyiXYQlJYE6rBuS5BqGgFtNZmDvfjF5snFw&s"
+            alt={store_name}
+            className="object-cover w-20 h-20 rounded-full"
+          />
+          <div className="flex-1">
+            <h2 className="text-2xl font-semibold">{store_name}</h2>
+            <p className="text-sm text-gray-500">1.3k followers</p>
+            <p className="text-sm text-gray-500">{business_email}</p>
+>>>>>>> 7d64dfe96b0e99c76ee9270404a7aa82107b8d14
           </div>
-        ) : (
-          <p className="text-gray-500">No products available at the moment.</p>
-        )}
+          <button
+            className={`px-6 py-2 rounded-lg font-medium transition duration-200 ${isFollowed
+                ? "bg-gray-400 text-white cursor-not-allowed"
+                : "bg-black text-white hover:bg-gray-800"
+              }`}
+            onClick={handleFollow}
+            disabled={isFollowed}
+          >
+            {isFollowed ? "Followed" : "Follow"}
+          </button>
+        </div>
+
+        {/* Product List */}
+        <div className="mt-10">
+          <h2 className="mb-4 text-xl font-semibold">Products</h2>
+          {storeProducts.length > 0 ? (
+            <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-4">
+              {storeProducts.map((product) => (
+                <div
+                  key={product.product_id}
+                  className="p-4 transition bg-white border rounded-lg shadow-sm hover:shadow-md"
+                >
+                  <img
+                    src={product.product_image || "default-product-image.jpg"}
+                    alt={product.name}
+                    className="object-cover w-full h-40 mb-3 rounded"
+                  />
+                  <h3 className="text-lg font-medium">{product.name}</h3>
+                  <p className="text-sm text-gray-500">{product.description}</p>
+                  <p className="mt-2 text-xl font-bold text-black">Rs. {product.price}</p>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="text-gray-500">No products available at the moment.</p>
+          )}
+        </div>
       </div>
 
       {/* Message Modal */}

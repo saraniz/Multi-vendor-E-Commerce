@@ -28,15 +28,15 @@ const Footer = () => {
           </div>
 
           {/* Middle Section for Logo */}
-         <div className="pr-20 mb-8 md:mb-0">
-         <Link to={'/'}>
-            <img
-              src={whitelogo} // Sample logo placeholder URL
-              alt="Logo"
-              className="w-48 h-48 mx-auto md:mx-0"
-            /></Link>
+          <div className="pr-20 mb-8 md:mb-0">
+            <Link to={'/'}>
+              <img
+                src={whitelogo} // Sample logo placeholder URL
+                alt="Logo"
+                className="w-48 h-48 mx-auto md:mx-0"
+              /></Link>
           </div>
-          
+
 
           {/* Right Section */}
           <div className="flex flex-col text-center md:flex-row md:space-x-12 md:text-left">

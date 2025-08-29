@@ -79,20 +79,20 @@ function SellerDashboard() {
           </div>
 
           {/* Order Counts */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-            <div className="p-6 bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg shadow-lg">
+          <div className="grid grid-cols-1 gap-6 mb-6 md:grid-cols-3">
+            <div className="p-6 rounded-lg shadow-lg bg-gradient-to-r from-blue-500 to-blue-600">
               <h3 className="text-lg font-semibold text-white">Shipped Orders</h3>
               <p className="text-3xl font-bold text-white">
                 {orderLoading ? "Loading..." : orderCounts?.shipped || 0}
               </p>
             </div>
-            <div className="p-6 bg-gradient-to-r from-red-500 to-red-600 rounded-lg shadow-lg">
+            <div className="p-6 rounded-lg shadow-lg bg-gradient-to-r from-red-500 to-red-600">
               <h3 className="text-lg font-semibold text-white">Pending Orders</h3>
               <p className="text-3xl font-bold text-white">
                 {orderLoading ? "Loading..." : orderCounts?.pending || 0}
               </p>
             </div>
-            <div className="p-6 bg-gradient-to-r from-purple-500 to-purple-600 rounded-lg shadow-lg">
+            <div className="p-6 rounded-lg shadow-lg bg-gradient-to-r from-purple-500 to-purple-600">
               <h3 className="text-lg font-semibold text-white">New Orders</h3>
               <p className="text-3xl font-bold text-white">
                 {orderLoading ? "Loading..." : orderCounts?.new || 0}
@@ -101,9 +101,9 @@ function SellerDashboard() {
           </div>
 
           {/* Sales Chart */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
             <div className="p-6 bg-white rounded-lg shadow-lg">
-              <h3 className="text-lg font-semibold mb-2">Product Sales Overview</h3>
+              <h3 className="mb-2 text-lg font-semibold">Product Sales Overview</h3>
               <ResponsiveContainer width="100%" height={300}>
                 <BarChart
                   data={categorySalesData}
@@ -132,7 +132,7 @@ function SellerDashboard() {
 
             {/* Monthly Revenue */}
             <div className="p-6 bg-white rounded-lg shadow-lg">
-              <h3 className="text-lg font-semibold mb-4">Monthly Revenue</h3>
+              <h3 className="mb-4 text-lg font-semibold">Monthly Revenue</h3>
               <div className="overflow-y-auto border-t border-b border-gray-200 max-h-48">
                 {monthlyRevenueData.map((item, index) => (
                   <div key={index} className="flex justify-between p-3">
@@ -149,10 +149,10 @@ function SellerDashboard() {
           </div>
 
           {/* Add Customer Profile Card/Button */}
-          <div className="mt-8 flex justify-end">
+          <div className="flex justify-end mt-8">
             <Link
               to="/CustomerProfile"
-              className="inline-flex items-center px-5 py-3 bg-green-600 text-white rounded-lg shadow hover:bg-green-700 transition"
+              className="inline-flex items-center px-5 py-3 text-white transition bg-green-600 rounded-lg shadow hover:bg-green-700"
             >
               <HiOutlineUser className="mr-2 text-xl" />
               Customer Profile
