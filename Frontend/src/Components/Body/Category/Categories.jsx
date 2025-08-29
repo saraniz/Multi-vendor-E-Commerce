@@ -2,11 +2,11 @@ import React from 'react'
 import CategoryItem from './CategoryItem'
 
 const categoryData = [
-  { title: 'Frock', imageSrc: 'https://res.cloudinary.com/dggdmacdb/image/upload/v1751814732/download_1_jo8sza.jpg' },
-  { title: 'T-shirt', imageSrc: 'https://res.cloudinary.com/dggdmacdb/image/upload/v1751814732/download_2_qd8gcr.jpg' },
-  { title: 'Jeans', imageSrc: 'https://res.cloudinary.com/dggdmacdb/image/upload/v1751814732/download_3_lempex.jpg' },
-  { title: 'Skirt', imageSrc: 'https://res.cloudinary.com/dggdmacdb/image/upload/v1751814733/images_quwpe7.jpg' },
-  { title: 'Premium', imageSrc: 'https://res.cloudinary.com/dggdmacdb/image/upload/v1751814732/download_vvklhs.jpg' }
+  { title: 'Frock', imageSrc: 'https://res.cloudinary.com/dggdmacdb/image/upload/v1756436352/WhatsApp_Image_2025-08-28_at_21.33.12_27bb3540_dse387.jpg' },
+  { title: 'T-shirt', imageSrc: 'https://res.cloudinary.com/dggdmacdb/image/upload/v1756436329/WhatsApp_Image_2025-08-28_at_21.30.25_854fd4ff_lydtxr.jpg' },
+  { title: 'Jeans', imageSrc: 'https://res.cloudinary.com/dggdmacdb/image/upload/v1756436319/WhatsApp_Image_2025-08-28_at_21.30.25_c4c524e0_wyhdq6.jpg' },
+  { title: 'Skirt', imageSrc: 'https://res.cloudinary.com/dggdmacdb/image/upload/v1756436339/WhatsApp_Image_2025-08-28_at_21.30.24_e2fbfe82_dm3ejx.jpg' },
+  { title: 'Premium', imageSrc: 'https://res.cloudinary.com/dggdmacdb/image/upload/v1756436308/WhatsApp_Image_2025-08-28_at_21.30.24_7df8adcd_gjow4h.jpg' }
 ];
 
 
