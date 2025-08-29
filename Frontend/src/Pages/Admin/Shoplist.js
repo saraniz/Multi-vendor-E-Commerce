@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Navbar from "../../Components/Header/Navbar";
 import Footer from "../../Components/Footer/Footer";
 import AdminNavbar from "../../Components/Body/AdminNavbar";
-import { fetchShopList } from "../../Storage/admin/adminaction"; 
+import { fetchShopList } from "../../Storage/admin/adminaction";
 
 function Shoplist() {
   // Sample shop data (can be replaced with backend API call)
@@ -66,36 +66,37 @@ function Shoplist() {
         <AdminNavbar />
 
         {/* Main Content */}
-        <div className="flex-1 p-6">
+        <div className="flex-1 p-6 ">
           <h2 className="mb-4 text-2xl font-semibold">Shop List</h2>
-
-          <table className="w-full border border-collapse border-gray-300">
-            <thead>
-              <tr className="text-white bg-gray-800">
-                <th className="p-2 text-left border">Shop</th>
-                <th className="p-2 text-left border">Status</th>
-                <th className="p-2 text-left border">Monthly Revenue</th>
-              </tr>
-            </thead>
-            <tbody>
-              {shops.map((shop) => (
-                <tr key={shop.id} className="border">
-                  <td className="flex items-center p-2 border">
-                    <img
-                      src={shop.image} // Replace with actual shop image
-                      alt={shop.name}
-                      className="w-10 h-10 mr-3 rounded-full"
-                    />
-                    {shop.name}
-                  </td>
-                  <td className={`border p-2 font-medium ${getStatusColor(shop.status)}`}>
-                    {shop.status}
-                  </td>
-                  <td className="p-2 border">Rs. {shop.revenue.toLocaleString()}</td>
+          <div className="h-screen overflow-y-auto">
+            <table className="w-full overflow-y-auto border border-collapse border-gray-300 ">
+              <thead>
+                <tr className="text-white bg-gray-800">
+                  <th className="p-2 text-left border">Shop</th>
+                  <th className="p-2 text-left border">Status</th>
+                  <th className="p-2 text-left border">Monthly Revenue</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {shops.map((shop) => (
+                  <tr key={shop.id} className="border">
+                    <td className="flex items-center p-2 border">
+                      <img
+                        src={shop.image} // Replace with actual shop image
+                        alt={shop.name}
+                        className="w-10 h-10 mr-3 rounded-full"
+                      />
+                      {shop.name}
+                    </td>
+                    <td className={`border p-2 font-medium ${getStatusColor(shop.status)}`}>
+                      {shop.status}
+                    </td>
+                    <td className="p-2 border">Rs. {shop.revenue.toLocaleString()}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
       <Footer />

@@ -3,7 +3,7 @@ import Navbar from '../../Components/Header/Navbar';
 import Footer from '../../Components/Footer/Footer';
 import AdminNavbar from '../../Components/Body/AdminNavbar';
 import Swal from 'sweetalert2';
-import {fetchWarning1Sellers, fetchWarning2Sellers, fetchWarning3Sellers, sendWarning, blockSeller, fetchSellersForActions, unblockSeller } from '../../Storage/admin/adminaction';
+import { fetchWarning1Sellers, fetchWarning2Sellers, fetchWarning3Sellers, sendWarning, blockSeller, fetchSellersForActions, unblockSeller } from '../../Storage/admin/adminaction';
 
 function Actions() {
   const [users, setUsers] = useState([]);
@@ -12,28 +12,12 @@ function Actions() {
   // ✅ Fetch sellers depending on selected tab
   useEffect(() => {
     const fetchUsers = async () => {
-      try {
-        let data = [];
-
-        if (selectedTab === 'All') {
-          data = await fetchSellersForActions(); // ✅ All sellers
-        } else if (selectedTab === 'Warned 1 time') {
-          data = await fetchWarning1Sellers(); // ✅ Only Warning 1 sellers
-        }else if (selectedTab === 'Warned 2 times') {
-          data = await fetchWarning2Sellers(); // ✅ Only Warning 2 sellers
-        }else if (selectedTab === 'Warned 3 times') {
-          data = await fetchWarning3Sellers(); // ✅ Only Warning 3 sellers
-        } else {
-          data = await fetchSellersForActions(); // fallback
-        }
-
-        setUsers(data);
-      } catch (error) {
-        Swal.fire('❌ Error', 'Failed to fetch sellers', 'error');
-      }
+      const data = await fetchSellersForActions();
+      setUsers(data);
     };
     fetchUsers();
-  }, [selectedTab]); // ✅ Re-run when tab changes
+  }, []);
+
 
   const handleStatusChange = async (id, newStatus) => {
     setUsers(users.map(user =>
@@ -97,42 +81,40 @@ function Actions() {
               </button>
             ))}
           </div>
-
-          {/* Table Wrapper */}
-          <div className="flex justify-center w-full mt-4">
-            <table className="w-3/4 border-collapse">
-              <tbody>
-                {filteredUsers.map(user => (
-                  <tr key={user.id} className="border-b">
-                    <td className="flex items-center p-2">
-                      <img
-                        src={user.profilePic}
-                        alt="profile"
-                        className="w-10 h-10 mr-2 rounded-full"
-                      />
-                      {user.name}
-                    </td>
-                    <td className="flex p-2 space-x-4">
-                      <button
-                        className="px-4 py-1 text-white bg-blue-500 rounded"
-                        onClick={() => alert(`Contacting ${user.name}`)}
-                      >
-                        Contact
-                      </button>
-                      {['01 Warn', '02 Warn', '03 Warn', 'Blocked', 'UnBlocked'].map(status => (
-                        <button
-                          key={status}
-                          className={`px-8 py-1 rounded ${user.status === status ? 'bg-red-500 text-white' : 'bg-gray-300'}`}
-                          onClick={() => handleStatusChange(user.id, status)}
-                        >
-                          {status}
+          <div className="h-screen overflow-y-auto">
+            {/* Table Wrapper to avoid overflow */}
+            <div className="flex justify-center w-full mt-4">
+              <table className="w-3/4 border-collapse"> {/* Centered table */}
+                <tbody>
+                  {filteredUsers.map(user => (
+                    <tr key={user.id} className="border-b">
+                      <td className="flex items-center p-2">
+                        <img
+                          src={user.profilePic}
+                          alt="profile"
+                          className="w-10 h-10 mr-2 rounded-full"
+                        />
+                        {user.name}
+                      </td>
+                      <td className="flex p-2 space-x-4">
+                        <button className="px-4 py-1 text-white bg-blue-500 rounded" onClick={() => alert(`Contacting ${user.name}`)}>
+                          Contact
                         </button>
-                      ))}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+                        {['01 Warn', '02 Warn', '03 Warn', 'Blocked'].map(status => (
+                          <button
+                            key={status}
+                            className={`px-8 py-1 rounded ${user.status === status ? 'bg-red-500 text-white' : 'bg-gray-300'}`}
+                            onClick={() => handleStatusChange(user.id, status)}
+                          >
+                            {status}
+                          </button>
+                        ))}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>

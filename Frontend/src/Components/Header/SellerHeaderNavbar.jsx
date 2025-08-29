@@ -35,7 +35,7 @@ function SellerHeaderNavbar() {
     bgcolor: 'background.paper',
 
     boxShadow: 24,
-    borderRadius:2,
+    borderRadius: 2,
     p: 10,
   };
 
@@ -43,7 +43,7 @@ function SellerHeaderNavbar() {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  
+
 
   // Prevent page reload on form submission
   const handleSearch = async (e) => {
@@ -61,20 +61,20 @@ function SellerHeaderNavbar() {
 
     try {
       // Dispatch the Redux action and get the results
-      const response =  await dispatch(searchItems(searchQuery));
+      const response = await dispatch(searchItems(searchQuery));
 
       if (response && response.length > 0) {
         setSearchResults(response); // Update the results state
 
       } else {
         setSearchResults([]); // No results found, clear any previous results
-      
+
       }
     } catch (error) {
       alert("Something went wrong with the search. Please try again.")
       console.error("Search error:", error);
     }
-    
+
     setOpen(true)
   };
 
@@ -180,22 +180,22 @@ function SellerHeaderNavbar() {
       >
         <Box sx={style}>
 
-           {/* ✅ Bold and Large "Search Result for {sQuery}" */}
-           <Typography 
-            variant="h5" 
-            fontWeight="bold" 
+          {/* ✅ Bold and Large "Search Result for {sQuery}" */}
+          <Typography
+            variant="h5"
+            fontWeight="bold"
             gutterBottom
           >
             Search Result for "{sQuery}"
           </Typography>
-         
-        
-            {searchResults?(
-                <ProductList products={searchResults}/>
-              
-            ):(<p>No items found</p>)}
-          
-         
+
+
+          {searchResults ? (
+            <ProductList products={searchResults} />
+
+          ) : (<p>No items found</p>)}
+
+
         </Box>
       </Modal>
 

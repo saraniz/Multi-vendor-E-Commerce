@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from "react";
 import Navbar from "../Components/Header/Navbar";
 import AdvertisementSlider from "../Components/Body/AddSlider";
 import TabComponent from "../Components/Body/TabComponent";
-import NextButton from "../Components/Buttons/NextButton";
 import Footer from "../Components/Footer/Footer";
 import Categories from "../Components/Body/Category/Categories";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,14 +9,14 @@ import { fetchAllProducts } from "../Storage/Product/productAction";
 import { fetchCategoryProducts } from "../Storage/category/categoryaction";
 import Loader from "./Loader";
 import ProductCard from "../Components/Body/ProductCard";
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom";
 
 
 function HomePage() {
   const tabRef = useRef(null);
   const { loading, auth, fav } = useSelector((store) => store);
   const dispatch = useDispatch();
-   const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const [categoryProducts, setCategoryProducts] = useState([]); //  New state
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -26,38 +25,34 @@ function HomePage() {
 
 
 
-  useEffect(()=>{
-   
-      dispatch(fetchAllProducts())
-       const timer = setTimeout(() => {
-    setPageloading(false);
-  }, 1000);
+  useEffect(() => {
 
+    dispatch(fetchAllProducts())
+    const timer = setTimeout(() => {
+      setPageloading(false);
+    }, 1000);
 
-  return () => clearTimeout(timer);
-   
-  },[fav.flag, , dispatch]);     // ✌️✌️✌️✌️✌️
+    return () => clearTimeout(timer);
 
+  }, [fav.flag])
 
-   const handleCategoryClick = async (category) => {
-    // try {
-    //   const data = await fetchCategoryProducts(category);
-    //   setCategoryProducts(data.products);
-    //   setSelectedCategory(data.category);
-    //   scrollToTabComponent();
-    // } catch (error) {
-    //   console.error("Category fetch failed:", error);
-    // }
-    navigate(`/category/${category}`); // ✨ Go to separate category page
+  const handleCategoryClick = async (category) => {
+    try {
+      const data = await fetchCategoryProducts(category);
+      setCategoryProducts(data.products);
+      setSelectedCategory(data.category);
+      scrollToTabComponent();
+    } catch (error) {
+      console.error("Category fetch failed:", error);
+    }
   };
-
 
   const scrollToTabComponent = () => {
     tabRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
 
-  if(pageloading){
+  if (pageloading) {
     return <Loader />
   }
 
@@ -78,19 +73,19 @@ function HomePage() {
       <div className="flex justify-center">
         <div className="w-[90%] h-1 bg-slate-300"></div>
       </div>
-      <Categories onCategoryClick={handleCategoryClick}/>
+      <Categories onCategoryClick={handleCategoryClick} />
       <div ref={tabRef}>
-        <h2 className="text-center text-2xl font-bold my-5">
+        <h2 className="my-5 text-2xl font-bold text-center">
           {selectedCategory ? `Products in ${selectedCategory}` : 'All Products'}
         </h2>
 
 
         {/* Show Category Products here if selected */}
-        {/* {categoryProducts.length > 0 && (
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-5 p-5">
+        {categoryProducts.length > 0 && (
+          <div className="grid grid-cols-2 gap-5 p-5 md:grid-cols-3">
             {categoryProducts.map(product => (
               <div key={product.product_id} className="p-4 border rounded shadow">
-                <img src={product.product_image} alt={product.name} className="w-full h-48 object-cover rounded" />
+                <img src={product.product_image} alt={product.name} className="object-cover w-full h-48 rounded" />
                 <div className="mt-2 font-bold">{product.name}</div>
                 <div>{product.price} LKR</div>
               </div>
@@ -100,19 +95,18 @@ function HomePage() {
 
 
         {categoryProducts.length > 0 && (
-  <div className="grid grid-cols-2 md:grid-cols-3 gap-5 p-5">
-    {categoryProducts.map((product) => (
-      // Render product card
-      <ProductCard key={product.product_id} product={product} />   
-    ))}
-  </div>
-)}
+          <div className="grid grid-cols-2 gap-5 p-5 md:grid-cols-3">
+            {categoryProducts.map((product) => (
+              // Render product card
+              <ProductCard key={product.product_id} product={product} />
+            ))}
+          </div>
+        )}
 
 
         {/* If not selected, show all products from Redux (TabComponent) */}
         {categoryProducts.length === 0 && <TabComponent />}
       </div>
-      <NextButton />
       <Footer />
     </div>
   );
