@@ -16,6 +16,7 @@ import {
 
 import Swal from 'sweetalert2';
 import { API_BASE_URL } from '../APIConfig';
+import { toast } from 'react-toastify';
 
 export const addToCart = (product, quantity) => async (dispatch, getState) => {
   dispatch({ type: ADD_TO_CART_REQUEST });
@@ -57,13 +58,16 @@ export const addToCart = (product, quantity) => async (dispatch, getState) => {
 
     console.log("🛍️ Guest cart saved (final):", guestCart);
 
-    Swal.fire({
-      position: "top-end",
-      icon: "success",
-      title: "Item added to guest cart",
-      showConfirmButton: false,
-      timer: 1500,
+    toast.success("Item added to guest cart!", {
+      position: "top-right",
+      autoClose: 1500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      theme: "light",
     });
+
 
     return;
   }
@@ -86,13 +90,23 @@ export const addToCart = (product, quantity) => async (dispatch, getState) => {
       }
     );
 
-    Swal.fire({
-      position: "top-end",
-      icon: "success",
-      title: "Item added to cart successfully",
-      showConfirmButton: false,
-      timer: 1500,
+    toast.success("Success!", {
+      position: "top-right",
+      autoClose: 1500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      theme: "light",
     });
+
+    // Swal.fire({
+    //   position: "top-end",
+    //   icon: "success",
+    //   title: "Item added to cart successfully",
+    //   showConfirmButton: false,
+    //   timer: 1500,
+    // });
 
     dispatch({ type: ADD_TO_CART_SUCCESS, payload: response.data.cartItem });
     dispatch({ type: CART_FLAG_TOGGLE });
@@ -224,16 +238,31 @@ export const deleteFromCart = (cart_id, product_id) => async (dispatch) => {
 
     dispatch({ type: CART_FLAG_TOGGLE }); // ✅ trigger re-fetch
 
-    Swal.fire({
-      position: "top-end",
-      icon: "success",
-      title: "Item removed from cart",
-      showConfirmButton: false,
-      timer: 1500,
+    toast.success("Item removed from cart", {
+      position: "top-right",
+      autoClose: 1500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      theme: "light",
     });
 
+   
   } catch (error) {
     console.error("Error removing product from cart:", error);
+
+   toast.error("Error! Cannot Remove Item", {
+  position: "top-right",
+  autoClose: 1500,
+  hideProgressBar: false,
+  closeOnClick: true,
+  pauseOnHover: true,
+  draggable: true,
+  theme: "light",
+});
+
+    
   }
 };
 
@@ -260,15 +289,30 @@ export const updateCartItem = (cart_id, quantity) => async (dispatch) => {
 
     dispatch({ type: "CART_FLAG_TOGGLE" }); // trigger re-fetch
 
-    Swal.fire({
-      position: "top-end",
-      icon: "success",
-      title: "Cart updated",
-      showConfirmButton: false,
-      timer: 1000,
-    });
+    toast.success("Cart Updated Successfully", {
+  position: "top-right",
+  autoClose: 1500,
+  hideProgressBar: false,
+  closeOnClick: true,
+  pauseOnHover: true,
+  draggable: true,
+  theme: "light",
+});
+
+
+  
 
   } catch (error) {
     console.error("Error updating cart item:", error);
+    toast.error("Error updating cart item", {
+  position: "top-right",
+  autoClose: 1500,
+  hideProgressBar: false,
+  closeOnClick: true,
+  pauseOnHover: true,
+  draggable: true,
+  theme: "light",
+});
+
   }
 };

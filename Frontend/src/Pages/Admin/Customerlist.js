@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Navbar from '../../Components/Header/Navbar';
 import Footer from '../../Components/Footer/Footer';
 import AdminNavbar from '../../Components/Body/AdminNavbar';
-import { getAllCustomers } from '../../Storage/admin/adminaction';
+import { getAllCustomers, getCustomerPayments } from '../../Storage/admin/adminaction';
 import Swal from 'sweetalert2';
 
 function Customerlist() {
@@ -22,8 +22,19 @@ function Customerlist() {
   useEffect(() => {
     const fetchCustomers = async () => {
       try {
-        const data = await getAllCustomers();
-        setCustomers(data);
+        const customerData = await getAllCustomers();
+        const paymentData = await getCustomerPayments();
+
+        const mergedData = customerData.map(customer => {
+          const payment = paymentData.find(p => p.reg_id === customer.reg_id);
+          return {
+            ...customer,
+            totalAmount: payment?._sum?.amount || 0 // if no payments, set 0
+          };
+        });
+
+        setCustomers(mergedData);
+        //setCustomers(data);
       } catch (error) {
         Swal.fire('❌ Error', error.response?.data?.message || 'Failed to load customers', 'error');
       }
@@ -42,38 +53,36 @@ function Customerlist() {
         {/* Main content */}
         <div className="flex-1 p-6">
           <h2 className="mb-4 text-2xl font-bold">Customer List</h2>
-          <div className='h-screen overflow-y-auto'>
-            <div className="overflow-x-auto">
-              <table className="min-w-full bg-white border border-gray-300 shadow-md">
-                <thead>
-                  <tr className="text-left text-white bg-gray-800">
-                    <th className="px-4 py-2 border">Name</th>
-                    <th className="px-4 py-2 border">Contact No</th>
-                    <th className="px-4 py-2 border">E-mail</th>
-                    <th className="px-4 py-2 border">Address</th>
-                    <th className="px-4 py-2 border">Monthly Cost</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {customers.map((customer) => (
-                    <tr key={customer.id} className="text-center border">
-                      <td className="flex items-center gap-2 px-4 py-2 border">
-                        {/*<img
+          <div className="overflow-x-auto">
+            <table className="min-w-full bg-white border border-gray-300 shadow-md">
+              <thead>
+                <tr className="text-left text-white bg-gray-800">
+                  <th className="px-4 py-2 border">Name</th>
+                  <th className="px-4 py-2 border">Contact No</th>
+                  <th className="px-4 py-2 border">E-mail</th>
+                  <th className="px-4 py-2 border">Address</th>
+                  <th className="px-4 py-2 border">Monthly Cost</th>
+                </tr>
+              </thead>
+              <tbody>
+                {customers.map((customer) => (
+                  <tr key={customer.id} className="text-center border">
+                    <td className="flex items-center gap-2 px-4 py-2 border">
+                      {/*<img
                         src="https://via.placeholder.com/40"
                         alt="Profile"
                         className="w-10 h-10 rounded-full"
                       />*/}
-                        {customer.username}
-                      </td>
-                      <td className="px-4 py-2 border">{customer.mobileNo}</td>
-                      <td className="px-4 py-2 border">{customer.email}</td>
-                      <td className="px-4 py-2 border">{customer.address}</td>
-                      <td className="px-4 py-2 border">Rs. xxx</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                      {customer.username}
+                    </td>
+                    <td className="px-4 py-2 border">{customer.mobileNo}</td>
+                    <td className="px-4 py-2 border">{customer.email}</td>
+                    <td className="px-4 py-2 border">{customer.address}</td>
+                    <td className="px-4 py-2 border">Rs. xxx</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
       </div>

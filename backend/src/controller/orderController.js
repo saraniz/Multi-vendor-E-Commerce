@@ -52,12 +52,12 @@ const placeOrder = async (req, res) => {
         return res.status(404).json({ success: false, message: "User not found in MongoDB." });
       }
     } else {
-      if (!guest_name || !guest_mobile || !guest_address) {
-        return res.status(400).json({
-          success: false,
-          message: "Guest name, mobile, and address are required for guest checkout.",
-        });
-      }
+      // if (!guest_name || !guest_mobile || !guest_address) {
+      //   return res.status(400).json({
+      //     success: false,
+      //     message: "Guest name, mobile, and address are required for guest checkout.",
+      //   });
+      // }
     }
 
     const createdOrders = [];

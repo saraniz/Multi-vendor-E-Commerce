@@ -8,15 +8,21 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchAllProducts } from "../Storage/Product/productAction";
 import { fetchCategoryProducts } from "../Storage/category/categoryaction";
 import Loader from "./Loader";
+import ProductCard from "../Components/Body/ProductCard";
+import { useNavigate } from "react-router-dom";
+
 
 function HomePage() {
   const tabRef = useRef(null);
   const { loading, auth, fav } = useSelector((store) => store);
   const dispatch = useDispatch();
-  const [categoryProducts, setCategoryProducts] = useState([]); // ✨ New state
-  const [selectedCategory, setSelectedCategory] = useState(null);
+  const navigate = useNavigate();
 
+  const [categoryProducts, setCategoryProducts] = useState([]); //  New state
+  const [selectedCategory, setSelectedCategory] = useState(null);
   const [pageloading, setPageloading] = useState(true)
+
+
 
 
   useEffect(() => {
@@ -45,9 +51,11 @@ function HomePage() {
     tabRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
+
   if (pageloading) {
     return <Loader />
   }
+
 
   return (
     <div>
@@ -71,6 +79,7 @@ function HomePage() {
           {selectedCategory ? `Products in ${selectedCategory}` : 'All Products'}
         </h2>
 
+
         {/* Show Category Products here if selected */}
         {categoryProducts.length > 0 && (
           <div className="grid grid-cols-2 gap-5 p-5 md:grid-cols-3">
@@ -82,7 +91,18 @@ function HomePage() {
               </div>
             ))}
           </div>
+        )} */}
+
+
+        {categoryProducts.length > 0 && (
+          <div className="grid grid-cols-2 gap-5 p-5 md:grid-cols-3">
+            {categoryProducts.map((product) => (
+              // Render product card
+              <ProductCard key={product.product_id} product={product} />
+            ))}
+          </div>
         )}
+
 
         {/* If not selected, show all products from Redux (TabComponent) */}
         {categoryProducts.length === 0 && <TabComponent />}
@@ -92,4 +112,6 @@ function HomePage() {
   );
 }
 
+
 export default HomePage;
+

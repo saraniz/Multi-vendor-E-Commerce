@@ -18,6 +18,7 @@ import {
 } from "./productActionType";
 
 import { ADD_FAVORITE_SUCCESS } from "../Favorite/favActionType";
+import { toast } from "react-toastify";
 
 // ✅ Fetch single product details
 export const fetchProductDetails = (product_id) => async (dispatch) => {
@@ -93,13 +94,18 @@ export const addProducts = (productData) => async (dispatch) => {
     dispatch({ type: ADD_PRODUCT_SUCCESS, payload: data });
     dispatch({ type: ADD_FAVORITE_SUCCESS, payload: data });
 
-    Swal.fire({
-      position: "top-end",
-      icon: "success",
-      title: "Product added successfully",
-      showConfirmButton: false,
-      timer: 1500,
-    });
+    toast.success("Product added successfully", {
+  position: "top-right",
+  autoClose: 1500,
+  hideProgressBar: false,
+  closeOnClick: true,
+  pauseOnHover: true,
+  draggable: true,
+  theme: "light",
+});
+
+
+  
   } catch (error) {
     const errorMessage =
       error.response?.data?.message || error.message || "Something went wrong!";
@@ -144,13 +150,17 @@ export const updateProduct = (prisma_id, formData) => async (dispatch) => {
 
     dispatch({ type: UPDATE_PRODUCT_SUCCESS, payload: data });
 
-    Swal.fire({
-      icon: "success",
-      title: "Product Updated!",
-      text: "Your product has been updated successfully.",
-      timer: 1500,
-      showConfirmButton: false,
-    });
+    toast.success("Product updated successfully", {
+  position: "top-right",
+  autoClose: 1500,
+  hideProgressBar: false,
+  closeOnClick: true,
+  pauseOnHover: true,
+  draggable: true,
+  theme: "light",
+});
+
+
 
     console.log("[updateProduct Action] Success Response:", data);
   } catch (error) {
@@ -159,11 +169,17 @@ export const updateProduct = (prisma_id, formData) => async (dispatch) => {
 
     dispatch({ type: UPDATE_PRODUCT_FAILURE, payload: errorMessage });
 
-    Swal.fire({
-      icon: "error",
-      title: "Update Failed",
-      text: errorMessage,
-    });
+    toast.error("Updated Failed!", {
+  position: "top-right",
+  autoClose: 1500,
+  hideProgressBar: false,
+  closeOnClick: true,
+  pauseOnHover: true,
+  draggable: true,
+  theme: "light",
+});
+
+
 
     console.error("[updateProduct Action] Error occurred:", error);
   }

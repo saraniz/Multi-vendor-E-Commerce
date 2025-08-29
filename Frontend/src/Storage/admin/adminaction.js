@@ -19,6 +19,10 @@ export const blockSeller = async (seller_id) => {
   return axios.put(`${API_BASE_URL}/api/admin/block/${seller_id}`);
 };
 
+// Unblock Seller
+export const unblockSeller = async (seller_id) => {
+  return axios.put(`${API_BASE_URL}/api/admin/unblock/${seller_id}`);
+};
 
 const adminAxios = axios.create({
   baseURL: 'http://localhost:2000/api/admin', 
@@ -143,5 +147,70 @@ export const fetchSellersForActions = async () => {
   } catch (error) {
     console.error("❌ Failed to fetch sellers for actions:", error);
     return [];
+  }
+};
+
+export const getAllShops = async () => {
+  try {
+    const res = await axios.get("http://localhost:2000/api/admin/shops"); // backend route
+    return res.data; // [{store_id, store_name, store_image}]
+  } catch (error) {
+    console.error("❌ Failed to fetch shops:", error);
+    return [];
+  }
+};
+
+//  Fetch sellers with Level 1 warning
+export const fetchWarning1Sellers = async () => {
+  try {
+    const res = await axios.get(`${API_BASE_URL}/api/admin/warning1`);
+    return res.data; // Array of sellers
+  } catch (error) {
+    console.error("❌ Failed to fetch Level 1 warning sellers:", error);
+    return [];
+  }
+};
+
+export const fetchWarning2Sellers = async () => {
+  try {
+    const res = await axios.get(`${API_BASE_URL}/api/admin/warning2`);
+    return res.data; // Array of sellers
+  } catch (error) {
+    console.error("❌ Failed to fetch Level 2 warning sellers:", error);
+    return [];
+  }
+};
+
+export const fetchWarning3Sellers = async () => {
+  try {
+    const res = await axios.get(`${API_BASE_URL}/api/admin/warning3`);
+    return res.data; // Array of sellers
+  } catch (error) {
+    console.error("❌ Failed to fetch Level 3 warning sellers:", error);
+    return [];
+  }
+};
+
+export const getCustomerPayments = async () => {
+  try {
+    const res = await adminAxios.get("/totals"); 
+    return res.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const adminLogin = async (email, password) => {
+  try {
+    const res = await axios.post(`${API_BASE_URL}/api/admin/admin-login`, { email, password });
+    return res.data; // { message, jwt }
+  } catch (error) {
+    // Handle backend errors nicely
+    if (error.response) {
+      // Backend returned an error response
+      return { error: error.response.data.message || "Login failed" };
+    } else {
+      return { error: "Network or server error" };
+    }
   }
 };
